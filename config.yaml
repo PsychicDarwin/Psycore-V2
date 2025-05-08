@@ -1,0 +1,11 @@
+model:
+  primary: "gpt-4"           # String for the main LLM model to use
+  allow_image_input: true    # Boolean to enable image inputs into the model
+
+graph_verification:
+  enabled: true              # Boolean to enable graph verification
+  method: "llm"              # Options: "llm" (requires model) or "bert"
+  llm_model: "gpt-4"         # Only used if method is "llm"
+
+prompt_mode:
+  mode: "q_learning"         # Options: "original", "elaborated", "q_learning", "q_training"

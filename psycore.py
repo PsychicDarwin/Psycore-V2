@@ -68,7 +68,7 @@ class Psycore:
         # Clean the S3 Buckets
         self.s3_handler.reset_buckets()
         # Create the file preprocessor
-        self.file_preprocessor = FilePreprocessor(self.s3_handler, self.vdb, self.embedder)
+        self.file_preprocessor = FilePreprocessor(self.s3_handler, self.vdb, self.embedder,self.main_wrapper, self.graphModel)
         # Get all files from the Documents bucket
         files = self.s3_handler.list_base_directory_files(S3Bucket.DOCUMENTS) 
         # Limit to first 2 files for testing

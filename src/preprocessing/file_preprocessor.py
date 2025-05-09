@@ -20,14 +20,14 @@ class FilePreprocessor:
         :param file_path: Path to the file.
         :param additional_data: Additional data to be stored with the file.
         """
-        attachment_format = Attachment.get_attachment_type(file_path)
+        attachment_format = AttachmentTypes.from_filename(file_path)
         attachment_file = Attachment(file_path, attachment_format, needs_extraction=True, additional_data=None)
         attachment_file.extract()
         bucket_name, document_name, graph_path = None, None, None
         if additional_data is not None and "key" in additional_data.keys():
             # Split the document name and bucket name
-            bucket_name = additional_data["key"].split("/")[0]
-            document_name = additional_data["key"].split("/")[1]
+            bucket_name = S3Bucket.DOCUMENTS.value
+            document_name = additional_data["key"]
             graph_path = f"{document_name}.json"
         if attachment_file.needs_extraction:
             print("Failed to read attachment")

@@ -1,5 +1,6 @@
 from PIL import Image
-import io, json, imagehash,base64, docx2txt,pandas, fitz # PyMuPDF
+import io, imagehash,base64, docx2txt,pandas # PyMuPDF
+import fitz
 class PDFReader:
     
     MARGIN_PT = 3.0

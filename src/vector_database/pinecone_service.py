@@ -3,7 +3,6 @@ import uuid
 from src.vector_database.vector_service import VectorDatabaseService
 
 class PineconeService(VectorDatabaseService):
-    pass
     def __init__(self, embedder, credentials: dict):
         super().__init__(embedder)
         self.index_name = credentials['index_name']

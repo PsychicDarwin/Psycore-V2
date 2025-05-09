@@ -45,6 +45,8 @@ coverage.xml
 htmlcov/
 .pytest_cache/
 .tox/
+jupiter_testing/
+
 
 # Distribution
 *.log

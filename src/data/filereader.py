@@ -98,6 +98,9 @@ class FileReader:
                     "images": images,
                     "page_count": len(doc)
                 }
+        except Exception as e:
+            print(f"Error reading PDF file: {e}")
+            return None
             
     def extract_txt(file_path):
         with open(file_path, 'r', encoding='utf-8') as file:

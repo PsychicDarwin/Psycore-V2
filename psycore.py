@@ -65,6 +65,10 @@ class Psycore:
         })
 
     def preprocess(self):
+        # Clean the VDB
+        self.vdb.reset_data()
+        # Clean the S3 Buckets
+        self.s3_handler.reset_buckets()
         pass
 
     def __init__(self, config_path=None):

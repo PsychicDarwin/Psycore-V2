@@ -157,3 +157,34 @@ class S3Handler:
         bucket = file_info['Bucket']
         _, file_extension = os.path.splitext(key)
         return self.download_to_temp_and_process(bucket, key, process_callback, file_extension)
+    
+
+    def reset_buckets(self) -> None:
+        """
+        Deletes all objects from the text, images, and graphs buckets.
+        Use with caution.
+
+        This will not reset the documents bucket.
+        """
+        buckets = [
+            self.text_bucket,
+            self.images_bucket,
+            self.graphs_bucket
+        ]
+
+        for bucket in buckets:
+            try:
+                response = self.s3.list_objects_v2(Bucket=bucket)
+                if 'Contents' in response:
+                    objects_to_delete = [{'Key': obj['Key']} for obj in response['Contents']]
+                    # Boto3 supports batch deletion of up to 1000 objects
+                    self.s3.delete_objects(
+                        Bucket=bucket,
+                        Delete={'Objects': objects_to_delete}
+                    )
+                    print(f"Cleared {len(objects_to_delete)} objects from {bucket}")
+                else:
+                    print(f"No objects found in {bucket}")
+            except ClientError as e:
+                print(f"Error resetting bucket {bucket}: {e}")
+                raise

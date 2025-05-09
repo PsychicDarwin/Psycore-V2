@@ -1,16 +1,15 @@
 from pinecone import Pinecone, ServerlessSpec
 import uuid
-from src.vector_database.vector_service import VectorDatabaseService
-
-class PineconeService(VectorDatabaseService):
+from src.vector_database.vector_service import VectorService
+from numpy import ndarray
+class PineconeService(VectorService):
     def __init__(self, embedder, credentials: dict):
         super().__init__(embedder)
         self.index_name = credentials['index_name']
         self.service = Pinecone(
             api_key=credentials['api_key']
         )
-
-        if self.index_name not in self.service.list_indexes():
+        if self.index_name not in [i['name'] for i in self.service.list_indexes()]:
             self.service.create_index(
                 name=self.index_name,
                 dimension=embedder.chunk_size,
@@ -46,7 +45,7 @@ class PineconeService(VectorDatabaseService):
         embedding = self.embedder.text_to_embedding(query)
         results = self.index.query(
             vector=embedding,
-            top_k= k,
+            top_k= n,
             include_metadata=True
         )
         return results['matches']
@@ -73,8 +72,9 @@ class PineconeService(VectorDatabaseService):
 
     def reset_data(self):
         """Reset the vector database."""
-        self.index.delete_all()
-        self.index.create_index(
+        print("Cleaning Pinecone index...")
+        self.service.delete_index(self.index_name)
+        self.service.create_index(
             name=self.index_name,
             dimension=self.embedder.chunk_size,
             metric='cosine',

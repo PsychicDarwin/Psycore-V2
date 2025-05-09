@@ -1,14 +1,12 @@
-from src.system_manager.LocalCredentials import LocalCredentials
-from src.system_manager.ConfigManager import ConfigManager
-from src.data.s3_handler import S3Handler
-from src.kg.bert import BERT_KG
-from src.kg.llm import LLM_KG
-from src.llm.model_catalogue import ModelCatalogue
+from src.system_manager import LocalCredentials, ConfigManager
+from src.data.s3_handler import S3Handler, S3Bucket
+from src.kg import BERT_KG, LLM_KG
+from src.llm import ModelCatalogue
 from src.llm.wrappers import ChatModelWrapper
-from src.vector_database.embedder import Embedder
-from src.vector_database.clip_embedder import CLIPEmbedder
-from src.vector_database.pinecone_service import PineconeService
+from src.vector_database import CLIPEmbedder, PineconeService, Embedder, VectorService
+from src.preprocessing.file_preprocessor import FilePreprocessor
 import argparse
+
 parser = argparse.ArgumentParser()
 
 class Psycore:
@@ -69,6 +67,11 @@ class Psycore:
         self.vdb.reset_data()
         # Clean the S3 Buckets
         self.s3_handler.reset_buckets()
+        # Create the file preprocessor
+        self.file_preprocessor = FilePreprocessor(self.s3_handler, self.vdb, self.embedder)
+        # Get all files from the Documents bucket
+        files = self.s3_handler.list_base_directory_files(S3Bucket.DOCUMENTS)
+        self
         
 
     def __init__(self, config_path=None):

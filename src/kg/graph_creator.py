@@ -18,7 +18,6 @@ class GraphRelation:
             return False
         return self.subject == __value.subject and self.object == __value.object and self.relation == __value.relation
     
-    
 
 class GraphCreator(ABC):
     @abstractmethod

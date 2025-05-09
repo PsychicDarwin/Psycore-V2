@@ -1,13 +1,13 @@
 import base64
-from src.data.data_helper import split_audio_file, clean_temp_files
+from .data_helper import split_audio_file, clean_temp_files
 import whisper
 import logging
 from enum import Enum
 from PIL import Image
 from io import BytesIO
-from src.llm.content_formatter import ContentFormatter
 from src.llm.wrappers import ChatModelWrapper
-from src.data.filereader import FileReader
+from src.llm.content_formatter import ContentFormatter
+from .filereader import FileReader
 
 # Initialize the logger
 logger = logging.getLogger(__name__)
@@ -38,6 +38,24 @@ class Attachment:
         self.needs_extraction = needs_extraction
         self.additional_data = additional_data if additional_data else {}
 
+
+    def image_to_attachment(image_information: dict, additional_data: dict = None):
+        """
+        Converts an extracted image dict (from a PDF) to an Attachment object.
+        :param image_information: Dictionary containing image information.
+        :param additional_data: Additional data to be stored with the image.
+        :return: Attachment object.
+        """
+        if image_information is None:
+            raise ValueError("Image information cannot be None")
+        attachment_data = image_information.get("image")
+        if attachment_data is None:
+            raise ValueError("Attachment data cannot be None")
+        attachment_type = AttachmentTypes.IMAGE
+        image_information.pop("image")
+        additional_data = dict(list(additional_data.items()) + list(image_information.items()))
+        return Attachment(attachment_type, attachment_data, needs_extraction=False, additional_data=additional_data)
+    
     def extract(self):
         if self.needs_extraction:
             try:

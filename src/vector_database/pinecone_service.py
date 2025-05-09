@@ -45,7 +45,7 @@ class PineconeService(VectorService):
         embedding = self.embedder.text_to_embedding(query)
         results = self.index.query(
             vector=embedding,
-            top_k= n,
+            top_k= k,
             include_metadata=True
         )
         return results['matches']

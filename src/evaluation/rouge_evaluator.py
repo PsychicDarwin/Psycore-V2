@@ -1,4 +1,4 @@
-from src.evaluation.evaluator import Evaluator
+from .evaluator import Evaluator
 from evaluate import load
 from rouge_score import rouge_scorer
 

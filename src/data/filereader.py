@@ -1,6 +1,5 @@
 from PIL import Image
-import io, json, imagehash, docx2txt,pandas, fitz # PyMuPDF
-
+import io, json, imagehash,base64, docx2txt,pandas, fitz # PyMuPDF
 class PDFReader:
     
     MARGIN_PT = 3.0
@@ -86,7 +85,7 @@ class FileReader:
                             processed_hashes.add(hash_value)
                             buffer = io.BytesIO()
                             image.convert("RGB").save(buffer, format="JPEG")
-                            jpeg_data = buffer.getvalue()
+                            jpeg_data = base64.b64encode(buffer.getvalue()).decode("utf-8")
                             images.append({
                                 "page": page_num,
                                 "bbox": bbox,

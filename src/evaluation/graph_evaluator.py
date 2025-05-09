@@ -1,5 +1,5 @@
-from src.evaluation.evaluator import Evaluator
-from src.kg.graph_creator import GraphCreator, GraphRelation
+from .evaluator import Evaluator
+from src.kg import GraphCreator, GraphRelation
 
 class GraphEvaluator(Evaluator):
     def __init__(self, graph_creator: GraphCreator):

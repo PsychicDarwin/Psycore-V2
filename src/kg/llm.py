@@ -1,10 +1,9 @@
-
 import re
 import json
 import torch
-from src.kg.graph_creator import GraphCreator, GraphRelation
+from .graph_creator import GraphCreator, GraphRelation
 from src.llm.wrappers import ChatModelWrapper
-from src.vector_database.embedder import Embedder
+from src.vector_database import Embedder
 from langchain_experimental.graph_transformers import LLMGraphTransformer
 from langchain_core.documents import Document
 

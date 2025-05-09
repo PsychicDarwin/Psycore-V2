@@ -5,7 +5,7 @@ from typing import Dict, List, Any, BinaryIO, Optional, Tuple, Union
 from botocore.exceptions import ClientError
 from dotenv import load_dotenv
 import tempfile
-from src.system_manager.LocalCredentials import LocalCredentials
+from src.system_manager import LocalCredentials
 from enum import Enum
 
 # Load environment variables
@@ -143,7 +143,7 @@ class S3Handler:
         binary_content = self.download_file(s3_link)
         return binary_content.decode('utf-8')
 
-    def download_to_temp_and_process(self, bucket: str, key: str, process_callback, file_extension: Optional[str] = None) -> Any:
+    def download_to_temp_and_process(self, bucket: S3Bucket, key: str, process_callback, file_extension: Optional[str] = None) -> Any:
         """
         Download a file to a temporary location, process it, and clean up.
         """
@@ -155,11 +155,11 @@ class S3Handler:
         temp_file.close()
 
         try:
-            self.s3.download_file(bucket, key, local_path)
-            extra_data = {'bucket': bucket, 'key': key, 'file_extension': file_extension}
+            self.s3.download_file(bucket.value, key, local_path)
+            extra_data = {'key': key, 'file_extension': file_extension}
             return process_callback(local_path, extra_data)
         except Exception as e:
-            print(f"Error processing file {bucket}/{key}: {e}")
+            print(f"Error processing file {bucket.value}/{key}: {e}")
             raise
         finally:
             if os.path.exists(local_path):

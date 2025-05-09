@@ -52,6 +52,6 @@ LocalCredentials.add_credential('CHROMADB_PORT', os.getenv('CHROMADB_PORT', 8000
 
 # Add Pinecone Configuration
 LocalCredentials.add_credential('PINECONE_API_KEY', os.getenv('PINECONE_API_KEY'))
-LocalCredentials.add_credential('PINECONE_ENVIRONMENT', os.getenv('PINECONE_ENVIRONMENT'))
+LocalCredentials.add_credential('PINECONE_REGION', os.getenv('PINECONE_REGION'))
 LocalCredentials.add_credential('PINECONE_HOST', os.getenv('PINECONE_HOST'))
 LocalCredentials.add_credential('PINECONE_INDEX', os.getenv('PINECONE_INDEX'))

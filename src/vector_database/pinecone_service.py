@@ -17,8 +17,9 @@ class PineconeService(VectorDatabaseService):
                 metric='cosine',
                 spec=ServerlessSpec(
                     cloud='aws',
-                    region='us-east-1'
+                    region=credentials['aws_region']
                 )
+            )
         self.index = self.service.Index(self.index_name)
 
     def gen_uuid(self):
@@ -45,7 +46,7 @@ class PineconeService(VectorDatabaseService):
         embedding = self.embedder.text_to_embedding(query)
         results = self.index.query(
             vector=embedding,
-            top_k=n,
+            top_k= k,
             include_metadata=True
         )
         return results['matches']

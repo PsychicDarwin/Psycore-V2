@@ -1,6 +1,5 @@
 # Base Q Learning Class that contains the Q Learning information to be used by the QAgent and QTrainer classes
 import numpy as np
-import matplotlib.pyplot as plt
 import random
 
 class QModel:
@@ -95,17 +94,3 @@ class QModel:
             
         return total_rewards
     
-    def plot_learning_curve(self, rewards):
-        """
-        Plot the learning curve (rewards over episodes)
-        
-        Args:
-            rewards (list): List of rewards per episode
-        """
-        plt.figure(figsize=(10, 6))
-        plt.plot(rewards)
-        plt.title('Q-Learning Performance')
-        plt.xlabel('Episodes')
-        plt.ylabel('Average Reward')
-        plt.grid(True)
-        plt.show()

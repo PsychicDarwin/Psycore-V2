@@ -68,3 +68,6 @@ matplotlib>=3.10.0  # For visualization
 
 # Whisper
 openai-whisper
+
+# Rouge Score
+rouge_score==0.1.2

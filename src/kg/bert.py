@@ -4,7 +4,7 @@ import re
 import json
 import torch
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
-from src.kg.graph_creator import GraphCreator
+from src.kg.graph_creator import GraphCreator, GraphRelation
 
 class BERT_KG(GraphCreator):
     def __init__(self, model_name: str = "Babelscape/rebel-large"):
@@ -12,7 +12,7 @@ class BERT_KG(GraphCreator):
         self.tokenizer = AutoTokenizer.from_pretrained(model_name)
         self.model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
 
-    def extract_triples(self, text: str):
+    def create_graph_relations(self, text: str):
         inputs = self.tokenizer(text, return_tensors="pt", truncation=True)
         
         with torch.no_grad():
@@ -38,16 +38,8 @@ class BERT_KG(GraphCreator):
                     continue
                 try:
                     obj, rel = obj_rel.split("<obj> ")[:2]
-                    triplets.append({
-                        "subject": subject.strip(),
-                        "object": obj.strip(),
-                        "relation": rel.strip()
-                    })
+                    triplets.append(GraphRelation(subject.strip(), obj.strip(), rel.strip()))
                 except ValueError:
                     continue  # Malformed triple part
 
         return triplets
-
-    def create_graph_json(self, text: str):
-        triples = self.extract_triples(text)
-        return {"triples": triples}

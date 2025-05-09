@@ -5,7 +5,9 @@ from src.kg.bert import BERT_KG
 from src.kg.llm import LLM_KG
 from src.llm.model_catalogue import ModelCatalogue
 from src.llm.wrappers import ChatModelWrapper
-
+from src.vector_database.embedder import Embedder
+from src.vector_database.clip_embedder import CLIPEmbedder
+from src.vector_database.pinecone_service import PineconeService
 import argparse
 parser = argparse.ArgumentParser()
 
@@ -23,6 +25,8 @@ class Psycore:
             }
         }
         self.s3_handler = S3Handler(self.s3_creds)
+
+
 
     def init_config(self,config_path=None):
         if config_path is None:
@@ -43,7 +47,7 @@ class Psycore:
                 try:
                     modelType = ModelCatalogue.get_models_with_json_schema()[graphModelName]
                     wrapper = ChatModelWrapper(modelType)
-                    self.graphModel = LLM_KG(wrapper)
+                    self.graphModel = LLM_KG(wrapper, self.embedder)
                 except KeyError:
                     raise ValueError(f"Graph model type '{graphModelName}' is not recognized in the ModelCatalogue as with json schema encoding.\n Options are {list(ModelCatalogue.get_models_with_json_schema().keys())}")
 
@@ -53,12 +57,20 @@ class Psycore:
             self.graphModel = None
         self.prompt_style = config.get_prompt_mode()
 
+    def init_vector_database(self):
+        self.vdb = PineconeService(self.embedder, {
+            "index_name": LocalCredentials.get_credential('PINECONE_INDEX').secret_key,
+            "api_key": LocalCredentials.get_credential('PINECONE_API_KEY').secret_key,
+            "aws_region": LocalCredentials.get_credential('PINECONE_REGION').secret_key
+        })
 
     def preprocess(self):
         pass
 
     def __init__(self, config_path=None):
+        self.embedder = CLIPEmbedder()
         self.init_config(config_path)
+        self.init_vector_database()
         self.init_s3()
 
     def text_interface(self):

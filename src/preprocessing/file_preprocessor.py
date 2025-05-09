@@ -4,6 +4,7 @@ from src.data.attachments import Attachment, AttachmentTypes
 from src.vector_database import Embedder
 from src.llm.wrappers import ChatModelWrapper
 from src.kg.graph_creator import GraphCreator
+import base64, json
 class FilePreprocessor:
 
     def __init__(self, s3_handler: S3Handler, vector_database: VectorService, embedder : Embedder, imageConverter: ChatModelWrapper, graph_creator: GraphCreator):
@@ -11,6 +12,7 @@ class FilePreprocessor:
         self.vector_database = vector_database
         self.embedder = embedder
         self.imageConverter = imageConverter
+        self.graphModel = graph_creator
 
     def process_file(self, file_path: str, additional_data : dict):
         """
@@ -21,15 +23,39 @@ class FilePreprocessor:
         attachment_format = Attachment.get_attachment_type(file_path)
         attachment_file = Attachment(file_path, attachment_format, needs_extraction=True, additional_data=None)
         attachment_file.extract()
+        bucket_name, document_name, graph_path = None, None, None
+        if additional_data is not None and "key" in additional_data.keys():
+            # Split the document name and bucket name
+            bucket_name = additional_data["key"].split("/")[0]
+            document_name = additional_data["key"].split("/")[1]
+            graph_path = f"{document_name}.json"
         if attachment_file.needs_extraction:
             print("Failed to read attachment")
         else:
+            appended_data = ""
+            data = ""
             if type(attachment_file.attachment_data) == str:
                 # If the attachment is a string, it means it's a text file or bbase64 image
                 data = attachment_file.attachment_data
+
+                if attachment_file.attachment_format == AttachmentTypes.IMAGE:
+                    # Base64 to BytesIO binary
+                    binary_image = base64.b64decode(data)
+                    image_bucket, image_path = self.s3_handler.upload_image(document_name, binary_image)
+                    embedded_image = self.embedder.image_to_embedding(binary_image)
+                    self.vector_database.add_data(embedded_image, {
+                        "document_path": f"{additional_data['key']}",
+                        "graph_path": graph_path,
+                        "image_path": f"s3://{image_bucket}/{image_path}",
+                        "type": "image",
+                    })
+                    summary = self.imageConverter._text_summary(binary_image)
+                    self.s3_handler.upload_document_summary(document_name, summary)
+                    graph = self.graphModel.create_graph_dict(summary)
+                    self.s3_handler.upload_graph(document_name, json.dumps(graph))
+
             elif type(attachment_file.attachment_data) == dict:
                 data = attachment_file.attachment_data["text"]
-                additional_data = ""
                 if "images" in attachment_file.attachment_data.keys():
                     attachment_images = [
                         Attachment.image_to_attachment(image, additional_data=additional_data) for image in attachment_file.attachment_data["images"]
@@ -37,15 +63,38 @@ class FilePreprocessor:
                     image_text = [
                         file._text_summary(self.imageConverter) for file in attachment_images
                     ]
-                    for image in attachment_images:
+                    for i, image in enumerate(attachment_images):
                         image.attachment_data["summary"] = image_text
-                    
-
+                        image.attachment_data["image_path"] = f"{document_name}/image{i}"
+                        self.s3_handler.upload_image_text(document_name, image_text, i)
+                        # Base64 to BytesIO binary
+                        binary_image = base64.b64decode(image.attachment_data["image"])
+                        image_bucket, image_path = self.s3_handler.upload_image(document_name, binary_image, i)
+                        embedded_image = self.embedder.image_to_embedding(binary_image)
+                        self.vector_database.add_data(embedded_image, {
+                            "document_path": f"{additional_data['key']}",
+                            "graph_path": graph_path,
+                            "image_path": f"s3://{image_bucket}/{image_path}",
+                            "type": "attachment_image",
+                        })
+                        appended_data += f"Image {i} from Page {image.additional_data['page_number']}: {image_text}\n"
+                    if data is not None:
+                        chunked_data = self.embedder.chunk_text(data)
+                        for chunk in chunked_data:
+                            self.vector_database.add_data(chunk, {
+                                "document_path": f"{additional_data['key']}",
+                                "graph_path": graph_path,
+                                "text": data,
+                                "type": "text"
+                            })
+                        
+                        data += appended_data
+                        self.s3_handler.upload_document_text(document_name, data, file_type="summary")
+                        graph = self.graphModel.create_graph_dict(data)
+                        self.s3_handler.upload_graph(document_name, json.dumps(graph))
             else:
                 raise ValueError("Unknown attachment data type")
-    def process_additional_image(self, image: Attachment):
 
-        
 
 
 

@@ -70,7 +70,20 @@ class Psycore:
         # Create the file preprocessor
         self.file_preprocessor = FilePreprocessor(self.s3_handler, self.vdb, self.embedder)
         # Get all files from the Documents bucket
-        files = self.s3_handler.list_base_directory_files(S3Bucket.DOCUMENTS)
+        files = self.s3_handler.list_base_directory_files(S3Bucket.DOCUMENTS) 
+        # Limit to first 2 files for testing
+        files = files[:2]
+        # Process the files
+        for file in files:
+            # Get the file path
+            file_path = f"s3://{S3Bucket.DOCUMENTS.value}/{file}"
+            # Get the additional data
+            additional_data = {
+                "key": file,
+                "bucket": S3Bucket.DOCUMENTS.value
+            }
+            # Process the file
+            self.file_preprocessor.process_file(file_path, additional_data)
         self
         
 

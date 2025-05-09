@@ -1,3 +1,4 @@
+from numpy import ndarray
 from src.vector_database.embedder import Embedder
 from abc import ABC, abstractmethod
 class VectorService(ABC):
@@ -7,7 +8,7 @@ class VectorService(ABC):
         pass
 
     @abstractmethod
-    def add_data(self, data: dict):
+    def add_data(self, embedding : ndarray, data: dict):
         """Add data to the vector database."""
         pass
 

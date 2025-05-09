@@ -17,7 +17,13 @@ class GraphRelation:
         if not isinstance(__value, GraphRelation):
             return False
         return self.subject == __value.subject and self.object == __value.object and self.relation == __value.relation
-    
+
+    def __dict_to_relation(self, data: dict):
+        if not isinstance(data, dict):
+            raise TypeError("data must be a dictionary")
+        if "subject" not in data or "object" not in data or "relation" not in data:
+            raise ValueError("data must contain 'subject', 'object', and 'relation' keys")
+        return GraphRelation(data["subject"], data["object"], data["relation"])
 
 class GraphCreator(ABC):
     @abstractmethod

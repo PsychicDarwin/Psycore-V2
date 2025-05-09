@@ -10,10 +10,10 @@ class Embedder(ABC):
         self.chunk_overlap = 20
         pass
 
-    def chunk_text(self) -> list:
+    def chunk_text(self,text) -> list:
         """Chunk the text into smaller pieces for embedding."""
         text_splitter = TokenTextSplitter(chunk_size=self.chunk_size, chunk_overlap=self.chunk_overlap)
-        chunks = text_splitter.split_text(self.text)
+        chunks = text_splitter.split_text(text)
         return chunks
 
     @abstractmethod

@@ -69,7 +69,7 @@ class Psycore:
         self.vdb.reset_data()
         # Clean the S3 Buckets
         self.s3_handler.reset_buckets()
-        pass
+        
 
     def __init__(self, config_path=None):
         self.embedder = CLIPEmbedder()
@@ -85,12 +85,12 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Psycore CLI")
     parser.add_argument("--config", type=str, help="Path to the config file")
     parser.add_argument("--preprocess", action="store_true", help="Preprocess the data")
-    parser.add_argument("--continue", action="store_true", help="If preprocessing, allows program to work as normal afterwards rather than only preprocessing")
+    parser.add_argument("--proceed", action="store_true", help="If preprocessing, allows program to work as normal afterwards rather than only preprocessing")
     args = parser.parse_args()
     psycore = Psycore(args.config)
     if args.preprocess:
         psycore.preprocess()
-        if not args.continue_:
+        if not args.proceed:
             exit(0)
     else:
         print("No preprocessing requested. Continuing with Psycore.")

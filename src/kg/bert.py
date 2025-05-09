@@ -4,7 +4,7 @@ import re
 import json
 import torch
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
-from kg.graph_creator import GraphCreator
+from src.kg.graph_creator import GraphCreator
 
 class BERT_KG(GraphCreator):
     def __init__(self, model_name: str = "Babelscape/rebel-large"):

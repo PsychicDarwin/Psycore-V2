@@ -31,7 +31,7 @@ class ContentFormatter:
             "text": "{prompt}"
         }
     
-    def prep_images(count: int) -> list[dict]:
+    def prep_images(count: int,label=None) -> list[dict]:
         """
         Formats a base64 image string for LLM input.
         Args:
@@ -39,16 +39,19 @@ class ContentFormatter:
         Returns:
             dict: Formatted image data.
         """
+        if label is None:
+            label = IMAGE_LABEL
         return_val = []
         for i in range(count):
             return_val.append({
                 "type": "image_url",
                 "image_url": {
-                    "url": "data:image/jpeg;base64,{" + f"{IMAGE_LABEL}{i}" + "}"
+                    "url": "data:image/jpeg;base64,{" + f"{label}{i}" + "}"
                 }
             })
+        return return_val
 
-    def map_image_data(image_data: list) -> dict:
+    def map_image_data(image_data: list, label: str = None) -> dict:
         """
         Maps image data to a format suitable for LLM input.
         Args:
@@ -57,9 +60,14 @@ class ContentFormatter:
             dict: Mapped image data.
         """
         mappings = {}
+        if label is None:
+            label = IMAGE_LABEL
         for i, base64_image in enumerate(image_data):
-            mappings[f"{IMAGE_LABEL}{i}"] = base64_image
+            mappings[f"{label}{i}"] = base64_image
         return mappings
+    
+    def merge_image_prompt(mapping1: dict, mapping2: dict):
+        return {**mapping1, **mapping2}
 
     
     def chat_to_template(chat):

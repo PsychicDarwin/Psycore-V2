@@ -7,6 +7,7 @@ class ConfigError(Exception):
 class ConfigManager:
     VALID_GRAPH_METHODS = {"llm", "bert"}
     VALID_PROMPT_MODES = {"original", "elaborated", "q_learning"}
+    VALID_LOG_LEVELS = {"DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"}
 
     def __init__(self, path="config.yaml"):
         self.path = path
@@ -23,7 +24,7 @@ class ConfigManager:
         c = self.config
 
         # Check presence
-        for section in ["model", "graph_verification", "prompt_mode"]:
+        for section in ["model", "graph_verification", "prompt_mode", "text_summariser", "logger"]:
             if section not in c:
                 raise ConfigError(f"Missing required section: '{section}'")
 
@@ -51,6 +52,16 @@ class ConfigManager:
         if mode not in self.VALID_PROMPT_MODES:
             raise ConfigError(f"prompt_mode.mode must be one of {self.VALID_PROMPT_MODES}")
 
+        # Validate text_summariser
+        if not isinstance(c["text_summariser"].get("model"), str):
+            raise ConfigError("text_summariser.model must be a string")
+
+        # Validate logger
+        if not isinstance(c["logger"].get("level"), str):
+            raise ConfigError("logger.level must be a string")
+        if c["logger"]["level"] not in self.VALID_LOG_LEVELS:
+            raise ConfigError(f"logger.level must be one of {self.VALID_LOG_LEVELS}")
+
     def get_model(self):
         return self.config["model"]["primary"]
 
@@ -71,6 +82,12 @@ class ConfigManager:
     def get_prompt_mode(self):
         return self.config["prompt_mode"]["mode"]
 
+    def get_text_summariser_model(self):
+        return self.config["text_summariser"]["model"]
+
+    def get_log_level(self):
+        return self.config["logger"]["level"]
+
 # Example usage
 if __name__ == "__main__":
     try:
@@ -79,5 +96,7 @@ if __name__ == "__main__":
         print("Allow Images:", config.allow_images())
         print("Graph Method:", config.get_graph_method())
         print("Prompt Mode:", config.get_prompt_mode())
+        print("Text Summariser Model:", config.get_text_summariser_model())
+        print("Log Level:", config.get_log_level())
     except (ConfigError, FileNotFoundError) as e:
         print(f"Config error:", e)

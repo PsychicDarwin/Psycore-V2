@@ -8,9 +8,10 @@ from io import BytesIO
 from src.llm.wrappers import ChatModelWrapper
 from src.llm.content_formatter import ContentFormatter
 from .filereader import FileReader
+from system_manager.LoggerController import LoggerController
 
 # Initialize the logger
-logger = logging.getLogger(__name__)
+logger = LoggerController.get_logger()
 
 MAX_LLM_IMAGE_PIXELS = 512
 
@@ -135,17 +136,21 @@ class Attachment:
         if file_extension in ALL_TYPES:
             # Use the appropriate file reader based on the file extension
             if file_extension in TXT_TYPES:
-                return FileReader.extract_txt(self.attachment_data)
+                self.attachment_data = FileReader.extract_txt(self.attachment_data)
             elif file_extension in DOC_TYPES:
-                return FileReader.extract_docx(self.attachment_data)
+                self.attachment_data = FileReader.extract_docx(self.attachment_data)
             elif file_extension in XLS_TYPES:
-                return FileReader.extract_xlsx(self.attachment_data)
+                self.attachment_data = FileReader.extract_xlsx(self.attachment_data)
             elif file_extension in PDF_TYPES:
-                return FileReader.extract_pdf(self.attachment_data)
+                self.attachment_data = FileReader.extract_pdf(self.attachment_data)
+            else:
+                self.attachment_data = None
+
+            if self.attachment_data is not None:
+                return self.attachment_data
         else:
             logger.error(f"Unsupported file type: {file_extension}")
             raise FailedExtraction(self, f"Unsupported file type: {file_extension}")
-        pass
 
     def _extract_video(self):
         raise NotImplementedError("Video extraction is not implemented yet.")

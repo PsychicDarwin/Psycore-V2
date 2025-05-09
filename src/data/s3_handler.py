@@ -7,12 +7,12 @@ from dotenv import load_dotenv
 import tempfile
 from src.system_manager import LocalCredentials
 from enum import Enum
-import logging
+from system_manager.LoggerController import LoggerController
 
 # Load environment variables
 load_dotenv()
 
-logger = logging.getLogger(__name__)
+logger = LoggerController.get_logger()
 
 class S3Bucket(Enum):
     DOCUMENTS = LocalCredentials.get_credential('S3_DOCUMENTS_BUCKET').secret_key
@@ -50,16 +50,22 @@ class S3Handler:
             raise
         logger.debug("Exiting list_base_directory_files")
 
-    def _upload_to_s3(self,bucket: S3Bucket, key: str, body: Union[bytes, BinaryIO], content_type: str) -> str:
+    def _upload_to_s3(self,bucket: Union[S3Bucket, str], key: str, body: Union[bytes, BinaryIO, str], content_type: str) -> str:
         logger.debug("Entering _upload_to_s3 with bucket=%s, key=%s, content_type=%s", bucket, key, content_type)
         try:
-            if isinstance(body, bytes):
-                self.s3.put_object(Bucket=bucket.value, Key=key, Body=body, ContentType=content_type)
+            # Get bucket value if it's an S3Bucket enum
+            bucket_name = bucket.value if isinstance(bucket, S3Bucket) else bucket
+            
+            if isinstance(body, (bytes, str)):
+                # Convert string to bytes if needed
+                if isinstance(body, str):
+                    body = body.encode('utf-8')
+                self.s3.put_object(Bucket=bucket_name, Key=key, Body=body, ContentType=content_type)
             else:
-                self.s3.upload_fileobj(body, bucket, key)
-            return f"s3://{bucket.value}/{key}"
+                self.s3.upload_fileobj(body, bucket_name, key)
+            return f"s3://{bucket_name}/{key}"
         except ClientError as e:
-            print(f"Error uploading to {bucket.value}/{key}: {e}")
+            print(f"Error uploading to {bucket_name}/{key}: {e}")
             raise
         logger.debug("Exiting _upload_to_s3")
 
@@ -101,7 +107,7 @@ class S3Handler:
         logger.debug("Entering upload_document_text with doc_s3_link=%s, file_type=%s", doc_s3_link, file_type)
         doc_id = doc_s3_link.split("/")[-1].split(".")[0]
         key = f"{doc_id}/{file_type}.txt"
-        return self._upload_to_s3(S3Bucket.TEXT.value, key, text_content.encode('utf-8'), 'text/plain')
+        return self._upload_to_s3(S3Bucket.TEXT, key, text_content, 'text/plain')
         logger.debug("Exiting upload_document_text")
 
     def upload_document_summary(self, document_id: str, summary_content: str) -> str:
@@ -112,7 +118,7 @@ class S3Handler:
     def upload_image(self, document_id: str, image_data: BinaryIO, image_number: int, extension: str = ".png") -> str:
         logger.debug("Entering upload_image with document_id=%s, image_number=%s, extension=%s", document_id, image_number, extension)
         key = f"{document_id}/image{image_number}{extension}"
-        return self._upload_to_s3(S3Bucket.IMAGES.value, key, image_data, 'image/png')
+        return self._upload_to_s3(S3Bucket.IMAGES, key, image_data, 'image/png')
         logger.debug("Exiting upload_image")
 
     def upload_image_text(self, document_id: str, text_content: str, image_number: int) -> str:
@@ -123,7 +129,7 @@ class S3Handler:
     def upload_graph(self, document_id: str, graph_json: str) -> str:
         logger.debug("Entering upload_graph with document_id=%s", document_id)
         key = f"{document_id}/graph.json"
-        return self._upload_to_s3(S3Bucket.GRAPHS.value, key, graph_json.encode('utf-8'), 'application/json')
+        return self._upload_to_s3(S3Bucket.GRAPHS, key, graph_json.encode('utf-8'), 'application/json')
         logger.debug("Exiting upload_graph")
 
     def concat_and_replace_summary(self, document_id: str) -> str:

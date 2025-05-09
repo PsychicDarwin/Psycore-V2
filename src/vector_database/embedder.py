@@ -6,9 +6,8 @@ from numpy import ndarray
 class Embedder(ABC):
     @abstractmethod
     def __init__(self):
-        self.chunk_size = 57
-        self.chunk_overlap = 20
-        pass
+        self.chunk_size = 512
+        self.chunk_overlap = 24
 
     def chunk_text(self,text) -> list:
         """Chunk the text into smaller pieces for embedding."""

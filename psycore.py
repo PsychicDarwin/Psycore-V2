@@ -64,12 +64,6 @@ class Psycore:
     def text_interface(self):
         print("Welcome to Psycore! \n")
         pass
-
-        
-        
-
-
-
         
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Psycore CLI")

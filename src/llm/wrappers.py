@@ -6,8 +6,8 @@ from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAI
 from langchain_google_genai.embeddings import GoogleGenerativeAIEmbeddings
 from langchain_ollama import ChatOllama, OllamaLLM
 from langchain_ollama.embeddings import OllamaEmbeddings
-from src.credential_manager.LocalCredentials import LocalCredentials
-from src.model.model_catalogue import ModelType, EmbeddingType, Providers, ModelCatalogue
+from src.system_manager.LocalCredentials import LocalCredentials
+from src.llm.model_catalogue import ModelType, EmbeddingType, Providers, ModelCatalogue
 from langchain_xai import ChatXAI
 
 

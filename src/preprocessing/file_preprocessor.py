@@ -20,8 +20,7 @@ class FilePreprocessor:
         :param file_path: Path to the file.
         :param additional_data: Additional data to be stored with the file.
         """
-        attachment_format = AttachmentTypes.from_filename(file_path)
-        attachment_file = Attachment(file_path, attachment_format, needs_extraction=True, additional_data=None)
+        attachment_file = Attachment(AttachmentTypes.from_filename(file_path),file_path, needs_extraction=True, additional_data=None)
         attachment_file.extract()
         bucket_name, document_name, graph_path = None, None, None
         if additional_data is not None and "key" in additional_data.keys():
@@ -38,7 +37,7 @@ class FilePreprocessor:
                 # If the attachment is a string, it means it's a text file or bbase64 image
                 data = attachment_file.attachment_data
 
-                if attachment_file.attachment_format == AttachmentTypes.IMAGE:
+                if attachment_file.attachment_type == AttachmentTypes.IMAGE:
                     # Base64 to BytesIO binary
                     binary_image = base64.b64decode(data)
                     image_bucket, image_path = self.s3_handler.upload_image(document_name, binary_image)
@@ -52,6 +51,19 @@ class FilePreprocessor:
                     summary = self.imageConverter._text_summary(binary_image)
                     self.s3_handler.upload_document_summary(document_name, summary)
                     graph = self.graphModel.create_graph_dict(summary)
+                    self.s3_handler.upload_graph(document_name, json.dumps(graph))
+                else:
+                    # If the attachment is a text file, we chunk it and add it to the vector database
+                    chunked_data = self.embedder.chunk_text(data)
+                    for chunk in chunked_data:
+                        self.vector_database.add_data(chunk, {
+                            "document_path": f"{additional_data['key']}",
+                            "graph_path": graph_path,
+                            "text": data,
+                            "type": "text"
+                        })
+                    self.s3_handler.upload_document_text(document_name, data, file_type="summary")
+                    graph = self.graphModel.create_graph_dict(data)
                     self.s3_handler.upload_graph(document_name, json.dumps(graph))
 
             elif type(attachment_file.attachment_data) == dict:
@@ -103,6 +115,6 @@ class FilePreprocessor:
             # We download the file and go through our temp_download s3 process
             self.s3_handler.download_to_temp_and_process(
                 bucket=S3Bucket.DOCUMENTS,
-                file_key=file,
-                process_func=self.process_file
+                key=file,
+                process_callback=self.process_file
             )

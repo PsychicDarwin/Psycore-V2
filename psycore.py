@@ -74,18 +74,7 @@ class Psycore:
         # Limit to first 2 files for testing
         files = files[:2]
         # Process the files
-        for file in files:
-            # Get the file path
-            file_path = f"s3://{S3Bucket.DOCUMENTS.value}/{file}"
-            # Get the additional data
-            additional_data = {
-                "key": file,
-                "bucket": S3Bucket.DOCUMENTS.value
-            }
-            # Process the file
-            self.file_preprocessor.process_file(file_path, additional_data)
-        self
-        
+        self.file_preprocessor.process_files(files)
 
     def __init__(self, config_path=None):
         self.embedder = CLIPEmbedder()

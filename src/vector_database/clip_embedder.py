@@ -8,9 +8,10 @@ class CLIPEmbedder(Embedder):
     PROCESSOR_MODEL = "openai/clip-vit-base-patch32"
 
     def __init__(self):
+        super().__init__()
         self.model = CLIPModel.from_pretrained(self.BASE_MODEL)
         self.processor = CLIPProcessor.from_pretrained(self.PROCESSOR_MODEL)
-        self.chunk_size = 57
+
     
     def text_to_embedding(self,text : str) -> ndarray:
         """Convert chunk data to embedding."""

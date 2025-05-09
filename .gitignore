@@ -52,6 +52,7 @@ jupiter_testing/
 *.log
 *.pot
 *.pyc
+.png
 
 # Project specific
 logs/

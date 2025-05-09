@@ -6,12 +6,26 @@ from src.llm.wrappers import ChatModelWrapper
 from src.vector_database import CLIPEmbedder, PineconeService, Embedder, VectorService
 from src.preprocessing.file_preprocessor import FilePreprocessor
 import argparse
+import logging
+import sys
+
+# Configure logging
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.StreamHandler(sys.stdout)
+    ]
+)
+
+logger = logging.getLogger(__name__)
 
 parser = argparse.ArgumentParser()
 
 class Psycore:
 
     def init_s3(self):
+        logger.debug("Entering init_s3")
         self.s3_creds = {
         "aws_iam": LocalCredentials.get_credential('AWS_IAM_KEY'),
         "region": LocalCredentials.get_credential('AWS_DEFAULT_REGION').secret_key,
@@ -23,10 +37,10 @@ class Psycore:
             }
         }
         self.s3_handler = S3Handler(self.s3_creds)
-
-
+        logger.debug("Exiting init_s3")
 
     def init_config(self,config_path=None):
+        logger.debug("Entering init_config with config_path=%s", config_path)
         if config_path is None:
             config_path = "config.yaml"
         config = ConfigManager(config_path)
@@ -54,15 +68,19 @@ class Psycore:
         else:
             self.graphModel = None
         self.prompt_style = config.get_prompt_mode()
+        logger.debug("Exiting init_config")
 
     def init_vector_database(self):
+        logger.debug("Entering init_vector_database")
         self.vdb = PineconeService(self.embedder, {
             "index_name": LocalCredentials.get_credential('PINECONE_INDEX').secret_key,
             "api_key": LocalCredentials.get_credential('PINECONE_API_KEY').secret_key,
             "aws_region": LocalCredentials.get_credential('PINECONE_REGION').secret_key
         })
+        logger.debug("Exiting init_vector_database")
 
     def preprocess(self):
+        logger.debug("Entering preprocess")
         # Clean the VDB
         self.vdb.reset_data()
         # Clean the S3 Buckets
@@ -75,16 +93,21 @@ class Psycore:
         files = files[:2]
         # Process the files
         self.file_preprocessor.process_files(files)
+        logger.debug("Exiting preprocess")
 
     def __init__(self, config_path=None):
+        logger.debug("Entering __init__ with config_path=%s", config_path)
         self.embedder = CLIPEmbedder()
         self.init_config(config_path)
         self.init_vector_database()
         self.init_s3()
+        logger.debug("Exiting __init__")
 
     def text_interface(self):
+        logger.debug("Entering text_interface")
         print("Welcome to Psycore! \n")
         pass
+        logger.debug("Exiting text_interface")
         
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Psycore CLI")

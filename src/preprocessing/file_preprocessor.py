@@ -5,16 +5,23 @@ from src.vector_database import Embedder
 from src.llm.wrappers import ChatModelWrapper
 from src.kg.graph_creator import GraphCreator
 import base64, json
+import logging
+
+logger = logging.getLogger(__name__)
+
 class FilePreprocessor:
 
     def __init__(self, s3_handler: S3Handler, vector_database: VectorService, embedder : Embedder, imageConverter: ChatModelWrapper, graph_creator: GraphCreator):
+        logger.debug("Entering FilePreprocessor.__init__")
         self.s3_handler = s3_handler
         self.vector_database = vector_database
         self.embedder = embedder
         self.imageConverter = imageConverter
         self.graphModel = graph_creator
+        logger.debug("Exiting FilePreprocessor.__init__")
 
     def process_file(self, file_path: str, additional_data : dict):
+        logger.debug("Entering process_file with file_path=%s, additional_data=%s", file_path, additional_data)
         """
         Process the file and add it to the vector database.
         :param file_path: Path to the file.
@@ -106,11 +113,10 @@ class FilePreprocessor:
                         self.s3_handler.upload_graph(document_name, json.dumps(graph))
             else:
                 raise ValueError("Unknown attachment data type")
-
-
-
+        logger.debug("Exiting process_file")
 
     def process_files(self, files):
+        logger.debug("Entering process_files with files=%s", files)
         for file in files:
             # We download the file and go through our temp_download s3 process
             self.s3_handler.download_to_temp_and_process(
@@ -118,3 +124,4 @@ class FilePreprocessor:
                 key=file,
                 process_callback=self.process_file
             )
+        logger.debug("Exiting process_files")

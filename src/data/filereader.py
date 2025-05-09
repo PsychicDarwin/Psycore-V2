@@ -74,7 +74,7 @@ class FileReader:
 
                 for cluster in clusters:
                     bbox = PDFReader._figure_bbox(page, cluster)
-                    image_list = page.get_images(full=True)
+                    image_list = page.get_images(full=True, clip=bbox)
                     for img in image_list:
                         xref = img[0]
                         base_image = doc.extract_image(xref)

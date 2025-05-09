@@ -7,9 +7,12 @@ from dotenv import load_dotenv
 import tempfile
 from src.system_manager import LocalCredentials
 from enum import Enum
+import logging
 
 # Load environment variables
 load_dotenv()
+
+logger = logging.getLogger(__name__)
 
 class S3Bucket(Enum):
     DOCUMENTS = LocalCredentials.get_credential('S3_DOCUMENTS_BUCKET').secret_key
@@ -20,6 +23,7 @@ class S3Bucket(Enum):
 
 class S3Handler:
     def __init__(self, creds={}):
+        logger.debug("Entering S3Handler.__init__")
         aws_cred = creds["aws_iam"]
         session = boto3.Session(
             aws_access_key_id=aws_cred.user_key,
@@ -29,8 +33,10 @@ class S3Handler:
         self.account_id = session.client('sts').get_caller_identity().get('Account')
         self.region = session.region_name
         self.s3 = session.client('s3')
+        logger.debug("Exiting S3Handler.__init__")
 
     def list_base_directory_files(self,  bucket: S3Bucket) -> List[str]:
+        logger.debug("Entering list_base_directory_files with bucket=%s", bucket)
         """
         Lists all files in the root of the specified S3 bucket (not recursively).
         """
@@ -42,8 +48,10 @@ class S3Handler:
         except ClientError as e:
             print(f"Error listing files in bucket {bucket.value}: {e}")
             raise
+        logger.debug("Exiting list_base_directory_files")
 
     def _upload_to_s3(self,bucket: S3Bucket, key: str, body: Union[bytes, BinaryIO], content_type: str) -> str:
+        logger.debug("Entering _upload_to_s3 with bucket=%s, key=%s, content_type=%s", bucket, key, content_type)
         try:
             if isinstance(body, bytes):
                 self.s3.put_object(Bucket=bucket.value, Key=key, Body=body, ContentType=content_type)
@@ -53,16 +61,20 @@ class S3Handler:
         except ClientError as e:
             print(f"Error uploading to {bucket.value}/{key}: {e}")
             raise
+        logger.debug("Exiting _upload_to_s3")
 
     def parse_s3_uri(self, s3_uri: str) -> tuple[str, str]:
+        logger.debug("Entering parse_s3_uri with s3_uri=%s", s3_uri)
         if not s3_uri.startswith('s3://'):
             raise ValueError(f"Invalid S3 URI format: {s3_uri}")
         parts = s3_uri[5:].split('/', 1)
         if len(parts) != 2:
             raise ValueError(f"Invalid S3 URI format: {s3_uri}")
         return parts[0], parts[1]
+        logger.debug("Exiting parse_s3_uri")
 
     def upload_document(self, file_obj: BinaryIO, original_filename: str) -> Tuple[str, str]:
+        logger.debug("Entering upload_document with original_filename=%s", original_filename)
         base, extension = os.path.splitext(original_filename)
         key_base = f"documents/{base}"
         key = f"{key_base}{extension}"
@@ -82,28 +94,40 @@ class S3Handler:
 
         s3_link = self._upload_to_s3(S3Bucket.DOCUMENTS.value, key, file_obj, 'application/octet-stream')
         document_id = os.path.splitext(os.path.basename(key))[0]
+        logger.debug("Exiting upload_document")
         return document_id, s3_link
 
     def upload_document_text(self, doc_s3_link: str, text_content: str, file_type: str = "main") -> str:
+        logger.debug("Entering upload_document_text with doc_s3_link=%s, file_type=%s", doc_s3_link, file_type)
         doc_id = doc_s3_link.split("/")[-1].split(".")[0]
         key = f"{doc_id}/{file_type}.txt"
         return self._upload_to_s3(S3Bucket.TEXT.value, key, text_content.encode('utf-8'), 'text/plain')
+        logger.debug("Exiting upload_document_text")
 
     def upload_document_summary(self, document_id: str, summary_content: str) -> str:
+        logger.debug("Entering upload_document_summary with document_id=%s", document_id)
         return self.upload_document_text(document_id, summary_content, file_type="summary")
+        logger.debug("Exiting upload_document_summary")
 
     def upload_image(self, document_id: str, image_data: BinaryIO, image_number: int, extension: str = ".png") -> str:
+        logger.debug("Entering upload_image with document_id=%s, image_number=%s, extension=%s", document_id, image_number, extension)
         key = f"{document_id}/image{image_number}{extension}"
         return self._upload_to_s3(S3Bucket.IMAGES.value, key, image_data, 'image/png')
+        logger.debug("Exiting upload_image")
 
     def upload_image_text(self, document_id: str, text_content: str, image_number: int) -> str:
+        logger.debug("Entering upload_image_text with document_id=%s, image_number=%s", document_id, image_number)
         return self.upload_document_text(document_id, text_content, file_type=f"image{image_number}")
+        logger.debug("Exiting upload_image_text")
 
     def upload_graph(self, document_id: str, graph_json: str) -> str:
+        logger.debug("Entering upload_graph with document_id=%s", document_id)
         key = f"{document_id}/graph.json"
         return self._upload_to_s3(S3Bucket.GRAPHS.value, key, graph_json.encode('utf-8'), 'application/json')
+        logger.debug("Exiting upload_graph")
 
     def concat_and_replace_summary(self, document_id: str) -> str:
+        logger.debug("Entering concat_and_replace_summary with document_id=%s", document_id)
         try:
             response = self.s3.list_objects_v2(Bucket=S3Bucket.TEXT.value, Prefix=f"{document_id}/")
             if 'Contents' not in response:
@@ -123,8 +147,10 @@ class S3Handler:
         except ClientError as e:
             print(f"Error concatenating summary: {e}")
             raise
-        
+        logger.debug("Exiting concat_and_replace_summary")
+
     def download_file(self, s3_link: str) -> bytes:
+        logger.debug("Entering download_file with s3_link=%s", s3_link)
         """
         Download a file from S3 using its S3 URI.
         """
@@ -135,15 +161,19 @@ class S3Handler:
         except ClientError as e:
             print(f"Error downloading file: {e}")
             raise
+        logger.debug("Exiting download_file")
 
     def download_text(self, s3_link: str) -> str:
+        logger.debug("Entering download_text with s3_link=%s", s3_link)
         """
         Download and decode a text file from S3.
         """
         binary_content = self.download_file(s3_link)
         return binary_content.decode('utf-8')
+        logger.debug("Exiting download_text")
 
     def download_to_temp_and_process(self, bucket: S3Bucket, key: str, process_callback, file_extension: Optional[str] = None) -> Any:
+        logger.debug("Entering download_to_temp_and_process with bucket=%s, key=%s, file_extension=%s", bucket, key, file_extension)
         """
         Download a file to a temporary location, process it, and clean up.
         """
@@ -164,8 +194,10 @@ class S3Handler:
         finally:
             if os.path.exists(local_path):
                 os.unlink(local_path)
+        logger.debug("Exiting download_to_temp_and_process")
 
     def process_s3_file(self, file_info: Dict[str, str], process_callback) -> Any:
+        logger.debug("Entering process_s3_file with file_info=%s", file_info)
         """
         Process an S3 file using metadata and a callback.
         """
@@ -173,9 +205,10 @@ class S3Handler:
         bucket = file_info['Bucket']
         _, file_extension = os.path.splitext(key)
         return self.download_to_temp_and_process(bucket, key, process_callback, file_extension)
-    
+        logger.debug("Exiting process_s3_file")
 
     def reset_buckets(self) -> None:
+        logger.debug("Entering reset_buckets")
         """
         Deletes all objects from the text, images, and graphs buckets.
         Use with caution.
@@ -204,3 +237,4 @@ class S3Handler:
             except ClientError as e:
                 print(f"Error resetting bucket {bucket}: {e}")
                 raise
+        logger.debug("Exiting reset_buckets")

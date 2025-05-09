@@ -7,6 +7,7 @@ from PIL import Image
 from io import BytesIO
 from src.llm.content_formatter import ContentFormatter
 from src.llm.wrappers import ChatModelWrapper
+from src.data.filereader import FileReader
 
 # Initialize the logger
 logger = logging.getLogger(__name__)
@@ -48,14 +49,14 @@ class Attachment:
                 elif self.attachment_type == AttachmentTypes.IMAGE:
                     self._extract_image()
                 elif self.attachment_type == AttachmentTypes.FILE:
-                    self._extract_file()
+                    self._extract_contents()
                 else:
                     self.needs_extraction = True
             except Exception as e:
                 logger.error(f"Error extracting attachment: {str(e)}")
                 self.needs_extraction = True
 
-    def _process_image(self):
+    def _extract_image(self):
         try: 
             with Image.open(self.attachment_data) as img:
                 img = img.convert("RGB")
@@ -86,7 +87,7 @@ class Attachment:
             return description.content
 
 
-    def _process_audio(self):
+    def _extract_audio(self):
         # We process audio files by splitting them into smaller chunks and transcribing them using Whisper
         # Not all MLLM models support audio input, so we just convert it to text
         try: 
@@ -106,8 +107,30 @@ class Attachment:
             logger.error(f"Failed to process audio: {str(e)}")
             raise FailedExtraction(self, f"Failed to process audio: {str(e)}")
             
-    def _process_file(self):
+    def _extract_contents(self):
+        file_extension = self.attachment_data.split('.')[-1].lower()
+        TXT_TYPES = ['txt','md','json','xml','yaml','csv']
+        DOC_TYPES = ['doc','docx']
+        PDF_TYPES = ['pdf']
+        XLS_TYPES = ['xls','xlsx']
+        ALL_TYPES = TXT_TYPES + DOC_TYPES + PDF_TYPES + XLS_TYPES
+        if file_extension in ALL_TYPES:
+            # Use the appropriate file reader based on the file extension
+            if file_extension in TXT_TYPES:
+                return FileReader.extract_txt(self.attachment_data)
+            elif file_extension in DOC_TYPES:
+                return FileReader.extract_docx(self.attachment_data)
+            elif file_extension in XLS_TYPES:
+                return FileReader.extract_xlsx(self.attachment_data)
+            elif file_extension in PDF_TYPES:
+                return FileReader.extract_pdf(self.attachment_data)
+        else:
+            logger.error(f"Unsupported file type: {file_extension}")
+            raise FailedExtraction(self, f"Unsupported file type: {file_extension}")
         pass
+
+    def _extract_video(self):
+        raise NotImplementedError("Video extraction is not implemented yet.")
 
     
 

@@ -8,6 +8,7 @@ class ConfigManager:
     VALID_GRAPH_METHODS = {"llm", "bert"}
     VALID_PROMPT_MODES = {"original", "elaborated", "q_learning","q_training"}
     VALID_LOG_LEVELS = {"DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"}
+    VALID_EMBEDDING_METHODS = {"langchain", "clip", "aws"}
 
     def __init__(self, path="config.yaml"):
         self.path = path
@@ -24,7 +25,7 @@ class ConfigManager:
         c = self.config
 
         # Check presence
-        for section in ["model", "graph_verification", "prompt_mode", "text_summariser", "logger"]:
+        for section in ["model", "graph_verification", "prompt_mode", "text_summariser", "logger", "embedding"]:
             if section not in c:
                 raise ConfigError(f"Missing required section: '{section}'")
 
@@ -59,6 +60,16 @@ class ConfigManager:
         if not isinstance(c["text_summariser"].get("model"), str):
             raise ConfigError("text_summariser.model must be a string")
 
+        # Validate embedding
+        emb = c["embedding"]
+        method = emb.get("method")
+        if method not in self.VALID_EMBEDDING_METHODS:
+            raise ConfigError(f"embedding.method must be one of {self.VALID_EMBEDDING_METHODS}")
+        
+        if method in ["langchain", "aws"]:
+            if not isinstance(emb.get("model"), str):
+                raise ConfigError(f"embedding.model must be a string when method is '{method}'")
+
         # Validate logger
         if not isinstance(c["logger"].get("level"), str):
             raise ConfigError("logger.level must be a string")
@@ -91,6 +102,15 @@ class ConfigManager:
     def get_text_summariser_model(self):
         return self.config["text_summariser"]["model"]
 
+    def get_embedding_method(self):
+        return self.config["embedding"]["method"]
+
+    def get_embedding_model(self):
+        method = self.get_embedding_method()
+        if method in ["langchain", "aws"]:
+            return self.config["embedding"]["model"]
+        return None
+
     def get_log_level(self):
         return self.config["logger"]["level"]
 
@@ -103,6 +123,8 @@ if __name__ == "__main__":
         print("Graph Method:", config.get_graph_method())
         print("Prompt Mode:", config.get_prompt_mode())
         print("Text Summariser Model:", config.get_text_summariser_model())
+        print("Embedding Method:", config.get_embedding_method())
+        print("Embedding Model:", config.get_embedding_model())
         print("Log Level:", config.get_log_level())
     except (ConfigError, FileNotFoundError) as e:
         print(f"Config error:", e)

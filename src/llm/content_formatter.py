@@ -19,7 +19,7 @@ class ContentFormatter:
         chat.append(("user", formatted_prompt))
         return chat
 
-    def prep_texts(count: int, label) -> dict:
+    def prep_texts(count: int, label: str = "") -> dict:
         """
         Formats text for LLM input.
         Args:
@@ -36,7 +36,7 @@ class ContentFormatter:
             })
         return return_val
     
-    def prep_images(count: int,label=None) -> list[dict]:
+    def prep_images(count: int,label: str = "") -> list[dict]:
         """
         Formats a base64 image string for LLM input.
         Args:
@@ -55,7 +55,7 @@ class ContentFormatter:
             })
         return return_val
 
-    def map_image_data(image_data: list, label: str = None) -> dict:
+    def map_image_data(image_data: list, label: str = "") -> dict:
         """
         Maps image data to a format suitable for LLM input.
         Args:
@@ -69,7 +69,7 @@ class ContentFormatter:
             mappings[f"{label}{i}"] = base64_image
         return mappings
     
-    def map_text_data(text_data: list, label: str = None) -> dict:
+    def map_text_data(text_data: list, label: str = "") -> dict:
         mappings = {}
         label = label + TEXT_LABEL
         for i, text in enumerate(text_data):

@@ -1,9 +1,9 @@
 from src.system_manager import LocalCredentials, ConfigManager, LoggerController
 from src.data.s3_handler import S3Handler, S3Bucket
 from src.kg import BERT_KG, LLM_KG
-from src.llm import ModelCatalogue
-from src.llm.wrappers import ChatModelWrapper
-from src.vector_database import CLIPEmbedder, PineconeService, Embedder, VectorService
+from src.llm import ModelCatalogue, EmbeddingType
+from src.llm.wrappers import ChatModelWrapper, EmbeddingWrapper
+from src.vector_database import CLIPEmbedder, LangchainEmbedder, AWSEmbedder, PineconeService, Embedder, VectorService
 from src.preprocessing.file_preprocessor import FilePreprocessor
 from src.main import PromptStage, Elaborator, RAGElaborator, UserPromptElaboration
 from src.main import RAGStage, RAGChatStage
@@ -37,6 +37,17 @@ class Psycore:
         LoggerController.initialize(config.get_log_level())
         self.logger = LoggerController.get_logger()
         primaryModelType = config.get_model()
+        if config.get_embedding_method() == "langchain":
+            try:
+                modelType = ModelCatalogue.get_MEmbeddings()[config.get_embedding_model()]
+                self.embedding_wrapper = EmbeddingWrapper(modelType)
+                self.embedder = LangchainEmbedder(self.embedding_wrapper)
+            except KeyError:
+                raise ValueError(f"Embedding model type '{config.get_embedding_model()}' is not recognized in the ModelCatalogue as a multimodal embedding. \nOptions are {list(ModelCatalogue.get_MEmbeddings().keys())}")
+        elif config.get_embedding_method() == "aws":
+            self.embedder = AWSEmbedder(config.get_embedding_model())
+        elif config.get_embedding_method() == "clip":
+            self.embedder = CLIPEmbedder()
         try:
             modelType = ModelCatalogue.get_MLLMs()[primaryModelType]
             self.main_wrapper = ChatModelWrapper(modelType)
@@ -111,7 +122,7 @@ class Psycore:
 
 
     def __init__(self, config_path=None):
-        self.embedder = CLIPEmbedder()
+
         self.init_config(config_path)
         self.init_vector_database()
         self.init_s3()

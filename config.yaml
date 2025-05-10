@@ -14,5 +14,9 @@ prompt_mode:
 text_summariser:
   model: "oai_4o_latest"     # String for the LLM model to use for text summarization
 
+embedding:
+  method: "aws"        # Options: "langchain", "clip", or "aws"
+  model: "bedrock_multimodal_g1_titan"     # Required if method is "langchain" or "aws"
+
 logger:
   level: "INFO"              # Options: "DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"

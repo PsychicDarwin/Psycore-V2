@@ -82,8 +82,8 @@ class EmbeddingWrapper:
             )
         elif embedding_type.provider == Providers.BEDROCK:
             credential = LocalCredentials.get_credential('AWS_IAM_KEY')
-            raise NotImplementedError("Bedrock is not yet supported")
-            # This needs an AWS agent loaded with credentials profile as opposed to just keys like chatbedrock
+            self.embedding = BedrockEmbeddings(model_id=embedding_type.model, aws_access_key_id=credential.user_key, aws_secret_access_key=credential.secret_key)
+            self.embedding.embed_query()
         elif embedding_type.provider == Providers.GEMINI:
             credential = LocalCredentials.get_credential('GEMINI_API_KEY')
             self.embedding = GoogleGenerativeAIEmbeddings(model=embedding_type.model, google_api_key=credential.secret_key)
@@ -93,3 +93,4 @@ class EmbeddingWrapper:
             raise NotImplementedError("Huggingface is not yet supported")
         else:
             raise ValueError("Invalid provider")
+            

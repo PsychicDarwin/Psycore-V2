@@ -1,6 +1,6 @@
 from pinecone import Pinecone, ServerlessSpec
 import uuid
-from system_manager.LoggerController import LoggerController
+from src.system_manager import LoggerController
 from src.vector_database.vector_service import VectorService
 from numpy import ndarray
 
@@ -67,11 +67,10 @@ class PineconeService(VectorService):
         logger.debug(f"Querying vector database with query: {query}, k={k}")
         embedding = self.embedder.text_to_embedding(query)
         results = self.index.query(
-            vector=embedding,
+            vector=embedding.tolist(),
             top_k= k,
             include_metadata=True
         )
-        logger.debug(f"Found {len(results['matches'])} matches for query")
         return results['matches']
 
     def delete_data(self, data_id: str):

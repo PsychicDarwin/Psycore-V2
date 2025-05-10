@@ -8,7 +8,7 @@ from io import BytesIO
 from src.llm.wrappers import ChatModelWrapper
 from src.llm.content_formatter import ContentFormatter
 from .filereader import FileReader
-from system_manager.LoggerController import LoggerController
+from src.system_manager import LoggerController
 
 # Initialize the logger
 logger = LoggerController.get_logger()

@@ -1,7 +1,7 @@
 from PIL import Image
 import io, imagehash,base64, docx2txt,pandas # PyMuPDF
 import fitz
-from system_manager.LoggerController import LoggerController
+from src.system_manager import LoggerController
 
 # Configure logging
 logger = LoggerController.get_logger()

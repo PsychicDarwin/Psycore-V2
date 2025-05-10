@@ -5,10 +5,12 @@ from src.llm import ModelCatalogue
 from src.llm.wrappers import ChatModelWrapper
 from src.vector_database import CLIPEmbedder, PineconeService, Embedder, VectorService
 from src.preprocessing.file_preprocessor import FilePreprocessor
+from src.main import PromptStage, Elaborator, RAGElaborator, UserPromptElaboration
+from src.main import RAGStage, RAGChatStage
 import argparse
 import logging
 import sys
-
+import json
 parser = argparse.ArgumentParser()
 
 class Psycore:
@@ -45,6 +47,11 @@ class Psycore:
             self.text_summariser = ChatModelWrapper(modelType)
         else:
             self.text_summariser = self.main_wrapper
+        if config.get_elaborator_model() is not None:
+            modelType = ModelCatalogue.get_MLLMs()[config.get_elaborator_model()]
+            self.elaborator_model = ChatModelWrapper(modelType)
+        else:
+            self.elaborator_model = self.main_wrapper
         self.allow_mllm_images = config.allow_images()
         if config.is_graph_verification_enabled() == True:
             graphModel = config.get_graph_method()
@@ -80,7 +87,7 @@ class Psycore:
         # Clean the S3 Buckets
         self.s3_handler.reset_buckets()
         # Create the file preprocessor
-        self.file_preprocessor = FilePreprocessor(self.s3_handler, self.vdb, self.embedder,self.main_wrapper, self.graphModel)
+        self.file_preprocessor = FilePreprocessor(self.s3_handler, self.vdb, self.embedder,self.text_summariser, self.graphModel)
         # Get all files from the Documents bucket
         files = self.s3_handler.list_base_directory_files(S3Bucket.DOCUMENTS) 
         # Limit to first 2 files for testing
@@ -89,16 +96,36 @@ class Psycore:
         self.file_preprocessor.process_files(files)
         self.logger.debug("Exiting preprocess")
 
+
+    def process_prompt(self, base_prompt):
+        self.logger.debug("Entering process_prompt")
+        prompt_stage = PromptStage(None, self.prompt_style)
+        rag_elaborator = RAGElaborator(self.elaborator_model)
+        elaborated_prompt = rag_elaborator.elaborate(base_prompt)
+        chosen_rag_prompt, elaborated = prompt_stage.decide_between_prompts(base_prompt, elaborated_prompt)
+        rag_stage = RAGStage(self.vdb, 20)
+        rag_results = rag_stage.get_rag_prompt(chosen_rag_prompt)
+        rag_chat_results = self.rag_chat.chat(base_prompt, rag_results)
+        print(rag_chat_results)
+        self.logger.debug("Exiting process_prompt")
+
+
     def __init__(self, config_path=None):
         self.embedder = CLIPEmbedder()
         self.init_config(config_path)
         self.init_vector_database()
         self.init_s3()
+        self.rag_chat = RAGChatStage(self.main_wrapper, self.s3_handler)
         self.logger.debug("Exiting __init__")
 
     def text_interface(self):
         self.logger.debug("Entering text_interface")
-        print("Welcome to Psycore! \n")
+        while True:
+            print("Type 'exit' to exit the program")
+            prompt = input("Enter a prompt: ")
+            if prompt == "exit":
+                break
+            self.process_prompt(prompt)
         self.logger.debug("Exiting text_interface")
         
 if __name__ == "__main__":

@@ -8,7 +8,8 @@ graph_verification:
   llm_model: "oai_4o_latest"         # Only used if method is "llm"
 
 prompt_mode:
-  mode: "q_learning"         # Options: "original", "elaborated", "q_learning", "q_training"
+  mode: "original"         # Options: "original", "elaborated", "q_learning", "q_training"
+  elaborator_model: "oai_4o_latest"  # String for the LLM model to use for prompt elaboration
 
 text_summariser:
   model: "oai_4o_latest"     # String for the LLM model to use for text summarization

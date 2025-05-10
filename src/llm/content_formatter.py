@@ -1,6 +1,7 @@
 from langchain_core.prompts import ChatPromptTemplate
 from src.llm.wrappers import ChatModelWrapper
 IMAGE_LABEL = "image"
+TEXT_LABEL = "text"
 class ContentFormatter:
 
     def format_base_chat(system_prompt) -> list:
@@ -18,7 +19,7 @@ class ContentFormatter:
         chat.append(("user", formatted_prompt))
         return chat
 
-    def format_text(prompt) -> dict:
+    def prep_texts(count: int, label) -> dict:
         """
         Formats text for LLM input.
         Args:
@@ -26,10 +27,14 @@ class ContentFormatter:
         Returns:
             dict: Formatted text data.
         """
-        return {
-            "type": "text",
-            "text": "{prompt}"
-        }
+        label = label + TEXT_LABEL
+        return_val = []
+        for i in range(count):
+            return_val.append({
+                "type": "text",
+                "text": "{" + f"{label}{i}" + "}"
+            })
+        return return_val
     
     def prep_images(count: int,label=None) -> list[dict]:
         """
@@ -39,8 +44,7 @@ class ContentFormatter:
         Returns:
             dict: Formatted image data.
         """
-        if label is None:
-            label = IMAGE_LABEL
+        label = label + IMAGE_LABEL
         return_val = []
         for i in range(count):
             return_val.append({
@@ -60,15 +64,17 @@ class ContentFormatter:
             dict: Mapped image data.
         """
         mappings = {}
-        if label is None:
-            label = IMAGE_LABEL
+        label = label + IMAGE_LABEL
         for i, base64_image in enumerate(image_data):
             mappings[f"{label}{i}"] = base64_image
         return mappings
     
-    def merge_image_prompt(mapping1: dict, mapping2: dict):
-        return {**mapping1, **mapping2}
-
+    def map_text_data(text_data: list, label: str = None) -> dict:
+        mappings = {}
+        label = label + TEXT_LABEL
+        for i, text in enumerate(text_data):
+            mappings[f"{label}{i}"] = text
+        return mappings
     
     def chat_to_template(chat):
         return ChatPromptTemplate.from_messages(chat)

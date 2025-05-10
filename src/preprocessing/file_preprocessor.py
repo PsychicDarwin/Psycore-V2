@@ -7,7 +7,7 @@ from src.kg.graph_creator import GraphCreator
 import base64, json
 from io import BytesIO
 from PIL import Image
-from system_manager.LoggerController import LoggerController
+from src.system_manager import LoggerController
 
 logger = LoggerController.get_logger()
 

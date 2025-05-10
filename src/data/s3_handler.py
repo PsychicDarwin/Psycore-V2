@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 import tempfile
 from src.system_manager import LocalCredentials
 from enum import Enum
-from system_manager.LoggerController import LoggerController
+from src.system_manager import LoggerController
 
 # Load environment variables
 load_dotenv()
@@ -201,6 +201,21 @@ class S3Handler:
             if os.path.exists(local_path):
                 os.unlink(local_path)
         logger.debug("Exiting download_to_temp_and_process")
+
+    def temp_download_file(self, s3_link: str, file_extension: Optional[str] = None) -> str:
+        bucket, key = self.parse_s3_uri(s3_link)
+        if file_extension is None and '.' in key:
+            _, file_extension = os.path.splitext(key)
+        temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=file_extension)
+        local_path = temp_file.name
+        temp_file.close()
+        self.s3.download_file(bucket, key, local_path)
+        return local_path
+    
+    # Not really an S3 method, but it's useful for the quick fetch class
+    def cleanup_temp_file(self, local_path: str):
+        if os.path.exists(local_path):
+            os.unlink(local_path)
 
     def process_s3_file(self, file_info: Dict[str, str], process_callback) -> Any:
         logger.debug("Entering process_s3_file with file_info=%s", file_info)

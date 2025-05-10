@@ -6,7 +6,7 @@ class ConfigError(Exception):
 
 class ConfigManager:
     VALID_GRAPH_METHODS = {"llm", "bert"}
-    VALID_PROMPT_MODES = {"original", "elaborated", "q_learning"}
+    VALID_PROMPT_MODES = {"original", "elaborated", "q_learning","q_training"}
     VALID_LOG_LEVELS = {"DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"}
 
     def __init__(self, path="config.yaml"):
@@ -51,6 +51,9 @@ class ConfigManager:
         mode = c["prompt_mode"].get("mode")
         if mode not in self.VALID_PROMPT_MODES:
             raise ConfigError(f"prompt_mode.mode must be one of {self.VALID_PROMPT_MODES}")
+        
+        if not isinstance(c["prompt_mode"].get("elaborator_model"), str):
+            raise ConfigError("prompt_mode.elaborator_model must be a string")
 
         # Validate text_summariser
         if not isinstance(c["text_summariser"].get("model"), str):
@@ -81,6 +84,9 @@ class ConfigManager:
 
     def get_prompt_mode(self):
         return self.config["prompt_mode"]["mode"]
+
+    def get_elaborator_model(self):
+        return self.config["prompt_mode"]["elaborator_model"]
 
     def get_text_summariser_model(self):
         return self.config["text_summariser"]["model"]

@@ -13,7 +13,7 @@ class VectorService(ABC):
         pass
 
     @abstractmethod
-    def get_data(self, query: str) -> dict:
+    def get_data(self, query: str, k: int = 5) -> dict:
         """Get data from the vector database."""
         pass
 

@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from system_manager.LoggerController import LoggerController
+from src.system_manager import LoggerController
 
 # Configure logging
 logger = LoggerController.get_logger()

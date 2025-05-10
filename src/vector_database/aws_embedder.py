@@ -5,12 +5,13 @@ from PIL import Image
 import json
 from .embedder import Embedder
 from src.system_manager.LocalCredentials import LocalCredentials
+import numpy as np
 class AWSEmbedder(Embedder):
     MODEL_NAMES = [
-        "bedrock_multimodal_g1_titan"
+        "amazon.titan-embed-image-v1"
     ]
     def __init__(self, model_name: str):
-        super().__init__(1024,128)
+        super().__init__(90,30,1024)
         if model_name not in self.MODEL_NAMES:
             raise ValueError(f"Invalid model name: {model_name}, must be one of {self.MODEL_NAMES}")
         self.model_name = model_name
@@ -31,7 +32,10 @@ class AWSEmbedder(Embedder):
             })
         )
         response_body = json.loads(response.get("body").read())
-        return response_body
+        if response_body.get("message") is not None:
+            raise Exception(response_body.get("message"))
+        embedding = response_body.get("embedding")
+        return np.array(embedding)
     
     def image_to_embedding(self, image: Union[Image.Image, BinaryIO]) -> ndarray:
         image_base64 = self.image_to_base64(image)
@@ -44,4 +48,7 @@ class AWSEmbedder(Embedder):
             })
         )
         response_body = json.loads(response.get("body").read())
-        return response_body
+        if response_body.get("message") is not None:
+            raise Exception(response_body.get("message"))
+        embedding = response_body.get("embedding")
+        return np.array(embedding)

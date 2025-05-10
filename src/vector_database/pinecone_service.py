@@ -19,7 +19,7 @@ class PineconeService(VectorService):
             logger.info(f"Creating new Pinecone index: {self.index_name}")
             self.service.create_index(
                 name=self.index_name,
-                dimension=embedder.chunk_size,
+                dimension=embedder.dimension_output,
                 metric='cosine',
                 spec=ServerlessSpec(
                     cloud='aws',
@@ -107,7 +107,7 @@ class PineconeService(VectorService):
         logger.debug(f"Deleted index: {self.index_name}")
         self.service.create_index(
             name=self.index_name,
-            dimension=self.embedder.chunk_size,
+            dimension=self.embedder.dimension_output,
             metric='cosine',
             spec=ServerlessSpec(
                 cloud='aws',

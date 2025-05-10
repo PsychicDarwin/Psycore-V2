@@ -4,7 +4,7 @@ from src.data.attachments import Attachment, AttachmentTypes
 from src.vector_database import Embedder
 from src.llm.wrappers import ChatModelWrapper
 from src.kg.graph_creator import GraphCreator
-import base64, json
+import base64, json, re
 from io import BytesIO
 from PIL import Image
 from src.system_manager import LoggerController
@@ -124,8 +124,14 @@ class FilePreprocessor:
                         finally:
                             binary_image.close()
                     if data is not None:
+                        # Before trying with data we should remove any major whitespace that does not make sense and keep whitespace needed for formatting
+                        data = re.sub(r'\s+', ' ', data)
+                        data = data.strip()
                         chunked_data = self.embedder.chunk_text(data)
                         for chunk in chunked_data:
+                            if (chunk is None or chunk.strip() == ""):
+                                logger.warning(f"Skipping chunk: {chunk}")
+                                continue
                             embedded_chunk = self.embedder.text_to_embedding(chunk)
                             self.vector_database.add_data(embedded_chunk, {
                                 "document_path": f"s3://{S3Bucket.DOCUMENTS.value}/{additional_data['key']}",

@@ -29,7 +29,7 @@ class PsycoreTestRunner:
             },
             "graph_verification": {
                 "enabled": True,
-                "method": "bert",
+                "method": "llm",
                 "llm_model": "oai_4o_latest"
             },
             "prompt_mode": {
@@ -37,7 +37,7 @@ class PsycoreTestRunner:
                 "elaborator_model": "oai_4o_latest"
             },
             "text_summariser": {
-                "model": "llava_13b"
+                "model": "oai_4o_latest"
             },
             "embedding": {
                 "method": "aws",

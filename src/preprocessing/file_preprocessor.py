@@ -136,6 +136,7 @@ class FilePreprocessor:
                             
                             self.vector_database.add_data(embedded_image, {
                                 "document_path": f"s3://{S3Bucket.DOCUMENTS.value}/{additional_data['key']}",
+                                "summary_path" f"s3://{S3}"
                                 "graph_path": f"s3://{S3Bucket.GRAPHS.value}/{graph_path}",
                                 "summary_path": summary_s3_uri,
                                 "image_path": image_s3_uri,

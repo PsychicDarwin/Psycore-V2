@@ -71,3 +71,5 @@ openai-whisper
 # Rouge Score
 rouge_score==0.1.2
 streamlit
+
+evaluate==0.4.3

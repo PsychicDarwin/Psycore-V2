@@ -18,6 +18,7 @@ networkx==3.1  # For graph operations
 tqdm==4.65.0  # For progress bars
 python-magic==0.4.27  # For file type detection
 python-magic-bin==0.4.14  # Windows binary for python-magic
+evaluate==0.4.3 # To evaluate model performance
 
 
 # LangChain and related

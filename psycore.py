@@ -136,6 +136,7 @@ class Psycore:
         self.logger.debug("Exiting process_prompt")
 
     def evaluate_prompt(self, base_prompt) -> dict:
+        logger = LoggerController.get_logger()
         prompt_stage = PromptStage(None, self.prompt_style)
         elaborator = RAGElaborator(self.elaborator_model)
         elaborated_prompt = elaborator.elaborate(base_prompt)
@@ -143,14 +144,19 @@ class Psycore:
         rag_stage = RAGStage(self.vdb, 10)
         rag_results = rag_stage.get_rag_prompt_filtered(chosen_prompt, self.rag_text_similarity_threshold)
         rag_chat_results = self.rag_chat.chat(base_prompt, rag_results)
+        logger.info(rag_results)
+        logger.info("Evaluating RAG results")
         evaluators = [
             GraphEvaluator(self.graphModel, self.s3_quick_fetch),
             BERTEvaluator(self.s3_quick_fetch),
             RougeEvaluator(self.s3_quick_fetch)
         ]
         for i in range(len(rag_results)):
+            logger.info(f"Evaluating RAG result {i}")
             for evaluator in evaluators:
+                logger.info(f"Evaluating with {evaluator.__class__.__name__}")
                 rag_results[i] = evaluator.evaluate_rag_result(rag_chat_results.content, rag_results[i])
+        logger.info("Finished evaluating RAG results")
         return rag_results
 
 

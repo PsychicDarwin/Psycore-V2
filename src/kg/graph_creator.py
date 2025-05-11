@@ -26,21 +26,26 @@ class GraphRelation:
         is_equal = self.subject == __value.subject and self.object == __value.object and self.relation == __value.relation
         logger.debug(f"Comparing GraphRelations: {self.subject}->{self.relation}->{self.object} == {__value.subject}->{__value.relation}->{__value.object} = {is_equal}")
         return is_equal
+    
+    def __hash__(self) -> int:
+        hash_value = hash((self.subject, self.object, self.relation))
+        logger.debug(f"Hashing GraphRelation: {self.subject}->{self.relation}->{self.object} = {hash_value}")
+        return hash_value
 
-    def __dict_to_relation(self, data: dict):
-        logger.debug(f"Converting dict to GraphRelation: {data}")
-        if not isinstance(data, dict):
-            logger.error(f"Invalid data type: {type(data)}")
-            raise TypeError("data must be a dictionary")
-        if "subject" not in data or "object" not in data or "relation" not in data:
-            logger.error(f"Missing required keys in data: {data}")
-            raise ValueError("data must contain 'subject', 'object', and 'relation' keys")
-        return GraphRelation(data["subject"], data["object"], data["relation"])
+def dict_to_relation(data: dict):
+    logger.debug(f"Converting dict to GraphRelation: {data}")
+    if not isinstance(data, dict):
+        logger.error(f"Invalid data type: {type(data)}")
+        raise TypeError("data must be a dictionary")
+    if "subject" not in data or "object" not in data or "relation" not in data:
+        logger.error(f"Missing required keys in data: {data}")
+        raise ValueError("data must contain 'subject', 'object', and 'relation' keys")
+    return GraphRelation(data["subject"], data["object"], data["relation"])
     
 def dict_data_to_relations(data: list[dict]) -> list[GraphRelation]:
     relations = []
     for relation in data:
-        relation = GraphRelation.__dict_to_relation(relation)
+        relation = dict_to_relation(relation)
         relations.append(relation)
     return remove_dup_relations(relations)
 
@@ -79,8 +84,6 @@ class GraphCreator(ABC):
         relations = self.create_graph_relations(text)
         logger.info(f"Created {len(relations)} relations")
         
-        graph_dict = {
-            "triples": [relation._to_dict() for relation in relations]
-        }
+        graph_dict = [relation._to_dict() for relation in relations]
         logger.info(f"Converted {len(relations)} relations to dictionary format")
         return graph_dict

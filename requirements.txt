@@ -19,7 +19,7 @@ tqdm==4.65.0  # For progress bars
 python-magic==0.4.27  # For file type detection
 python-magic-bin==0.4.14  # Windows binary for python-magic
 evaluate==0.4.3 # To evaluate model performance
-
+bert-score==0.3.13 # For BERT-based evaluation 
 
 # LangChain and related
 langchain==0.3.18

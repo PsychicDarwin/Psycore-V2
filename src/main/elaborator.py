@@ -29,7 +29,7 @@ class RAGElaborator(Elaborator):
         super().__init__(wrapper, """You are an expert RAG/LLM prompt engineer. Your task is to take all user prompts and enhance them to be more effective before it is embedded for RAG. This is to combat issues of missing data like 2020 - 2024 containing 2020 2021,2022,2023,2024 and similar issues.
         
         Extract all keywords and make every detail explicit to enhance the retrieval chances of the RAG.
-        Return the elaborated prompt text, nothing else.
+        Return the elaborated prompt text, nothing else, all output should be less than 50 words.
         """)
     
 class UserPromptElaboration(Elaborator):

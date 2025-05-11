@@ -17,6 +17,7 @@ class PsycoreTestRunner:
         self.config = self._get_default_config() if config is None else config
         self.psycore = None
         
+        self.resetPsycore()
         if preprocess:
             self.preprocess()
     
@@ -49,7 +50,7 @@ class PsycoreTestRunner:
             "document_range": {
                 "enabled": True,
                 "start_index": 0,
-                "end_index": 10
+                "end_index": 3
             },
             "rag": {
                 "text_similarity_threshold": 0.55
@@ -76,7 +77,7 @@ class PsycoreTestRunner:
             return d
         
         self.config = deep_update(self.config, updates)
-        
+        self.resetPsycore()
         if preprocess:
             self.preprocess()
             
@@ -87,6 +88,23 @@ class PsycoreTestRunner:
         with tempfile.NamedTemporaryFile(mode='w', suffix='.yaml', delete=False) as temp_file:
             yaml.dump(self.config, temp_file)
             return temp_file.name
+        
+    def resetPsycore(self) -> 'PsycoreTestRunner':
+        """
+        Reset the Psycore instance.
+        
+        Returns:
+            self for method chaining
+        """
+        try:
+            temp_file_path = self._create_temp_config_file()
+            self.psycore = Psycore(temp_file_path)
+        finally:
+            os.unlink(temp_file_path)
+    
+
+
+        return self
     
     def preprocess(self) -> 'PsycoreTestRunner':
         """
@@ -95,14 +113,8 @@ class PsycoreTestRunner:
         Returns:
             self for method chaining
         """
-        temp_file_path = self._create_temp_config_file()
-        try:
-            self.psycore = Psycore(temp_file_path)
-            self.psycore.preprocess(skip_confirmation=True)
-            return self
-        finally:
-            os.unlink(temp_file_path)
-    
+        self.psycore.preprocess(skip_confirmation=True)
+        
     def evaluate_prompt(self, prompt: str) -> Any:
         """
         Evaluate a prompt using the current configuration.

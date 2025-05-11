@@ -49,7 +49,7 @@ class FilePreprocessor:
             # Split the document name and bucket name
             bucket_name = S3Bucket.DOCUMENTS.value
             document_name = additional_data["key"]
-            graph_path = f"{document_name}.json"
+            graph_path = f"{document_name}/graph.json"
         if attachment_file.needs_extraction:
             print("Failed to read attachment")
         else:
@@ -76,7 +76,6 @@ class FilePreprocessor:
                         logger.info(f"Image {document_name} uploaded to S3 and added to vector database")
                         self.vector_database.add_data(embedded_image, {
                             "document_path": f"s3://{S3Bucket.DOCUMENTS.value}/{additional_data['key']}",
-                            "summary_path": summary_path,
                             "graph_path": f"s3://{S3Bucket.GRAPHS.value}/{graph_path}",
                             "summary_path": summary_s3_uri,
                             "image_path": image_s3_uri,
@@ -136,11 +135,9 @@ class FilePreprocessor:
                             
                             self.vector_database.add_data(embedded_image, {
                                 "document_path": f"s3://{S3Bucket.DOCUMENTS.value}/{additional_data['key']}",
-                                "summary_path" f"s3://{S3}"
                                 "graph_path": f"s3://{S3Bucket.GRAPHS.value}/{graph_path}",
                                 "summary_path": summary_s3_uri,
                                 "image_path": image_s3_uri,
-                                "summary_path": summary_path,
                                 "type": "attachment_image",
                             })
                             logger.info(f"Image {i} uploaded to S3 and added to vector database")

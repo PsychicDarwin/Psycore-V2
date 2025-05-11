@@ -17,37 +17,33 @@ class GraphEvaluator(Evaluator):
         """
         return self.graph_creator.create_graph_json(output)
     
-    def compare_graph_recall(self, source_graph: list[GraphRelation], result_graph: list[GraphRelation]) -> float:
+    def compare_graph_precision(self, retrieved_graph: list[GraphRelation], llm_graph: list[GraphRelation]) -> float:
         """
-        Compares the recall of two graphs using amount of entries in the result graph as a percentage of the source graph.
+        Precision = True Positives / LLM Predictions
+        Measures how many of the LLM's relations were based on what it actually saw.
+        """
+        if not llm_graph:
+            return 0.0
 
-        :param source_graph: The source graph to compare against.
-        :param result_graph: The result graph to compare.
-        :return: The recall score between the two graphs.
-        """
-        source_graph_count = len(source_graph)
-        result_graph_count = len(result_graph)
-        if (result_graph_count > source_graph_count):
-            result_count = source_graph_count
-        else:
-            result_count = result_graph_count
-        return result_count / source_graph_count if source_graph_count > 0 else 0
+        retrieved_set = set(retrieved_graph)
+        llm_set = set(llm_graph)
+
+        true_positives = retrieved_set.intersection(llm_set)
+        return len(true_positives) / len(llm_set)
     
-    def compare_graph_precision(self, source_graph: list[GraphRelation], result_graph: list[GraphRelation]) -> float:
+    def compare_graph_recall(self, full_truth_graph: list[GraphRelation], retrieved_graph: list[GraphRelation]) -> float:
         """
-        Compares the precision of two graphs using amount of entries in the source graph as a percentage of the result graph, checking overlap between each relation.
-        :param source_graph: The source graph to compare against.
-        :param result_graph: The result graph to compare.
-        :return: The precision score between the two graphs.
+        Recall = True Positives / All True Relations
+        Measures how well the retrieved chunk covered the true content.
         """
-        matched_count = 0
-        source_graph_count = len(source_graph)
-        for source_relation in source_graph:
-            for result_relation in result_graph:
-                if source_relation == result_relation:
-                    matched_count += 1
-                    break
-        return matched_count / source_graph_count if source_graph_count > 0 else 0
+        if not full_truth_graph:
+            return 0.0
+
+        truth_set = set(full_truth_graph)
+        retrieved_set = set(retrieved_graph)
+
+        true_positives = truth_set.intersection(retrieved_set)
+        return len(true_positives) / len(truth_set)
     
     def f_beta_score(self, precision: float, recall: float, beta: float = 1.0) -> float:
         if (precision + recall) == 0:
@@ -74,20 +70,36 @@ class GraphEvaluator(Evaluator):
     
     def overall_value(self, output: str, additional_params: dict):
         pass
+        
+    
+     
     
 
     def evaluate_rag_result(self, result: str, rag_data: dict):
         graph_s3_path = rag_data["graph_path"]
         # Get the graph file from s3 bucket as text
         graph_text = self.s3_quick_fetch.fetch_text(graph_s3_path)
+        if rag_data["type"] == "image" or rag_data["type"] == "attachment_image":
+            text = self.pull_summary(rag_data)
+        elif rag_data["type"] == "text":
+            text = rag_data["text"]
+        else:
+            graph_text = None
+        graph_evaluation = {}
         if graph_text is None:
-            return (-1, -1, -1)
+            graph_evaluation = {
+                "recall": -1,
+                "precision": -1,
+                "f_beta": -1,
+                "beta": self.beta
+            }
         else:
             json_graph = json.loads(graph_text)
             graph_data = dict_data_to_relations(json_graph)
-            llm_graph = self.graph_creator.create_graph_json(result)
+            text_graph = self.graph_creator.create_graph_relations(text)
+            llm_graph = self.graph_creator.create_graph_relations(result)
 
-            recall = self.compare_graph_recall(graph_data, llm_graph)
+            recall = self.compare_graph_recall(graph_data, text_graph)
             precision = self.compare_graph_precision(graph_data, llm_graph)
             f_beta = self.compare_graph_f_beta(graph_data, llm_graph, self.beta)
 
@@ -95,6 +107,7 @@ class GraphEvaluator(Evaluator):
                 "recall": recall,
                 "precision": precision,
                 "f_beta": f_beta,
-                "beta": self.beta}
-            rag_data["graph_evaluation"] = graph_evaluation
-            return rag_data
+                "beta": self.beta
+                }
+        rag_data["graph_evaluation"] = graph_evaluation
+        return rag_data

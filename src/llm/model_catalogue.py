@@ -64,7 +64,7 @@ class ModelCatalogue:
         "deepseek_8b_r1": LocalModelType('deepseek-r1:8b', False, Providers.OLLAMA, 128000, 32768, 4.9, "deepseek", False),
         "deepseek_14b_r1": LocalModelType('deepseek-r1:14b', False, Providers.OLLAMA, 128000, 32768, 9.0, "deepseek", False),
         "deepseek_32b_r1": LocalModelType('deepseek-r1:32b', False, Providers.OLLAMA, 128000, 32768, 20, "deepseek", False),
-        "deepseek_70b_r1": LocalModelType('deepseek-r1:70b', False, Providers.OLLAMA, 128000, 32768, 43, "deepseek", False),
+        "deepseek_70b_r1": LocalModelType('deepseek-r1:70b', False, Providers.OLLAMA, 128000, 32768, 43, "deepseek", True),
         "deepseek_671b_r1": LocalModelType('deepseek-r1:671b', False, Providers.OLLAMA, 128000, 32768, 404, "deepseek", False),
 
         "llava_7b": LocalModelType('llava:7b', True, Providers.OLLAMA, 224000, 4096, 4.7, "llava", True),
@@ -80,8 +80,8 @@ class ModelCatalogue:
         "qwen_32b_2.5": LocalModelType('qwen2.5:32b', False, Providers.OLLAMA, 128000, 8000, 20, "qwen", False),
         "qwen_72b_2.5": LocalModelType('qwen2.5:72b', False, Providers.OLLAMA, 128000, 8000, 47, "qwen", False),
 
-        "microsoft_3.8b_phi3": LocalModelType("phi3", False, Providers.OLLAMA, 4000, None, 2.2, "phi", False),
-        "microsoft_14b_phi3": LocalModelType("phi3:14b", False, Providers.OLLAMA, 4000, None, 7.9, "phi", False),
+        "microsoft_3.8b_phi3": LocalModelType("phi3", False, Providers.OLLAMA, 4000, None, 2.2, "phi", True),
+        "microsoft_14b_phi3": LocalModelType("phi3:14b", False, Providers.OLLAMA, 4000, None, 7.9, "phi", True),
     }
 
     

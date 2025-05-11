@@ -107,7 +107,7 @@ class Psycore:
         # Get all files from the Documents bucket
         files = self.s3_handler.list_base_directory_files(S3Bucket.DOCUMENTS) 
         # Limit to first 2 files for testing
-        files = files[1:3]
+        #files = files[1:3]
         # Process the files
         self.file_preprocessor.process_files(files)
         self.logger.debug("Exiting preprocess")

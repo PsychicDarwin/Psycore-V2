@@ -1,10 +1,12 @@
 from .evaluator import Evaluator
-from src.kg import GraphCreator, GraphRelation
-
+from src.kg import GraphCreator, GraphRelation, dict_data_to_relations
+from src.data.s3_quick_fetch import S3QuickFetch
+import json
 class GraphEvaluator(Evaluator):
-    def __init__(self, graph_creator: GraphCreator):
+    def __init__(self, graph_creator: GraphCreator, s3_quick_fetch: S3QuickFetch,beta: float = 1.0):
+        super().__init__(s3_quick_fetch)
         self.graph_creator = graph_creator
-        pass
+        self.beta = beta
 
     def convert_output_to_graph(self, output: str):
         """
@@ -47,6 +49,11 @@ class GraphEvaluator(Evaluator):
                     break
         return matched_count / source_graph_count if source_graph_count > 0 else 0
     
+    def f_beta_score(self, precision: float, recall: float, beta: float = 1.0) -> float:
+        if (precision + recall) == 0:
+            return 0
+        return (1 + beta ** 2) * (precision * recall) / (beta ** 2 * precision + recall)
+    
     def compare_graph_f_beta(self, source_graph: list[GraphRelation], result_graph: list[GraphRelation], beta: float = 1.0) -> float:
         """
         Compares the F-beta score of two graphs using the recall and precision scores.
@@ -59,7 +66,7 @@ class GraphEvaluator(Evaluator):
         recall = self.compare_graph_recall(source_graph, result_graph)
         if (precision + recall) == 0:
             return 0
-        return (1 + beta ** 2) * (precision * recall) / (beta ** 2 * precision + recall)
+        return self.f_beta_score(precision, recall, beta)
 
 
     def evaluate(self, source: str, result: str):
@@ -68,3 +75,26 @@ class GraphEvaluator(Evaluator):
     def overall_value(self, output: str, additional_params: dict):
         pass
     
+
+    def evaluate_rag_result(self, result: str, rag_data: dict):
+        graph_s3_path = rag_data["graph_path"]
+        # Get the graph file from s3 bucket as text
+        graph_text = self.s3_quick_fetch.fetch_text(graph_s3_path)
+        if graph_text is None:
+            return (-1, -1, -1)
+        else:
+            json_graph = json.loads(graph_text)
+            graph_data = dict_data_to_relations(json_graph)
+            llm_graph = self.graph_creator.create_graph_json(result)
+
+            recall = self.compare_graph_recall(graph_data, llm_graph)
+            precision = self.compare_graph_precision(graph_data, llm_graph)
+            f_beta = self.compare_graph_f_beta(graph_data, llm_graph, self.beta)
+
+            graph_evaluation = {
+                "recall": recall,
+                "precision": precision,
+                "f_beta": f_beta,
+                "beta": self.beta}
+            rag_data["graph_evaluation"] = graph_evaluation
+            return rag_data

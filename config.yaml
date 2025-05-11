@@ -26,3 +26,11 @@ embedding:
 
 logger:
   level: "DEBUG"              # Options: "DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"
+
+document_range:
+  enabled: false              # Boolean to enable document range processing
+  start_index: 0              # Starting document index (inclusive)
+  end_index: 10              # Ending document index (exclusive)
+
+rag:
+  text_similarity_threshold: 0.55  # Threshold for text similarity in RAG (0.0 to 1.0)

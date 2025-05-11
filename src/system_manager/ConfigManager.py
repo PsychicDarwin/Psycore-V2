@@ -25,7 +25,7 @@ class ConfigManager:
         c = self.config
 
         # Check presence
-        for section in ["model", "graph_verification", "prompt_mode", "text_summariser", "logger", "embedding"]:
+        for section in ["model", "graph_verification", "prompt_mode", "text_summariser", "logger", "embedding", "document_range", "rag"]:
             if section not in c:
                 raise ConfigError(f"Missing required section: '{section}'")
 
@@ -76,6 +76,26 @@ class ConfigManager:
         if c["logger"]["level"] not in self.VALID_LOG_LEVELS:
             raise ConfigError(f"logger.level must be one of {self.VALID_LOG_LEVELS}")
 
+        # Validate document_range
+        dr = c["document_range"]
+        if not isinstance(dr.get("enabled"), bool):
+            raise ConfigError("document_range.enabled must be a boolean")
+        if not isinstance(dr.get("start_index"), int):
+            raise ConfigError("document_range.start_index must be an integer")
+        if not isinstance(dr.get("end_index"), int):
+            raise ConfigError("document_range.end_index must be an integer")
+        if dr["start_index"] < 0:
+            raise ConfigError("document_range.start_index must be non-negative")
+        if dr["end_index"] <= dr["start_index"]:
+            raise ConfigError("document_range.end_index must be greater than start_index")
+
+        # Validate rag
+        rag = c["rag"]
+        if not isinstance(rag.get("text_similarity_threshold"), (int, float)):
+            raise ConfigError("rag.text_similarity_threshold must be a number")
+        if not 0 <= rag["text_similarity_threshold"] <= 1:
+            raise ConfigError("rag.text_similarity_threshold must be between 0 and 1")
+
     def get_model(self):
         return self.config["model"]["primary"]
 
@@ -114,6 +134,18 @@ class ConfigManager:
     def get_log_level(self):
         return self.config["logger"]["level"]
 
+    def is_document_range_enabled(self):
+        return self.config["document_range"]["enabled"]
+
+    def get_document_range(self):
+        return {
+            "start_index": self.config["document_range"]["start_index"],
+            "end_index": self.config["document_range"]["end_index"]
+        }
+
+    def get_rag_text_similarity_threshold(self):
+        return self.config["rag"]["text_similarity_threshold"]
+
 # Example usage
 if __name__ == "__main__":
     try:
@@ -126,5 +158,8 @@ if __name__ == "__main__":
         print("Embedding Method:", config.get_embedding_method())
         print("Embedding Model:", config.get_embedding_model())
         print("Log Level:", config.get_log_level())
+        print("Document Range Enabled:", config.is_document_range_enabled())
+        print("Document Range:", config.get_document_range())
+        print("RAG Text Similarity Threshold:", config.get_rag_text_similarity_threshold())
     except (ConfigError, FileNotFoundError) as e:
         print(f"Config error:", e)

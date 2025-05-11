@@ -11,3 +11,9 @@ class S3QuickFetch:
         self.s3_handler.cleanup_temp_file(local_path)
         return attachment
 
+
+    def fetch_text(self, text_s3: str) -> str:
+        file = self.s3_handler.temp_download_file(text_s3)
+        file_data = open(file, "r").read()
+        self.s3_handler.cleanup_temp_file(file)
+        return file_data

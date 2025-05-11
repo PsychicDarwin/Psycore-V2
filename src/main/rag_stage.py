@@ -8,7 +8,7 @@ class RAGStage:
         results = self.vector_service.get_data(prompt, self.k)
         return [self.map_scores(result) for result in results]
     
-    def get_rag_prompt_filtered(self, prompt: str, text_threshold: float = 0.5) -> dict:
+    def get_rag_prompt_filtered(self, prompt: str, text_threshold: float = 0.5) -> list[dict]:
         results = self.get_rag_prompt(prompt)
         return self.filter_results(results, text_threshold)
     

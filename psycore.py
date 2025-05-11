@@ -1,5 +1,6 @@
 from src.system_manager import LocalCredentials, ConfigManager, LoggerController
 from src.data.s3_handler import S3Handler, S3Bucket
+from src.data.s3_quick_fetch import S3QuickFetch
 from src.kg import BERT_KG, LLM_KG
 from src.llm import ModelCatalogue, EmbeddingType
 from src.llm.wrappers import ChatModelWrapper, EmbeddingWrapper

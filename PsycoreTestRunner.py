@@ -5,7 +5,7 @@ from psycore import Psycore
 from typing import Optional, Dict, Any, Union
 
 
-class PsycoreRunner:
+class PsycoreTestRunner:
     def __init__(self, config: Optional[Union[str, Dict[str, Any]]] = None, preprocess: bool = True):
         """
         Initialize the PsycoreRunner with optional configuration.
@@ -56,7 +56,7 @@ class PsycoreRunner:
             }
         }
     
-    def update_config(self, updates: Dict[str, Any], preprocess: bool = True) -> 'PsycoreRunner':
+    def update_config(self, updates: Dict[str, Any], preprocess: bool = True) -> 'PsycoreTestRunner':
         """
         Update specific configuration parameters.
         
@@ -88,7 +88,7 @@ class PsycoreRunner:
             yaml.dump(self.config, temp_file)
             return temp_file.name
     
-    def preprocess(self) -> 'PsycoreRunner':
+    def preprocess(self) -> 'PsycoreTestRunner':
         """
         Run preprocessing with the current configuration.
         
@@ -145,7 +145,7 @@ class PsycoreRunner:
 # Example usage
 if __name__ == "__main__":
     # Create a runner with default config and run preprocessing
-    runner = PsycoreRunner(preprocess=True)
+    runner = PsycoreTestRunner(preprocess=True)
     
     # Example of updating specific parameters and re-preprocessing
     runner.update_config({

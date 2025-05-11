@@ -4,8 +4,8 @@ model:
 
 graph_verification:
   enabled: true              # Boolean to enable graph verification
-  method: "llm"              # Options: "llm" (requires model) or "bert"
-  llm_model: "microsoft_3.8b_phi3"         # Only used if method is "llm"
+  method: "bert"              # Options: "llm" (requires model) or "bert"
+  llm_model: "oai_4o_latest"         # Only used if method is "llm"
   # A light weight model that can handle JSON is required for processing graph chunks
   # 3.8 Billion 
 
@@ -25,4 +25,4 @@ embedding:
   model: "amazon.titan-embed-image-v1"     # Required if method is "langchain" or "aws"
 
 logger:
-  level: "INFO"              # Options: "DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"
+  level: "DEBUG"              # Options: "DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"

@@ -1,5 +1,6 @@
 from langchain_core.prompts import ChatPromptTemplate
 from src.llm.wrappers import ChatModelWrapper
+from langchain_text_splitters import TokenTextSplitter
 IMAGE_LABEL = "image"
 TEXT_LABEL = "text"
 class ContentFormatter:
@@ -119,4 +120,8 @@ class ContentFormatter:
         return chat_array
         
         
-         
+    def chunk_text(text, chunk_size: int = None, chunk_overlap: int = None) -> list:
+        """Chunk the text into smaller pieces for embedding."""
+        text_splitter = TokenTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
+        chunks = text_splitter.split_text(text)
+        return chunks

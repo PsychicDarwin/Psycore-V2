@@ -75,7 +75,7 @@ class Psycore:
                 except KeyError:
                     raise ValueError(f"Graph model type '{graphModelName}' is not recognized in the ModelCatalogue as with json schema encoding.\n Options are {list(ModelCatalogue.get_models_with_json_schema().keys())}")
 
-            elif self.graphModel == "bert":
+            elif graphModel == "bert":
                 self.graphModel = BERT_KG()
         else:
             self.graphModel = None

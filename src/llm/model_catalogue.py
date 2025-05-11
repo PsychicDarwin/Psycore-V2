@@ -67,21 +67,23 @@ class ModelCatalogue:
         "deepseek_70b_r1": LocalModelType('deepseek-r1:70b', False, Providers.OLLAMA, 128000, 32768, 43, "deepseek", True),
         "deepseek_671b_r1": LocalModelType('deepseek-r1:671b', False, Providers.OLLAMA, 128000, 32768, 404, "deepseek", False),
 
-        "llava_7b": LocalModelType('llava:7b', True, Providers.OLLAMA, 224000, 4096, 4.7, "llava", True),
-        "llava_13b": LocalModelType('llava:13b', True, Providers.OLLAMA, 224000, 4096, 8.0, "llava", True),
-        "llava_34b": LocalModelType('llava:34b', True, Providers.OLLAMA, 224000, 4096, 20, "llava", True),
-        "bakllava_7b": LocalModelType('bakllava:7b', True, Providers.OLLAMA, None, 2048, 4.7, "llava", True),
-
+        # These models are ones that can handle images so can be used for image summarization
+        "llava_7b": LocalModelType('llava:7b', True, Providers.OLLAMA, 224000, 4096, 4.7, "llava", False),
+        "llava_13b": LocalModelType('llava:13b', True, Providers.OLLAMA, 224000, 4096, 8.0, "llava", False),
+        "llava_34b": LocalModelType('llava:34b', True, Providers.OLLAMA, 224000, 4096, 20, "llava", False),
+        "bakllava_7b": LocalModelType('bakllava:7b', True, Providers.OLLAMA, None, 2048, 4.7, "llava", False),
+        
         "qwen_0.5b_2.5": LocalModelType('qwen2.5:0.5b', False, Providers.OLLAMA, 128000, 8000, 0.398, "qwen", False),
         "qwen_1.5b_2.5": LocalModelType('qwen2.5:1.5b', False, Providers.OLLAMA, 128000, 8000, 0.986, "qwen", False),
-        "qwen_3b_2.5": LocalModelType('qwen2.5:3b', False, Providers.OLLAMA, 128000, 8000, 1.9, "qwen", False),
+        "qwen_3b_2.5": LocalModelType('qwen2.5:3b', False, Providers.OLLAMA, 128000, 8000, 1.9, "qwen", True),
         "qwen_7b_2.5": LocalModelType('qwen2.5:7b', False, Providers.OLLAMA, 128000, 8000, 4.7, "qwen", False),
         "qwen_14b_2.5": LocalModelType('qwen2.5:14b', False, Providers.OLLAMA, 128000, 8000, 9.0, "qwen", False),
         "qwen_32b_2.5": LocalModelType('qwen2.5:32b', False, Providers.OLLAMA, 128000, 8000, 20, "qwen", False),
         "qwen_72b_2.5": LocalModelType('qwen2.5:72b', False, Providers.OLLAMA, 128000, 8000, 47, "qwen", False),
 
-        "microsoft_3.8b_phi3": LocalModelType("phi3", False, Providers.OLLAMA, 4000, None, 2.2, "phi", True),
-        "microsoft_14b_phi3": LocalModelType("phi3:14b", False, Providers.OLLAMA, 4000, None, 7.9, "phi", True),
+        # Phi does not work for Graphs
+        "microsoft_3.8b_phi3": LocalModelType("phi3", False, Providers.OLLAMA, 4000, None, 2.2, "phi", False),
+        "microsoft_14b_phi3": LocalModelType("phi3:14b", False, Providers.OLLAMA, 4000, None, 7.9, "phi", False),
     }
 
     

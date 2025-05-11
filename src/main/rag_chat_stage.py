@@ -6,7 +6,9 @@ from src.data.s3_quick_fetch import S3QuickFetch
 class RAGChatStage:
     def __init__(self, wrapper: ChatModelWrapper, s3_handler: S3Handler):
         self.chat_agent = ChatAgent(wrapper,history=True, system_prompt="""
-You are an information retrieval and vertification assistant, you will recieve a variety of source documents and will be asked queries by a user. Your job is to answer user queries as accurately as possible given the information you have available and to prevent halluciations where you can by double checking your sources.""")
+You are an information retrieval and vertification assistant, you will recieve a variety of source documents and will be asked queries by a user. Your job is to answer user queries as accurately as possible given the information you have available and to prevent halluciations where you can by double checking your sources.
+Refer to any sources provided as third party not as user provided.
+                                    """)
         self.s3_handler = s3_handler
         self.s3_quick_fetch = S3QuickFetch(s3_handler)
 

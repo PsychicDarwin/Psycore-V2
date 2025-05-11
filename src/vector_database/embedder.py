@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import BinaryIO, Union
 from PIL import Image
-from langchain_text_splitters import TokenTextSplitter
+from src.llm.content_formatter import ContentFormatter
 from numpy import ndarray
 import base64
 from io import BytesIO
@@ -19,9 +19,7 @@ class Embedder(ABC):
             chunk_size = self.chunk_size
         if chunk_overlap is None:
             chunk_overlap = self.chunk_overlap
-        text_splitter = TokenTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
-        chunks = text_splitter.split_text(text)
-        return chunks
+        return ContentFormatter.chunk_text(text, chunk_size, chunk_overlap)
 
     @abstractmethod
     def text_to_embedding(chunk_data : str) -> ndarray:

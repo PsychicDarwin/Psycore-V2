@@ -4,15 +4,20 @@ import re
 import json
 import torch
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
-from src.kg.graph_creator import GraphCreator, GraphRelation
+from src.kg.graph_creator import GraphCreator, GraphRelation, remove_dup_relations
+from langchain_core.documents import Document
+from src.llm.content_formatter import ContentFormatter
+from src.system_manager.LoggerController import LoggerController
 
+# Configure logging
+logger = LoggerController.get_logger()
 class BERT_KG(GraphCreator):
     def __init__(self, model_name: str = "Babelscape/rebel-large"):
         # Initialize model and tokenizer
         self.tokenizer = AutoTokenizer.from_pretrained(model_name)
         self.model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
 
-    def create_graph_relations(self, text: str):
+    def chunk_relations(self, text: str):
         inputs = self.tokenizer(text, return_tensors="pt", truncation=True)
         
         with torch.no_grad():
@@ -43,3 +48,13 @@ class BERT_KG(GraphCreator):
                     continue  # Malformed triple part
 
         return triplets
+
+    def create_graph_relations(self, text: str):
+        splitText = ContentFormatter.chunk_text(text, chunk_size=1000, chunk_overlap=500)
+        all_relations = []
+        for i, chunk in enumerate(splitText):
+            logger.info(f"Processing chunk {i+1} of {len(splitText)}")
+            relations = self.chunk_relations(chunk)
+            all_relations.extend(relations)
+        return remove_dup_relations(all_relations)
+      

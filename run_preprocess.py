@@ -154,7 +154,7 @@ if __name__ == "__main__":
         },
         "document_range": {
             "start_index": 0,
-            "end_index": 5
+            "end_index": 3
         }
     })
     

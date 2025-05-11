@@ -2,6 +2,9 @@
 import numpy as np
 import random
 
+#this will switch between the q leanring training mode and the q learning agent decider 
+
+
 class QModel:
     def __init__(self, states, actions, alpha=0.1, gamma=0.9, epsilon=0.1):
         """

@@ -8,3 +8,6 @@ class QTrainer(ABC):
     @abstractmethod
     def cost_function(self):
         pass
+    
+#Q learning algrotim
+#

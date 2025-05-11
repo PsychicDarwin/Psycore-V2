@@ -41,9 +41,9 @@ class Psycore:
         LoggerController.initialize(config.get_log_level())
         self.logger = LoggerController.get_logger()
         if config.is_document_range_enabled():
-            self.document_range = config.get_document_range()
+            self.document_ids = config.get_document_ids()
         else:
-            self.document_range = None
+            self.document_ids = None
         self.rag_text_similarity_threshold = config.get_rag_text_similarity_threshold()
         primaryModelType = config.get_model()
         if config.get_embedding_method() == "langchain":
@@ -116,8 +116,8 @@ class Psycore:
         # Get all files from the Documents bucket
         files = self.s3_handler.list_base_directory_files(S3Bucket.DOCUMENTS) 
         # Limit to first 2 files for testing
-        if self.document_range is not None:
-            files = files[self.document_range["start_index"]:self.document_range["end_index"]]
+        if self.document_ids is not None and len(self.document_ids) > 0:
+            files = [files[i] for i in self.document_ids]
         # Process the files
         self.file_preprocessor.process_files(files)
         self.logger.debug("Exiting preprocess")

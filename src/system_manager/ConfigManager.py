@@ -80,14 +80,12 @@ class ConfigManager:
         dr = c["document_range"]
         if not isinstance(dr.get("enabled"), bool):
             raise ConfigError("document_range.enabled must be a boolean")
-        if not isinstance(dr.get("start_index"), int):
-            raise ConfigError("document_range.start_index must be an integer")
-        if not isinstance(dr.get("end_index"), int):
-            raise ConfigError("document_range.end_index must be an integer")
-        if dr["start_index"] < 0:
-            raise ConfigError("document_range.start_index must be non-negative")
-        if dr["end_index"] <= dr["start_index"]:
-            raise ConfigError("document_range.end_index must be greater than start_index")
+        if not isinstance(dr.get("document_ids"), list):
+            raise ConfigError("document_range.document_ids must be a list")
+        if not all(isinstance(doc_id, int) for doc_id in dr["document_ids"]):
+            raise ConfigError("document_range.document_ids must contain only integers")
+        if not all(doc_id >= 0 for doc_id in dr["document_ids"]):
+            raise ConfigError("document_range.document_ids must contain only non-negative integers")
 
         # Validate rag
         rag = c["rag"]
@@ -137,11 +135,9 @@ class ConfigManager:
     def is_document_range_enabled(self):
         return self.config["document_range"]["enabled"]
 
-    def get_document_range(self):
-        return {
-            "start_index": self.config["document_range"]["start_index"],
-            "end_index": self.config["document_range"]["end_index"]
-        }
+    def get_document_ids(self):
+        """Get the list of document IDs to process."""
+        return self.config["document_range"]["document_ids"]
 
     def get_rag_text_similarity_threshold(self):
         return self.config["rag"]["text_similarity_threshold"]
@@ -159,7 +155,7 @@ if __name__ == "__main__":
         print("Embedding Model:", config.get_embedding_model())
         print("Log Level:", config.get_log_level())
         print("Document Range Enabled:", config.is_document_range_enabled())
-        print("Document Range:", config.get_document_range())
+        print("Document Range:", config.get_document_ids())
         print("RAG Text Similarity Threshold:", config.get_rag_text_similarity_threshold())
     except (ConfigError, FileNotFoundError) as e:
         print(f"Config error:", e)

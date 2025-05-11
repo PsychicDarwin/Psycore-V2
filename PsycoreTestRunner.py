@@ -49,8 +49,7 @@ class PsycoreTestRunner:
             },
             "document_range": {
                 "enabled": True,
-                "start_index": 0,
-                "end_index": 3
+                "document_ids": [0, 1, 2]
             },
             "rag": {
                 "text_similarity_threshold": 0.55
@@ -165,8 +164,7 @@ if __name__ == "__main__":
             "primary": "oai_4o_latest"
         },
         "document_range": {
-            "start_index": 0,
-            "end_index": 3
+            "document_ids": [0, 1, 2]
         }
     })
     

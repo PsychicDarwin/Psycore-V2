@@ -6,16 +6,20 @@ from typing import Optional, Dict, Any, Union
 
 
 class PsycoreRunner:
-    def __init__(self, config: Optional[Union[str, Dict[str, Any]]] = None):
+    def __init__(self, config: Optional[Union[str, Dict[str, Any]]] = None, preprocess: bool = True):
         """
         Initialize the PsycoreRunner with optional configuration.
         
         Args:
             config: Either a YAML string or a dictionary containing the configuration
+            preprocess: Whether to run preprocessing during initialization
         """
         self.config = self._get_default_config() if config is None else config
         self.psycore = None
         
+        if preprocess:
+            self.preprocess()
+    
     def _get_default_config(self) -> Dict[str, Any]:
         """Return the default configuration."""
         return {
@@ -52,12 +56,16 @@ class PsycoreRunner:
             }
         }
     
-    def update_config(self, updates: Dict[str, Any]) -> None:
+    def update_config(self, updates: Dict[str, Any], preprocess: bool = True) -> 'PsycoreRunner':
         """
         Update specific configuration parameters.
         
         Args:
             updates: Dictionary containing the configuration updates
+            preprocess: Whether to run preprocessing after updating config
+            
+        Returns:
+            self for method chaining
         """
         def deep_update(d: Dict[str, Any], u: Dict[str, Any]) -> Dict[str, Any]:
             for k, v in u.items():
@@ -68,6 +76,11 @@ class PsycoreRunner:
             return d
         
         self.config = deep_update(self.config, updates)
+        
+        if preprocess:
+            self.preprocess()
+            
+        return self
     
     def _create_temp_config_file(self) -> str:
         """Create a temporary YAML file with the current configuration."""
@@ -75,46 +88,66 @@ class PsycoreRunner:
             yaml.dump(self.config, temp_file)
             return temp_file.name
     
-    def preprocess(self, skip_confirmation: bool = True) -> 'PsycoreRunner':
+    def preprocess(self) -> 'PsycoreRunner':
         """
         Run preprocessing with the current configuration.
         
-        Args:
-            skip_confirmation: Whether to skip the confirmation prompt
-            
         Returns:
             self for method chaining
         """
         temp_file_path = self._create_temp_config_file()
         try:
             self.psycore = Psycore(temp_file_path)
-            self.psycore.preprocess(skip_confirmation=skip_confirmation)
+            self.psycore.preprocess(skip_confirmation=True)
             return self
         finally:
             os.unlink(temp_file_path)
     
-    def evaluate_prompt(self, prompt: str, preprocess: bool = True) -> Any:
+    def evaluate_prompt(self, prompt: str) -> Any:
         """
         Evaluate a prompt using the current configuration.
         
         Args:
             prompt: The prompt to evaluate
-            preprocess: Whether to run preprocessing before evaluation
             
         Returns:
             The evaluation result
         """
-        if preprocess or self.psycore is None:
-            self.preprocess()
+        if self.psycore is None:
+            raise RuntimeError("Psycore instance not initialized. Call preprocess() first or initialize with preprocess=True")
         return self.psycore.evaluate_prompt(prompt)
+    
+    def process_evaluation(self, evaluation: dict) -> dict:
+        """
+        Process the prompt evaluation result.
+
+        Args:
+            evaluation: The evaluation result
+            
+        Returns:
+            The processed evaluation result
+        """
+        # This function is TODO but it's to unify the output as a general manner between all the evaluators and the various documents the result returned
+        return evaluation
+    
+
+    def evaluate_prompts(self, prompts: list[str]) -> list[Any]:
+        """
+        Evaluate a list of prompts using the current configuration.
+        
+        Args:
+            prompts: List of prompts to evaluate
+            
+        """
+        return [self.evaluate_prompt(prompt) for prompt in prompts]
 
 
 # Example usage
 if __name__ == "__main__":
-    # Create a runner with default config
-    runner = PsycoreRunner()
+    # Create a runner with default config and run preprocessing
+    runner = PsycoreRunner(preprocess=True)
     
-    # Example of updating specific parameters
+    # Example of updating specific parameters and re-preprocessing
     runner.update_config({
         "model": {
             "primary": "oai_4o_latest"
@@ -125,5 +158,5 @@ if __name__ == "__main__":
         }
     })
     
-    # Run evaluation
-    result = runner.evaluate_prompt("What is the capital of France?", preprocess=True)
+    prompts = ["What is the capital of France?", "What is the capital of Germany?"]
+    results = runner.evaluate_prompts(prompts)

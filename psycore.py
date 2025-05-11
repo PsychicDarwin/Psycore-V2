@@ -1,16 +1,19 @@
 from src.system_manager import LocalCredentials, ConfigManager, LoggerController
 from src.data.s3_handler import S3Handler, S3Bucket
+from src.data.s3_quick_fetch import S3QuickFetch
 from src.kg import BERT_KG, LLM_KG
-from src.llm import ModelCatalogue
-from src.llm.wrappers import ChatModelWrapper
-from src.vector_database import CLIPEmbedder, PineconeService, Embedder, VectorService
+from src.llm import ModelCatalogue, EmbeddingType
+from src.llm.wrappers import ChatModelWrapper, EmbeddingWrapper
+from src.vector_database import CLIPEmbedder, LangchainEmbedder, AWSEmbedder, PineconeService, Embedder, VectorService
 from src.preprocessing.file_preprocessor import FilePreprocessor
 from src.main import PromptStage, Elaborator, RAGElaborator, UserPromptElaboration
 from src.main import RAGStage, RAGChatStage
 import argparse
+from src.evaluation import BERTEvaluator, RougeEvaluator, GraphEvaluator
 import logging
 import sys
 import json
+from src.evaluation import GraphEvaluator, RougeEvaluator, BERTEvaluator
 parser = argparse.ArgumentParser()
 
 class Psycore:
@@ -28,6 +31,7 @@ class Psycore:
             }
         }
         self.s3_handler = S3Handler(self.s3_creds)
+        self.s3_quick_fetch = S3QuickFetch(self.s3_handler)
         self.logger.debug("Exiting init_s3")
 
     def init_config(self,config_path=None):
@@ -36,7 +40,23 @@ class Psycore:
         config = ConfigManager(config_path)
         LoggerController.initialize(config.get_log_level())
         self.logger = LoggerController.get_logger()
+        if config.is_document_range_enabled():
+            self.document_range = config.get_document_range()
+        else:
+            self.document_range = None
+        self.rag_text_similarity_threshold = config.get_rag_text_similarity_threshold()
         primaryModelType = config.get_model()
+        if config.get_embedding_method() == "langchain":
+            try:
+                modelType = ModelCatalogue.get_MEmbeddings()[config.get_embedding_model()]
+                self.embedding_wrapper = EmbeddingWrapper(modelType)
+                self.embedder = LangchainEmbedder(self.embedding_wrapper)
+            except KeyError:
+                raise ValueError(f"Embedding model type '{config.get_embedding_model()}' is not recognized in the ModelCatalogue as a multimodal embedding. \nOptions are {list(ModelCatalogue.get_MEmbeddings().keys())}")
+        elif config.get_embedding_method() == "aws":
+            self.embedder = AWSEmbedder(config.get_embedding_model())
+        elif config.get_embedding_method() == "clip":
+            self.embedder = CLIPEmbedder()
         try:
             modelType = ModelCatalogue.get_MLLMs()[primaryModelType]
             self.main_wrapper = ChatModelWrapper(modelType)
@@ -64,7 +84,7 @@ class Psycore:
                 except KeyError:
                     raise ValueError(f"Graph model type '{graphModelName}' is not recognized in the ModelCatalogue as with json schema encoding.\n Options are {list(ModelCatalogue.get_models_with_json_schema().keys())}")
 
-            elif self.graphModel == "bert":
+            elif graphModel == "bert":
                 self.graphModel = BERT_KG()
         else:
             self.graphModel = None
@@ -80,7 +100,12 @@ class Psycore:
         })
         self.logger.debug("Exiting init_vector_database")
 
-    def preprocess(self):
+    def preprocess(self, skip_confirmation=False):
+        if not skip_confirmation:
+            confirmation = input("Are you sure you want to preprocess the data? This will delete all existing data from the VDB and S3 buckets. (y/n): ")
+            if confirmation != "y":
+                print("Preprocessing cancelled.")
+                return
         self.logger.debug("Entering preprocess")
         # Clean the VDB
         self.vdb.reset_data()
@@ -91,27 +116,46 @@ class Psycore:
         # Get all files from the Documents bucket
         files = self.s3_handler.list_base_directory_files(S3Bucket.DOCUMENTS) 
         # Limit to first 2 files for testing
-        files = files[1:3]
+        if self.document_range is not None:
+            files = files[self.document_range["start_index"]:self.document_range["end_index"]]
         # Process the files
         self.file_preprocessor.process_files(files)
         self.logger.debug("Exiting preprocess")
 
 
-    def process_prompt(self, base_prompt):
+    def process_prompt(self, base_prompt, rag_elaborator : Elaborator = None):
         self.logger.debug("Entering process_prompt")
         prompt_stage = PromptStage(None, self.prompt_style)
-        rag_elaborator = RAGElaborator(self.elaborator_model)
         elaborated_prompt = rag_elaborator.elaborate(base_prompt)
         chosen_rag_prompt, elaborated = prompt_stage.decide_between_prompts(base_prompt, elaborated_prompt)
-        rag_stage = RAGStage(self.vdb, 20)
-        rag_results = rag_stage.get_rag_prompt(chosen_rag_prompt)
+        rag_stage = RAGStage(self.vdb, 10)
+        rag_results = rag_stage.get_rag_prompt_filtered(chosen_rag_prompt, self.rag_text_similarity_threshold)
         rag_chat_results = self.rag_chat.chat(base_prompt, rag_results)
-        print(rag_chat_results)
+        rag_elaborator.queue_history(rag_chat_results.content)
+        print(f"Output:\n{rag_chat_results.content}\nSource:\n{[(result['document_path'], result['vector_id'], result['score']) for result in rag_results]}\nRAG Prompt:\n{chosen_rag_prompt}")
         self.logger.debug("Exiting process_prompt")
+
+    def evaluate_prompt(self, base_prompt) -> dict:
+        prompt_stage = PromptStage(None, self.prompt_style)
+        elaborator = RAGElaborator(self.elaborator_model)
+        elaborated_prompt = elaborator.elaborate(base_prompt)
+        chosen_prompt, elaborated = prompt_stage.decide_between_prompts(base_prompt, elaborated_prompt)
+        rag_stage = RAGStage(self.vdb, 10)
+        rag_results = rag_stage.get_rag_prompt_filtered(chosen_prompt, self.rag_text_similarity_threshold)
+        rag_chat_results = self.rag_chat.chat(base_prompt, rag_results)
+        evaluators = [
+            GraphEvaluator(self.graph_model, self.s3_quick_fetch),
+            BERTEvaluator(self.s3_quick_fetch),
+            RougeEvaluator(self.s3_quick_fetch)
+        ]
+        for i in range(len(rag_results)):
+            for evaluator in evaluators:
+                rag_results[i] = evaluator.evaluate_rag_result(rag_chat_results.content, rag_results[i])
+        return rag_results
 
 
     def __init__(self, config_path=None):
-        self.embedder = CLIPEmbedder()
+
         self.init_config(config_path)
         self.init_vector_database()
         self.init_s3()
@@ -120,12 +164,13 @@ class Psycore:
 
     def text_interface(self):
         self.logger.debug("Entering text_interface")
+        elaborator = RAGElaborator(self.elaborator_model)
         while True:
             print("Type 'exit' to exit the program")
             prompt = input("Enter a prompt: ")
             if prompt == "exit":
                 break
-            self.process_prompt(prompt)
+            self.process_prompt(prompt, elaborator)
         self.logger.debug("Exiting text_interface")
         
 if __name__ == "__main__":
@@ -133,10 +178,11 @@ if __name__ == "__main__":
     parser.add_argument("--config", type=str, help="Path to the config file")
     parser.add_argument("--preprocess", action="store_true", help="Preprocess the data")
     parser.add_argument("--proceed", action="store_true", help="If preprocessing, allows program to work as normal afterwards rather than only preprocessing")
+    parser.add_argument("--skip-confirmation", action="store_true", help="Skip confirmation prompts during preprocessing")
     args = parser.parse_args()
     psycore = Psycore(args.config)
     if args.preprocess:
-        psycore.preprocess()
+        psycore.preprocess(skip_confirmation=args.skip_confirmation)
         if not args.proceed:
             exit(0)
     else:

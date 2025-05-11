@@ -24,7 +24,7 @@ class ChatAgent:
         context_attachments = [item for item in context if isinstance(item, Attachment) and item.attachment_type == AttachmentTypes.IMAGE]
         context_label = "context"
         context_image_count = len(context_attachments)
-        context_role = "assistant"
+        context_role = "human"
         context_text_count = len(context_text)
         total_added_messages = 0
         if context_image_count > 0:
@@ -36,7 +36,7 @@ class ChatAgent:
         prompt_text = [item for item in prompt if isinstance(item, str)]
         prompt_attachments = [item for item in prompt if isinstance(item, Attachment) and item.attachment_type == AttachmentTypes.IMAGE]
         prompt_label = "prompt"
-        prompt_role = "human"
+        prompt_role = "user"
         prompt_image_count = len(prompt_attachments)
         prompt_text_count = len(prompt_text)
         if prompt_image_count > 0:
@@ -67,13 +67,12 @@ class ChatAgent:
         else:
             extended_chat = [("system", self.system_prompt)]
             extended_chat.extend(new_history)
-            print(extended_chat)
             template = ChatPromptTemplate.from_messages(extended_chat)
         
         llm_output = ContentFormatter.chat_to_model(template, self.wrapper, langchain_prompt)
         if self.history is not None:
             # We append output to chat, but acknowledge that since we added multiple messages with potential formatting, they'll need to be rewritten without langchain styling so we can reuse history
-            self.history.append_output_to_chat(template, langchain_prompt, llm_output.content, total_added_messages)
+            self.history.append_output_to_chat(template, langchain_prompt, llm_output, total_added_messages)
         return llm_output
     
     def process_prompt_text(self, prompt : list[Union[str, Attachment]], context : list[Union[str, Attachment]] = None):

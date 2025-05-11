@@ -13,6 +13,17 @@ class VectorService(ABC):
         pass
 
     @abstractmethod
+    def batch_add_data(self, embeddings: list[ndarray], data_list: list[dict], batch_size: int = 100):
+        """Add multiple data points to the vector database in batches.
+        
+        Args:
+            embeddings (list[ndarray]): List of embeddings to add
+            data_list (list[dict]): List of metadata dictionaries corresponding to each embedding
+            batch_size (int, optional): Size of batches to process. Defaults to 100.
+        """
+        pass
+
+    @abstractmethod
     def get_data(self, query: str, k: int = 5) -> dict:
         """Get data from the vector database."""
         pass

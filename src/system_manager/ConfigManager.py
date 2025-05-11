@@ -8,6 +8,7 @@ class ConfigManager:
     VALID_GRAPH_METHODS = {"llm", "bert"}
     VALID_PROMPT_MODES = {"original", "elaborated", "q_learning","q_training"}
     VALID_LOG_LEVELS = {"DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"}
+    VALID_EMBEDDING_METHODS = {"langchain", "clip", "aws"}
 
     def __init__(self, path="config.yaml"):
         self.path = path
@@ -24,7 +25,7 @@ class ConfigManager:
         c = self.config
 
         # Check presence
-        for section in ["model", "graph_verification", "prompt_mode", "text_summariser", "logger"]:
+        for section in ["model", "graph_verification", "prompt_mode", "text_summariser", "logger", "embedding", "document_range", "rag"]:
             if section not in c:
                 raise ConfigError(f"Missing required section: '{section}'")
 
@@ -59,11 +60,41 @@ class ConfigManager:
         if not isinstance(c["text_summariser"].get("model"), str):
             raise ConfigError("text_summariser.model must be a string")
 
+        # Validate embedding
+        emb = c["embedding"]
+        method = emb.get("method")
+        if method not in self.VALID_EMBEDDING_METHODS:
+            raise ConfigError(f"embedding.method must be one of {self.VALID_EMBEDDING_METHODS}")
+        
+        if method in ["langchain", "aws"]:
+            if not isinstance(emb.get("model"), str):
+                raise ConfigError(f"embedding.model must be a string when method is '{method}'")
+
         # Validate logger
         if not isinstance(c["logger"].get("level"), str):
             raise ConfigError("logger.level must be a string")
         if c["logger"]["level"] not in self.VALID_LOG_LEVELS:
             raise ConfigError(f"logger.level must be one of {self.VALID_LOG_LEVELS}")
+
+        # Validate document_range
+        dr = c["document_range"]
+        if not isinstance(dr.get("enabled"), bool):
+            raise ConfigError("document_range.enabled must be a boolean")
+        if not isinstance(dr.get("start_index"), int):
+            raise ConfigError("document_range.start_index must be an integer")
+        if not isinstance(dr.get("end_index"), int):
+            raise ConfigError("document_range.end_index must be an integer")
+        if dr["start_index"] < 0:
+            raise ConfigError("document_range.start_index must be non-negative")
+        if dr["end_index"] <= dr["start_index"]:
+            raise ConfigError("document_range.end_index must be greater than start_index")
+
+        # Validate rag
+        rag = c["rag"]
+        if not isinstance(rag.get("text_similarity_threshold"), (int, float)):
+            raise ConfigError("rag.text_similarity_threshold must be a number")
+        if not 0 <= rag["text_similarity_threshold"] <= 1:
+            raise ConfigError("rag.text_similarity_threshold must be between 0 and 1")
 
     def get_model(self):
         return self.config["model"]["primary"]
@@ -91,8 +122,29 @@ class ConfigManager:
     def get_text_summariser_model(self):
         return self.config["text_summariser"]["model"]
 
+    def get_embedding_method(self):
+        return self.config["embedding"]["method"]
+
+    def get_embedding_model(self):
+        method = self.get_embedding_method()
+        if method in ["langchain", "aws"]:
+            return self.config["embedding"]["model"]
+        return None
+
     def get_log_level(self):
         return self.config["logger"]["level"]
+
+    def is_document_range_enabled(self):
+        return self.config["document_range"]["enabled"]
+
+    def get_document_range(self):
+        return {
+            "start_index": self.config["document_range"]["start_index"],
+            "end_index": self.config["document_range"]["end_index"]
+        }
+
+    def get_rag_text_similarity_threshold(self):
+        return self.config["rag"]["text_similarity_threshold"]
 
 # Example usage
 if __name__ == "__main__":
@@ -103,6 +155,11 @@ if __name__ == "__main__":
         print("Graph Method:", config.get_graph_method())
         print("Prompt Mode:", config.get_prompt_mode())
         print("Text Summariser Model:", config.get_text_summariser_model())
+        print("Embedding Method:", config.get_embedding_method())
+        print("Embedding Model:", config.get_embedding_model())
         print("Log Level:", config.get_log_level())
+        print("Document Range Enabled:", config.is_document_range_enabled())
+        print("Document Range:", config.get_document_range())
+        print("RAG Text Similarity Threshold:", config.get_rag_text_similarity_threshold())
     except (ConfigError, FileNotFoundError) as e:
         print(f"Config error:", e)

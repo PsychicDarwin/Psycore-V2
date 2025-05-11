@@ -4,15 +4,33 @@ model:
 
 graph_verification:
   enabled: true              # Boolean to enable graph verification
-  method: "llm"              # Options: "llm" (requires model) or "bert"
+  method: "bert"              # Options: "llm" (requires model) or "bert"
   llm_model: "oai_4o_latest"         # Only used if method is "llm"
+  # A light weight model that can handle JSON is required for processing graph chunks
+  # 3.8 Billion 
 
 prompt_mode:
-  mode: "original"         # Options: "original", "elaborated", "q_learning", "q_training"
+  mode: "elaborated"         # Options: "original", "elaborated", "q_learning", "q_training"
   elaborator_model: "oai_4o_latest"  # String for the LLM model to use for prompt elaboration
+# 
+
 
 text_summariser:
-  model: "oai_4o_latest"     # String for the LLM model to use for text summarization
+  model: "llava_13b"     # String for the LLM model to use for text summarization
+  # This is for converting images to text so needs to be a multimodal model but also light enough to have fast processing.
+
+
+embedding:
+  method: "aws"        # Options: "langchain", "clip", or "aws"
+  model: "amazon.titan-embed-image-v1"     # Required if method is "langchain" or "aws"
 
 logger:
-  level: "INFO"              # Options: "DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"
+  level: "DEBUG"              # Options: "DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"
+
+document_range:
+  enabled: false              # Boolean to enable document range processing
+  start_index: 0              # Starting document index (inclusive)
+  end_index: 10              # Ending document index (exclusive)
+
+rag:
+  text_similarity_threshold: 0.55  # Threshold for text similarity in RAG (0.0 to 1.0)

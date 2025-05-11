@@ -36,6 +36,20 @@ class GraphRelation:
             logger.error(f"Missing required keys in data: {data}")
             raise ValueError("data must contain 'subject', 'object', and 'relation' keys")
         return GraphRelation(data["subject"], data["object"], data["relation"])
+    
+def dict_data_to_relations(data: list[dict]) -> list[GraphRelation]:
+    relations = []
+    for relation in data:
+        relation = GraphRelation.__dict_to_relation(relation)
+        relations.append(relation)
+    return remove_dup_relations(relations)
+
+def remove_dup_relations(relations: list[GraphRelation]):
+    unique_relations = []
+    for relation in relations:
+        if relation not in unique_relations:
+            unique_relations.append(relation)
+    return unique_relations
 
 class GraphCreator(ABC):
     @abstractmethod
@@ -51,7 +65,7 @@ class GraphCreator(ABC):
         :param text: The text to convert.
         :return: A list of GraphRelation objects.
         """
-        logger.debug(f"Creating default graph relation for text of length {len(text)}")
+        logger.info(f"Creating default graph relation for text of length {len(text)}")
         return [
             GraphRelation("document", text, "CONTAINS")
         ]
@@ -61,12 +75,12 @@ class GraphCreator(ABC):
         Uses the create_graph_relations method to convert the text into a graph representation.
         Then converts the graph representation into a dictionary format.
         """
-        logger.debug(f"Starting graph creation for text of length {len(text)}")
+        logger.info(f"Starting graph creation for text of length {len(text)}")
         relations = self.create_graph_relations(text)
-        logger.debug(f"Created {len(relations)} relations")
+        logger.info(f"Created {len(relations)} relations")
         
         graph_dict = {
             "triples": [relation._to_dict() for relation in relations]
         }
-        logger.debug(f"Converted {len(relations)} relations to dictionary format")
+        logger.info(f"Converted {len(relations)} relations to dictionary format")
         return graph_dict

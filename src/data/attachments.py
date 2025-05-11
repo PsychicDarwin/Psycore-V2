@@ -99,7 +99,7 @@ class Attachment:
             return self.attachment_data
         else:
             chat = ContentFormatter.format_base_chat("You are a description generator. You will describe in as much detail as possible the image you are given. You will only respond with the description of the image.")
-            chat = ContentFormatter.add_format_to_chat(chat, ContentFormatter.prep_images(1))
+            chat = ContentFormatter.add_format_to_chat(chat, ContentFormatter.prep_images(1,))
             prompt_data = ContentFormatter.format_prompt(image_data=[self.attachment_data])
             template = ContentFormatter.chat_to_template(chat)
             description = ContentFormatter.chat_to_model(template, wrapper, prompt_data)

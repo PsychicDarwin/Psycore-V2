@@ -1,8 +1,10 @@
 from .evaluator import Evaluator
 from evaluate import load
+from src.data.s3_quick_fetch import S3QuickFetch
 
 class BERTEvaluator(Evaluator):
-    def __init__(self):
+    def __init__(self, s3_quick_fetch: S3QuickFetch):
+        super().__init__(s3_quick_fetch)
         self.bertscore = load("bertscore", module_type="metric")
         pass
 
@@ -27,3 +29,12 @@ class BERTEvaluator(Evaluator):
         results = self.evaluate(source, output)
         f1 = results["f1"]
         return sum(f1) / len(f1)
+    
+
+    def evaluate_rag_result(self, result: str, rag_result: dict):
+        summary = self.pull_summary(rag_result)
+        bertscore_result = {}
+        if summary != "":
+            bertscore_result = self.evaluate(summary, result)
+        rag_result["bertscore_evaluation"] = bertscore_result
+        return rag_result

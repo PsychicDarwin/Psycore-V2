@@ -1,11 +1,16 @@
 import re
 import json
 import torch
-from .graph_creator import GraphCreator, GraphRelation
+from .graph_creator import GraphCreator, GraphRelation, remove_dup_relations
 from src.llm.wrappers import ChatModelWrapper
 from src.vector_database import Embedder
 from langchain_experimental.graph_transformers import LLMGraphTransformer
 from langchain_core.documents import Document
+from src.llm.content_formatter import ContentFormatter
+from src.system_manager.LoggerController import LoggerController
+
+# Configure logging
+logger = LoggerController.get_logger()
 
 class LLM_KG(GraphCreator):
     def __init__(self, model: ChatModelWrapper, embedder: Embedder):
@@ -18,14 +23,15 @@ class LLM_KG(GraphCreator):
     # Due to chunk based processing approach, this will not work for a mediums of information
     # Like hypothetically a book of short stories, as they may contradict each other regarding graph relations
     def get_nodes_and_relations(self, text: str):
-        splitText = self.embedder.chunk_text(text)
+        splitText = ContentFormatter.chunk_text(text, chunk_size=3000, chunk_overlap=1500)
         documents = [
             Document(page_content=chunk) for chunk in splitText
         ]
         graph_documents = self.transformer.convert_to_graph_documents(documents)
         nodes = []
         relationships = []
-        for graph_document in graph_documents:
+        for i, graph_document in enumerate(graph_documents):
+            logger.info(f"Processing graph document {i+1} of {len(graph_documents)}")
             nodes.extend(graph_document.nodes)
             relationships.extend(graph_document.relationships)
         return nodes, relationships
@@ -40,4 +46,4 @@ class LLM_KG(GraphCreator):
         for relationship in relationships:
             triplet = GraphRelation(relationship.source.id, relationship.target.id, relationship.type)
             triples.append(triplet)
-        return triples
+        return remove_dup_relations(triples)

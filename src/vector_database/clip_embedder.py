@@ -2,7 +2,7 @@ from numpy import ndarray
 from transformers import CLIPProcessor, CLIPModel
 from typing import BinaryIO, Union
 from PIL import Image
-from src.vector_database.embedder import Embedder
+from .embedder import Embedder
 class CLIPEmbedder(Embedder):
     BASE_MODEL = "openai/clip-vit-base-patch32"
     PROCESSOR_MODEL = "openai/clip-vit-base-patch32"

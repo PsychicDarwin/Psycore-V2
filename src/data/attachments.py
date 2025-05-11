@@ -93,7 +93,7 @@ class Attachment:
             logger.error(f"Failed to process image: {str(e)}")
             raise FailedExtraction(self, f"Failed to process image: {str(e)}")
 
-    def _text_summary(self, wrapper: ChatModelWrapper):
+    def text_summary(self, wrapper: ChatModelWrapper):
         if self.attachment_type != AttachmentTypes.IMAGE:
             # If the attachment is not an image, we don't need to process it as if regular text, or audio, it's already in text format
             return self.attachment_data

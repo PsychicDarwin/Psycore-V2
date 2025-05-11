@@ -23,11 +23,6 @@ class ChatHistory:
 
     def append_output_to_chat(self, template: ChatPromptTemplate, prompt_dict: dict, llm_output: dict, total_added_messages: int = 1):
         chat_output = template.invoke(prompt_dict)
-        print(chat_output.messages)
-        chat_output_messages = []
-        for i in range(total_added_messages):
-            chat_output_messages.append(chat_output.messages.pop())
-        for i, message in enumerate(chat_output_messages):
-            self.chat_history[(-i)-1] = message
+        self.chat_history = chat_output.messages
         self.chat_history.append(("ai", llm_output.content))
         

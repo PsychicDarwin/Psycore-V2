@@ -18,7 +18,7 @@ class LLM_KG(GraphCreator):
     # Due to chunk based processing approach, this will not work for a mediums of information
     # Like hypothetically a book of short stories, as they may contradict each other regarding graph relations
     def get_nodes_and_relations(self, text: str):
-        splitText = self.embedder.chunk_text(text)
+        splitText = self.embedder.chunk_text(text, chunk_size=2000, chunk_overlap=600)
         documents = [
             Document(page_content=chunk) for chunk in splitText
         ]

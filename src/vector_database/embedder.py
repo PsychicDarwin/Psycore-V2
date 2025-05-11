@@ -13,9 +13,13 @@ class Embedder(ABC):
         self.chunk_overlap = chunk_overlap
         self.dimension_output = dimension_output
 
-    def chunk_text(self,text) -> list:
+    def chunk_text(self,text, chunk_size: int = None, chunk_overlap: int = None) -> list:
         """Chunk the text into smaller pieces for embedding."""
-        text_splitter = TokenTextSplitter(chunk_size=self.chunk_size, chunk_overlap=self.chunk_overlap)
+        if chunk_size is None:
+            chunk_size = self.chunk_size
+        if chunk_overlap is None:
+            chunk_overlap = self.chunk_overlap
+        text_splitter = TokenTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
         chunks = text_splitter.split_text(text)
         return chunks
 

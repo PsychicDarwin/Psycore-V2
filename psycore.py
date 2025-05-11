@@ -91,7 +91,12 @@ class Psycore:
         })
         self.logger.debug("Exiting init_vector_database")
 
-    def preprocess(self):
+    def preprocess(self, skip_confirmation=False):
+        if not skip_confirmation:
+            confirmation = input("Are you sure you want to preprocess the data? This will delete all existing data from the VDB and S3 buckets. (y/n): ")
+            if confirmation != "y":
+                print("Preprocessing cancelled.")
+                return
         self.logger.debug("Entering preprocess")
         # Clean the VDB
         self.vdb.reset_data()
@@ -114,10 +119,11 @@ class Psycore:
         rag_elaborator = RAGElaborator(self.elaborator_model)
         elaborated_prompt = rag_elaborator.elaborate(base_prompt)
         chosen_rag_prompt, elaborated = prompt_stage.decide_between_prompts(base_prompt, elaborated_prompt)
-        rag_stage = RAGStage(self.vdb, 20)
-        rag_results = rag_stage.get_rag_prompt(chosen_rag_prompt)
+        rag_stage = RAGStage(self.vdb, 10)
+        rag_results = rag_stage.get_rag_prompt_filtered(chosen_rag_prompt,0.55)
         rag_chat_results = self.rag_chat.chat(base_prompt, rag_results)
-        print(rag_chat_results)
+        rag_elaborator.queue_history(rag_chat_results.content)
+        print(f"Output:\n{rag_chat_results.content}\nSource:\n{[(result['document_path'], result['vector_id'], result['score']) for result in rag_results]}\nRAG Prompt:\n{chosen_rag_prompt}")
         self.logger.debug("Exiting process_prompt")
 
 
@@ -144,10 +150,11 @@ if __name__ == "__main__":
     parser.add_argument("--config", type=str, help="Path to the config file")
     parser.add_argument("--preprocess", action="store_true", help="Preprocess the data")
     parser.add_argument("--proceed", action="store_true", help="If preprocessing, allows program to work as normal afterwards rather than only preprocessing")
+    parser.add_argument("--skip-confirmation", action="store_true", help="Skip confirmation prompts during preprocessing")
     args = parser.parse_args()
     psycore = Psycore(args.config)
     if args.preprocess:
-        psycore.preprocess()
+        psycore.preprocess(skip_confirmation=args.skip_confirmation)
         if not args.proceed:
             exit(0)
     else:

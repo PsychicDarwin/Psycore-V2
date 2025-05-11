@@ -144,7 +144,7 @@ class Psycore:
         rag_results = rag_stage.get_rag_prompt_filtered(chosen_prompt, self.rag_text_similarity_threshold)
         rag_chat_results = self.rag_chat.chat(base_prompt, rag_results)
         evaluators = [
-            GraphEvaluator(self.graph_model, self.s3_quick_fetch),
+            GraphEvaluator(self.graphModel, self.s3_quick_fetch),
             BERTEvaluator(self.s3_quick_fetch),
             RougeEvaluator(self.s3_quick_fetch)
         ]

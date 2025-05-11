@@ -71,15 +71,17 @@ class FilePreprocessor:
                         # Reset BytesIO position for S3 upload
                         binary_image.seek(0)
                         image_s3_uri = self.s3_handler.upload_image(document_name, binary_image)
+                        summary = self.imageConverter.text_summary(binary_image)
+                        summary_s3_uri = self.s3_handler.upload_document_summary(document_name, summary)
                         logger.info(f"Image {document_name} uploaded to S3 and added to vector database")
                         self.vector_database.add_data(embedded_image, {
                             "document_path": f"s3://{S3Bucket.DOCUMENTS.value}/{additional_data['key']}",
+                            "summary_path": summary_path,
                             "graph_path": f"s3://{S3Bucket.GRAPHS.value}/{graph_path}",
+                            "summary_path": summary_s3_uri,
                             "image_path": image_s3_uri,
                             "type": "image",
                         })
-                        summary = self.imageConverter._text_summary(binary_image)
-                        self.s3_handler.upload_document_summary(document_name, summary)
                         graph = self.graphModel.create_graph_dict(summary)
                         self.s3_handler.upload_graph(document_name, json.dumps(graph))
                     finally:
@@ -115,11 +117,11 @@ class FilePreprocessor:
                     ]
                     for i, image in enumerate(attachment_images):
                         logger.info(f"Processing image {i+1} of {len(attachment_images)}")
-                        text_summary = image._text_summary(self.imageConverter)
+                        text_summary = image.text_summary(self.imageConverter)
                         image.additional_data["summary"] = text_summary
                         image.additional_data["image_path"] = f"{document_name}/image{i}"
                         logger.info(f"Uploading image {i+1} to S3")
-                        self.s3_handler.upload_image_text(document_name, text_summary, i)
+                        summary_s3_uri = self.s3_handler.upload_image_text(document_name, text_summary, i)
                         # Base64 to BytesIO binary
                         binary_image = BytesIO(base64.b64decode(image.attachment_data)) # attachment_data is already the base64 string
                         try:
@@ -134,8 +136,11 @@ class FilePreprocessor:
                             
                             self.vector_database.add_data(embedded_image, {
                                 "document_path": f"s3://{S3Bucket.DOCUMENTS.value}/{additional_data['key']}",
+                                "summary_path" f"s3://{S3}"
                                 "graph_path": f"s3://{S3Bucket.GRAPHS.value}/{graph_path}",
+                                "summary_path": summary_s3_uri,
                                 "image_path": image_s3_uri,
+                                "summary_path": summary_path,
                                 "type": "attachment_image",
                             })
                             logger.info(f"Image {i} uploaded to S3 and added to vector database")

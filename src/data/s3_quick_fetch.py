@@ -17,3 +17,12 @@ class S3QuickFetch:
         file_data = open(file, "r").read()
         self.s3_handler.cleanup_temp_file(file)
         return file_data
+    
+    def pull_summary(self, rag_data: dict):
+        if rag_data["type"] == "text":
+            return rag_data["text"]
+        elif rag_data["type"] == "image" or rag_data["type"] == "attachment_image":
+            if rag_data["summary_path"] is not None:
+                summary = self.fetch_text(rag_data["summary_path"])
+                return summary
+        return ""

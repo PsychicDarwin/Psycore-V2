@@ -3,8 +3,8 @@ from evaluate import load
 from rouge_score import rouge_scorer
 from src.data.s3_quick_fetch import S3QuickFetch
 
-class RougeEvaluator(Evaluator, S3QuickFetch):
-    def __init__(self, s3_quick_fetch: S3QuickFetch):
+class RougeEvaluator(Evaluator):
+    def __init__(self, 
         super().__init__(s3_quick_fetch)
         self.scorer = rouge_scorer.RougeScorer(['rougeL'], use_stemmer=True)
         pass
@@ -21,7 +21,7 @@ class RougeEvaluator(Evaluator, S3QuickFetch):
         return results
 
     def evaluate_rag_result(self, result: str, rag_result: dict):
-        summary = self.pull_summary(rag_result)
+        summary = self.iterative_stage.chunk_summaries[rag_result["vector_id"]]["summary"]
         rouge_result = {}
         if summary != "":
             rouge_result = self.evaluate(summary, result)

@@ -32,6 +32,9 @@ class GraphRelation:
         logger.debug(f"Hashing GraphRelation: {self.subject}->{self.relation}->{self.object} = {hash_value}")
         return hash_value
 
+    def __str__(self):
+        return f" {self.subject} has relation of {self.relation} with {self.object} "
+
 def dict_to_relation(data: dict):
     logger.debug(f"Converting dict to GraphRelation: {data}")
     if not isinstance(data, dict):

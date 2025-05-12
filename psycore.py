@@ -1,13 +1,13 @@
 from src.system_manager import LocalCredentials, ConfigManager, LoggerController
 from src.data.s3_handler import S3Handler, S3Bucket
 from src.data.s3_quick_fetch import S3QuickFetch
-from src.kg import BERT_KG, LLM_KG
+from src.kg import BERT_KG, LLM_KG, dict_data_to_relations
 from src.llm import ModelCatalogue, EmbeddingType
 from src.llm.wrappers import ChatModelWrapper, EmbeddingWrapper
 from src.vector_database import CLIPEmbedder, LangchainEmbedder, AWSEmbedder, PineconeService, Embedder, VectorService
 from src.preprocessing.file_preprocessor import FilePreprocessor
 from src.main import PromptStage, Elaborator, RAGElaborator, UserPromptElaboration
-from src.main import RAGStage, RAGChatStage
+from src.main import RAGStage, RAGChatStage, IterativeStage
 import argparse
 from src.evaluation import BERTEvaluator, RougeEvaluator, GraphEvaluator
 import logging
@@ -44,6 +44,7 @@ class Psycore:
             self.document_ids = config.get_document_ids()
         else:
             self.document_ids = None
+        self.loop_retries = 5
         self.rag_text_similarity_threshold = config.get_rag_text_similarity_threshold()
         primaryModelType = config.get_model()
         if config.get_embedding_method() == "langchain":
@@ -144,12 +145,24 @@ class Psycore:
         rag_stage = RAGStage(self.vdb, 10)
         rag_results = rag_stage.get_rag_prompt_filtered(chosen_prompt, self.rag_text_similarity_threshold)
         rag_chat_results = self.rag_chat.chat(base_prompt, rag_results)
+        
         logger.info(rag_results)
         logger.info("Evaluating RAG results")
+
+        iterative_stage = IterativeStage(self.s3_quick_fetch,self.graphModel, 0.5)
+        stage_results = iterative_stage.decision_maker(rag_results,rag_chat_results)
+        retry_count = 0
+        while len(stage_results[1]) > 0 and retry_count < self.loop_retries:
+            missing_relations = stage_results[1]
+            string_relations = [ str(relation) for relation in missing_relations]
+            rag_chat_results = self.rag_chat.chat(base_prompt + ", bear in mind: "  + string_relations, rag_results)
+            stage_results = iterative_stage.decision_maker(rag_results,rag_chat_results)
+            retry_count += 1
+        (valid_relations, missing_relations) = stage_results
         evaluators = [
-            GraphEvaluator(self.graphModel, self.s3_quick_fetch),
-            BERTEvaluator(self.s3_quick_fetch),
-            RougeEvaluator(self.s3_quick_fetch)
+            GraphEvaluator(iterative_stage, self.graphModel),
+            BERTEvaluator(iterative_stage),
+            RougeEvaluator(iterative_stage)
         ]
         for i in range(len(rag_results)):
             logger.info(f"Evaluating RAG result {i}")

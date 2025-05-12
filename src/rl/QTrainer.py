@@ -9,5 +9,4 @@ class QTrainer(ABC):
     def cost_function(self):
         pass
     
-#Q learning algrotim
-#
+# Q learning algrotim

@@ -44,7 +44,8 @@ class Psycore:
             self.document_ids = config.get_document_ids()
         else:
             self.document_ids = None
-        self.loop_retries = 5
+        self.loop_retries = config.get_iteration_loop_retries()
+        self.iterator_pass_threshold = config.get_iteration_pass_threshold()
         self.rag_text_similarity_threshold = config.get_rag_text_similarity_threshold()
         primaryModelType = config.get_model()
         if config.get_embedding_method() == "langchain":
@@ -149,7 +150,7 @@ class Psycore:
         logger.info(rag_results)
         logger.info("Evaluating RAG results")
 
-        iterative_stage = IterativeStage(self.s3_quick_fetch,self.graphModel, 0.5)
+        iterative_stage = IterativeStage(self.s3_quick_fetch, self.graphModel, self.iterator_pass_threshold)
         stage_results = iterative_stage.decision_maker(rag_results,rag_chat_results)
         retry_count = 0
         while len(stage_results[1]) > 0 and retry_count < self.loop_retries:

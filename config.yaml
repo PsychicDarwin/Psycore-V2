@@ -33,3 +33,7 @@ document_range:
 
 rag:
   text_similarity_threshold: 0.55  # Threshold for text similarity in RAG (0.0 to 1.0)
+
+iteration:
+  loop_retries: 5              # Maximum number of retries for iterative processing
+  pass_threshold: 0.5          # Threshold for passing iterations (0.0 to 1.0)

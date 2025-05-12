@@ -53,6 +53,10 @@ class PsycoreTestRunner:
             },
             "rag": {
                 "text_similarity_threshold": 0.55
+            },
+            "iteration": {
+                "loop_retries": 5,
+                "pass_threshold": 0.5
             }
         }
     
@@ -165,6 +169,10 @@ if __name__ == "__main__":
         },
         "document_range": {
             "document_ids": [0, 1, 2]
+        },
+        "iteration": {
+            "loop_retries": 3,
+            "pass_threshold": 0.6
         }
     })
     

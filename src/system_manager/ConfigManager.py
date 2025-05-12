@@ -25,7 +25,7 @@ class ConfigManager:
         c = self.config
 
         # Check presence
-        for section in ["model", "graph_verification", "prompt_mode", "text_summariser", "logger", "embedding", "document_range", "rag"]:
+        for section in ["model", "graph_verification", "prompt_mode", "text_summariser", "logger", "embedding", "document_range", "rag", "iteration"]:
             if section not in c:
                 raise ConfigError(f"Missing required section: '{section}'")
 
@@ -94,6 +94,18 @@ class ConfigManager:
         if not 0 <= rag["text_similarity_threshold"] <= 1:
             raise ConfigError("rag.text_similarity_threshold must be between 0 and 1")
 
+        # Validate iteration
+        iteration = c["iteration"]
+        if not isinstance(iteration.get("loop_retries"), int):
+            raise ConfigError("iteration.loop_retries must be an integer")
+        if iteration["loop_retries"] < 0:
+            raise ConfigError("iteration.loop_retries must be non-negative")
+        
+        if not isinstance(iteration.get("pass_threshold"), (int, float)):
+            raise ConfigError("iteration.pass_threshold must be a number")
+        if not 0 <= iteration["pass_threshold"] <= 1:
+            raise ConfigError("iteration.pass_threshold must be between 0 and 1")
+
     def get_model(self):
         return self.config["model"]["primary"]
 
@@ -142,6 +154,12 @@ class ConfigManager:
     def get_rag_text_similarity_threshold(self):
         return self.config["rag"]["text_similarity_threshold"]
 
+    def get_iteration_loop_retries(self):
+        return self.config["iteration"]["loop_retries"]
+
+    def get_iteration_pass_threshold(self):
+        return self.config["iteration"]["pass_threshold"]
+
 # Example usage
 if __name__ == "__main__":
     try:
@@ -157,5 +175,7 @@ if __name__ == "__main__":
         print("Document Range Enabled:", config.is_document_range_enabled())
         print("Document Range:", config.get_document_ids())
         print("RAG Text Similarity Threshold:", config.get_rag_text_similarity_threshold())
+        print("Iteration Loop Retries:", config.get_iteration_loop_retries())
+        print("Iteration Pass Threshold:", config.get_iteration_pass_threshold())
     except (ConfigError, FileNotFoundError) as e:
         print(f"Config error:", e)

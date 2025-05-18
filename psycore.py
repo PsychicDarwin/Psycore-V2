@@ -130,7 +130,7 @@ class Psycore:
         prompt_stage = PromptStage(None, self.prompt_style)
         elaborated_prompt = rag_elaborator.elaborate(base_prompt)
         chosen_rag_prompt, elaborated = prompt_stage.decide_between_prompts(base_prompt, elaborated_prompt)
-        rag_stage = RAGStage(self.vdb, 10)
+        rag_stage = RAGStage(self.vdb, 5)
         rag_results = rag_stage.get_rag_prompt_filtered(chosen_rag_prompt, self.rag_text_similarity_threshold)
         rag_chat_results = self.rag_chat.chat(base_prompt, rag_results)
         rag_elaborator.queue_history(rag_chat_results.content)

@@ -1,0 +1,7 @@
+config_hash,model.primary,model.allow_image_input,graph_verification.enabled,graph_verification.method,graph_verification.llm_model,prompt_mode.mode,prompt_mode.elaborator_model,text_summariser.model,embedding.method,embedding.model,logger.level,document_range.enabled,document_range.document_ids,rag.text_similarity_threshold,iteration.loop_retries,iteration.pass_threshold,result_path
+40f5c0ad78,oai_4o_latest,True,True,llm,oai_4o_latest,elaborated,oai_4o_latest,oai_4o_latest,aws,amazon.titan-embed-image-v1,WARNING,True,1|4|7|15|34,0.3,2,0.1,./results\40f5c0ad78.json
+cee04afb72,oai_chatgpt_latest,True,True,llm,oai_4o_latest,elaborated,oai_4o_latest,oai_4o_latest,aws,amazon.titan-embed-image-v1,WARNING,True,1|4|7|15|34,0.3,2,0.1,./results\cee04afb72.json
+dfb33da9ba,claude_3_sonnet,True,True,llm,oai_4o_latest,elaborated,oai_4o_latest,oai_4o_latest,aws,amazon.titan-embed-image-v1,WARNING,True,1|4|7|15|34,0.3,2,0.1,./results\dfb33da9ba.json
+55372669a8,claude_3_haiku,True,True,llm,oai_4o_latest,elaborated,oai_4o_latest,oai_4o_latest,aws,amazon.titan-embed-image-v1,WARNING,True,1|4|7|15|34,0.3,2,0.1,./results\55372669a8.json
+13270193ad,gemini_1.5_flash,True,True,llm,oai_4o_latest,elaborated,oai_4o_latest,oai_4o_latest,aws,amazon.titan-embed-image-v1,WARNING,True,1|4|7|15|34,0.3,2,0.1,./results\13270193ad.json
+f2859c0b21,grok_2_vision,True,True,llm,oai_4o_latest,elaborated,oai_4o_latest,oai_4o_latest,aws,amazon.titan-embed-image-v1,WARNING,True,1|4|7|15|34,0.3,2,0.1,./results\f2859c0b21.json

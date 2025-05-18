@@ -1,0 +1,998 @@
+{
+    "What programs are there to enhance broadband?": [
+        {
+            "vector_id": "150c1527-8a48-4f8c-a4e7-bbdd30b7a581",
+            "score": 0.753662229,
+            "document_path": "s3://psycore-documents-445644858344/18-049091_01_LFFN_Wave_1_final_evaluation_Synthesis_report.pdf",
+            "graph_path": "s3://nas666graph/18-049091_01_LFFN_Wave_1_final_evaluation_Synthesis_report.pdf/graph.json",
+            "type": "text",
+            "text": " are some challenges to be addressed in delivering demand led broadband interventions. These interventions appear to be successful in achieving the public sector outcomes and impacts, however they appear to have struggled so far, to 2022, to provide additional gigabit-capable networks in the local area, above what would have happened in the absence of the projects. This limits the longer term benefits the projects have been able to generate in terms of economic, social and environmental impacts to 2022",
+            "graph_evaluation": {
+                "recall": 0.0,
+                "precision": 0.1,
+                "f_beta": 0.009302325581395349,
+                "beta": 1.0
+            },
+            "bertscore_evaluation": {
+                "precision": [
+                    0.8172026872634888
+                ],
+                "recall": [
+                    0.8855494260787964
+                ],
+                "f1": [
+                    0.8500043153762817
+                ],
+                "hashcode": "roberta-large_L17_no-idf_version=0.3.12(hug_trans=4.33.3)"
+            },
+            "rouge_evaluation": {
+                "rougeL": [
+                    0.11217948717948718,
+                    0.4375,
+                    0.17857142857142855
+                ]
+            }
+        },
+        {
+            "vector_id": "1072a490-deee-40f0-b376-ded03be63756",
+            "score": 0.749352396,
+            "document_path": "s3://psycore-documents-445644858344/18-049091_01_LFFN_Wave_1_final_evaluation_Synthesis_report.pdf",
+            "graph_path": "s3://nas666graph/18-049091_01_LFFN_Wave_1_final_evaluation_Synthesis_report.pdf/graph.json",
+            "type": "text",
+            "text": " from the evaluation indicate that there are some challenges to be addressed in delivering demand led broadband interventions. These interventions appear to be successful in achieving the public sector outcomes and impacts, however they appear to have struggled so far, to 2022, to provide additional gigabit-capable networks in the local area, above what would have happened in the absence of the projects. This limits the longer term benefits the projects have been able to generate in terms of economic,",
+            "graph_evaluation": {
+                "recall": 0.0,
+                "precision": 0.10526315789473684,
+                "f_beta": 0.009324009324009322,
+                "beta": 1.0
+            },
+            "bertscore_evaluation": {
+                "precision": [
+                    0.8167781233787537
+                ],
+                "recall": [
+                    0.8867645859718323
+                ],
+                "f1": [
+                    0.8503336906433105
+                ],
+                "hashcode": "roberta-large_L17_no-idf_version=0.3.12(hug_trans=4.33.3)"
+            },
+            "rouge_evaluation": {
+                "rougeL": [
+                    0.10897435897435898,
+                    0.425,
+                    0.17346938775510204
+                ]
+            }
+        },
+        {
+            "vector_id": "4ca7d78c-f6fc-46fd-b42d-51da58b0d653",
+            "score": 0.727099,
+            "document_path": "s3://psycore-documents-445644858344/Broadband_Delivery_UK_State_aid_consultation_Market_Testing_Pilot_Intervention_Areas_Second_Wave.pdf",
+            "graph_path": "s3://nas666graph/Broadband_Delivery_UK_State_aid_consultation_Market_Testing_Pilot_Intervention_Areas_Second_Wave.pdf/graph.json",
+            "type": "text",
+            "text": "-out or disincentivising existing and/or credible near future planned private sector investments that would otherwise meet the desired policy objectives. In the context of broadband, the State aid rules require using qualifying public funding only to extend broadband coverage in geographic areas where there is no market provision of equivalent broadband services. This includes both current provision and demonstrable, credible plans to deploy services over the next three years. The EU Guidelines for the application of State aid",
+            "graph_evaluation": {
+                "recall": 0.0,
+                "precision": 0.05,
+                "f_beta": 0.008230452674897118,
+                "beta": 1.0
+            },
+            "bertscore_evaluation": {
+                "precision": [
+                    0.8181501030921936
+                ],
+                "recall": [
+                    0.8825346231460571
+                ],
+                "f1": [
+                    0.8491235971450806
+                ],
+                "hashcode": "roberta-large_L17_no-idf_version=0.3.12(hug_trans=4.33.3)"
+            },
+            "rouge_evaluation": {
+                "rougeL": [
+                    0.10576923076923077,
+                    0.4177215189873418,
+                    0.1687979539641944
+                ]
+            }
+        },
+        {
+            "vector_id": "df60e2dc-7d58-4f67-98ba-a05105badf7e",
+            "score": 0.696469188,
+            "document_path": "s3://psycore-documents-445644858344/20201222_-_Planning_for_Gigabit_Delivery_in_2021_V2.pdf",
+            "graph_path": "s3://nas666graph/20201222_-_Planning_for_Gigabit_Delivery_in_2021_V2.pdf/graph.json",
+            "type": "text",
+            "text": " as soon as possible. The Government will continue to implement an ambitious programme of work to remove barriers to broadband deployment and maximise coverage in the hardest to reach areas of the country. We are investing an unprecedented \u00a35 billion of subsidy to support the deployment of gigabit broadband in the hardest-to-reach areas of the country, including prioritising delivery to those premises without access to superfast broadband (i.e. speeds of at least 30 Mbps",
+            "graph_evaluation": {
+                "recall": 0.0,
+                "precision": 0.15,
+                "f_beta": 0.02542372881355932,
+                "beta": 1.0
+            },
+            "bertscore_evaluation": {
+                "precision": [
+                    0.8239715099334717
+                ],
+                "recall": [
+                    0.9058945178985596
+                ],
+                "f1": [
+                    0.8629931807518005
+                ],
+                "hashcode": "roberta-large_L17_no-idf_version=0.3.12(hug_trans=4.33.3)"
+            },
+            "rouge_evaluation": {
+                "rougeL": [
+                    0.10897435897435898,
+                    0.44155844155844154,
+                    0.17480719794344474
+                ]
+            }
+        },
+        {
+            "vector_id": "50239cc4-14b6-4094-9763-72d810871c21",
+            "score": 0.695100486,
+            "document_path": "s3://psycore-documents-445644858344/20201222_-_Planning_for_Gigabit_Delivery_in_2021_V2.pdf",
+            "graph_path": "s3://nas666graph/20201222_-_Planning_for_Gigabit_Delivery_in_2021_V2.pdf/graph.json",
+            "type": "text",
+            "text": " soon as possible. We want to encourage commercial investment and stimulate suppliers to go further, by using subsidies to stretch that commercial investment. We are working with industry to target a minimum of 85% gigabit-capable coverage by 2025 but will seek to accelerate rollout further to get as close to 100% as soon as possible. The Government will continue to implement an ambitious programme of work to remove barriers to broadband deployment and maximise coverage in the hardest to",
+            "graph_evaluation": {
+                "recall": 0.0,
+                "precision": 0.15,
+                "f_beta": 0.02542372881355932,
+                "beta": 1.0
+            },
+            "bertscore_evaluation": {
+                "precision": [
+                    0.8211217522621155
+                ],
+                "recall": [
+                    0.8856610059738159
+                ],
+                "f1": [
+                    0.8521711230278015
+                ],
+                "hashcode": "roberta-large_L17_no-idf_version=0.3.12(hug_trans=4.33.3)"
+            },
+            "rouge_evaluation": {
+                "rougeL": [
+                    0.11538461538461539,
+                    0.45,
+                    0.1836734693877551
+                ]
+            }
+        },
+        {
+            "vector_id": "13a2b0de-8005-42bb-b37a-fbf47284b087",
+            "score": 0.685148716,
+            "document_path": "s3://psycore-documents-445644858344/Broadband_Delivery_UK_State_aid_consultation_Market_Testing_Pilot_Intervention_Areas_Second_Wave.pdf",
+            "graph_path": "s3://nas666graph/Broadband_Delivery_UK_State_aid_consultation_Market_Testing_Pilot_Intervention_Areas_Second_Wave.pdf/graph.json",
+            "type": "text",
+            "text": " the deployment of broadband infrastructure and coverage to the areas identified within this document. It provides background information on the nature of the projects including their detailed location (postcode) and mapping information to enable all stakeholders (including broadband Infrastructure providers, ISP\u2019s, businesses and residents) to identify whether the proposed pilot activity is at risk of over-building areas where there is current availability of comparable services or where there are firm plans, within the next three years",
+            "graph_evaluation": {
+                "recall": 0.0,
+                "precision": 0.05,
+                "f_beta": 0.008230452674897118,
+                "beta": 1.0
+            },
+            "bertscore_evaluation": {
+                "precision": [
+                    0.8099059462547302
+                ],
+                "recall": [
+                    0.8533532023429871
+                ],
+                "f1": [
+                    0.8310620784759521
+                ],
+                "hashcode": "roberta-large_L17_no-idf_version=0.3.12(hug_trans=4.33.3)"
+            },
+            "rouge_evaluation": {
+                "rougeL": [
+                    0.0673076923076923,
+                    0.2692307692307692,
+                    0.1076923076923077
+                ]
+            }
+        },
+        {
+            "vector_id": "7da31c12-46ab-496f-9762-953140ffeb00",
+            "score": 0.68040961,
+            "document_path": "s3://psycore-documents-445644858344/22-036458-01_GIS_early_process_evaluation_Accessible_CLIENT_USE.pdf",
+            "graph_path": "s3://nas666graph/22-036458-01_GIS_early_process_evaluation_Accessible_CLIENT_USE.pdf/graph.json",
+            "type": "text",
+            "text": " a higher need of public subsidy to ensure the population can access gigabit capable networks. Additionally, as described in Section 3.3, providing intervention areas of different sizes has allowed different types of network providers to participate in the intervention and has allowed all contracts tendered to date to attract bids. The extent to which the intervention has operated in the areas of most need will need to be investigated in more detail once the GIS intervention deployments have been delivered.",
+            "graph_evaluation": {
+                "recall": 0.15384615384615385,
+                "precision": 0.2,
+                "f_beta": 0.025477707006369428,
+                "beta": 1.0
+            },
+            "bertscore_evaluation": {
+                "precision": [
+                    0.8126233816146851
+                ],
+                "recall": [
+                    0.8616779446601868
+                ],
+                "f1": [
+                    0.8364319801330566
+                ],
+                "hashcode": "roberta-large_L17_no-idf_version=0.3.12(hug_trans=4.33.3)"
+            },
+            "rouge_evaluation": {
+                "rougeL": [
+                    0.08653846153846154,
+                    0.3333333333333333,
+                    0.13740458015267176
+                ]
+            }
+        },
+        {
+            "vector_id": "4c9b2197-edbc-4584-ba4f-216f48114ab4",
+            "score": 0.678801239,
+            "document_path": "s3://psycore-documents-445644858344/22-036458-01_GIS_early_process_evaluation_Accessible_CLIENT_USE.pdf",
+            "graph_path": "s3://nas666graph/22-036458-01_GIS_early_process_evaluation_Accessible_CLIENT_USE.pdf/graph.json",
+            "type": "text",
+            "text": " was to not just enhance connectivity, but also to create an environment that encourages private investment and competition in broadband infrastructure.. The GIS intervention\u2019s design allowed contracts of different sizes (local, regional and cross-regional), which would allow network providers of different sizes to participate. This built on lessons from the Superfast Broadband Programme where initially there was a framework contract, through which the majority of contracts were awarded (11 contracts were awarded through",
+            "graph_evaluation": {
+                "recall": 0.11764705882352941,
+                "precision": 0.2,
+                "f_beta": 0.025477707006369428,
+                "beta": 1.0
+            },
+            "bertscore_evaluation": {
+                "precision": [
+                    0.8191864490509033
+                ],
+                "recall": [
+                    0.8835785388946533
+                ],
+                "f1": [
+                    0.8501649498939514
+                ],
+                "hashcode": "roberta-large_L17_no-idf_version=0.3.12(hug_trans=4.33.3)"
+            },
+            "rouge_evaluation": {
+                "rougeL": [
+                    0.13782051282051283,
+                    0.5733333333333334,
+                    0.22222222222222224
+                ]
+            }
+        },
+        {
+            "vector_id": "67a69b3b-8349-4dd8-8399-94492b624f76",
+            "score": 0.678384185,
+            "document_path": "s3://psycore-documents-445644858344/20201222_-_Planning_for_Gigabit_Delivery_in_2021_V2.pdf",
+            "graph_path": "s3://nas666graph/20201222_-_Planning_for_Gigabit_Delivery_in_2021_V2.pdf/graph.json",
+            "type": "text",
+            "text": " initial procurements by Spring 2021. We are also exploring how we could procure a small number of very large frameworks for areas where competition is less likely, potentially on a regional basis. These frameworks could help to ensure that gigabit capability can be delivered to all areas - even those where there is limited prospect of competition, delivering at pace and targeting areas where less than 30Mbps broadband is available. Agreements will include additional requirements on suppliers to evidence efficiency and",
+            "graph_evaluation": {
+                "recall": 0.0,
+                "precision": 0.15,
+                "f_beta": 0.02542372881355932,
+                "beta": 1.0
+            },
+            "bertscore_evaluation": {
+                "precision": [
+                    0.8152004480361938
+                ],
+                "recall": [
+                    0.8649964332580566
+                ],
+                "f1": [
+                    0.8393605351448059
+                ],
+                "hashcode": "roberta-large_L17_no-idf_version=0.3.12(hug_trans=4.33.3)"
+            },
+            "rouge_evaluation": {
+                "rougeL": [
+                    0.057692307692307696,
+                    0.225,
+                    0.09183673469387756
+                ]
+            }
+        },
+        {
+            "vector_id": "7b0f6a31-ea25-4059-8914-d50bd76b41fc",
+            "score": 0.674857438,
+            "document_path": "s3://psycore-documents-445644858344/20201222_-_Planning_for_Gigabit_Delivery_in_2021_V2.pdf",
+            "graph_path": "s3://nas666graph/20201222_-_Planning_for_Gigabit_Delivery_in_2021_V2.pdf/graph.json",
+            "type": "text",
+            "text": " Review identified that approximately 20% of the country is unlikely to be commercially viable for gigabit-capable network rollout within a reasonable time frame. The Government is therefore ensuring that delivery to these harder to reach parts of the UK takes place in parallel with commercial build. We will deliver this \u2018outside in\u2019 strategy through a multi-intervention UK Gigabit Programme, led by Building Digital UK (BDUK), working in partnership with local authorities",
+            "graph_evaluation": {
+                "recall": 0.2,
+                "precision": 0.15,
+                "f_beta": 0.02542372881355932,
+                "beta": 1.0
+            },
+            "bertscore_evaluation": {
+                "precision": [
+                    0.8314938545227051
+                ],
+                "recall": [
+                    0.9064306020736694
+                ],
+                "f1": [
+                    0.8673466444015503
+                ],
+                "hashcode": "roberta-large_L17_no-idf_version=0.3.12(hug_trans=4.33.3)"
+            },
+            "rouge_evaluation": {
+                "rougeL": [
+                    0.125,
+                    0.5342465753424658,
+                    0.2025974025974026
+                ]
+            }
+        }
+    ],
+    "What does the Department of Digital, Culture, Media and Sport do?": [
+        {
+            "vector_id": "4d2fcdab-4d59-4191-929b-dd2a7a1b7b61",
+            "score": 0.672313333,
+            "document_path": "s3://psycore-documents-445644858344/20201222_-_Planning_for_Gigabit_Delivery_in_2021_V2.pdf",
+            "graph_path": "s3://nas666graph/20201222_-_Planning_for_Gigabit_Delivery_in_2021_V2.pdf/graph.json",
+            "type": "text",
+            "text": " - that agenda is among the most exciting opportunities for growth and security in the UK economy, but connectivity is about so much more than that: it\u2019s an engine for better education, better healthcare, for social justice and for human happiness. Delivering it is core to this government\u2019s programme. In line with our levelling up agenda, we want to become a world class leader in digital connectivity. To achieve this we will deliver reliable",
+            "graph_evaluation": {
+                "recall": 0.0,
+                "precision": 0.05263157894736842,
+                "f_beta": 0.00851063829787234,
+                "beta": 1.0
+            },
+            "bertscore_evaluation": {
+                "precision": [
+                    0.793519914150238
+                ],
+                "recall": [
+                    0.8253855109214783
+                ],
+                "f1": [
+                    0.8091391324996948
+                ],
+                "hashcode": "roberta-large_L17_no-idf_version=0.3.12(hug_trans=4.33.3)"
+            },
+            "rouge_evaluation": {
+                "rougeL": [
+                    0.07692307692307693,
+                    0.25333333333333335,
+                    0.11801242236024846
+                ]
+            }
+        },
+        {
+            "vector_id": "135d40e6-5c00-4e44-a13f-372a4d9a05cd",
+            "score": 0.663247108,
+            "document_path": "s3://psycore-documents-445644858344/18-049091_01_LFFN_Wave_1_final_evaluation_Synthesis_report.pdf",
+            "graph_path": "s3://nas666graph/18-049091_01_LFFN_Wave_1_final_evaluation_Synthesis_report.pdf/graph.json",
+            "type": "text",
+            "text": " international quality standard for Market Research, ISO 20252, and with the Ipsos Terms and Conditions which can be found at https://ipsos.uk/terms. Building Digital UK 2023 Ipsos | Evaluation of the Local Full Fibre Network wave one projects: Synthesis report Contents Executive summary ................................................................................................................... 6 Description of the programme ..........................................................................................................6 Study aims..........................................................................................................................................6 Key evaluation questions..................................................................................................................6 Key",
+            "graph_evaluation": {
+                "recall": 0.6,
+                "precision": 0.05263157894736842,
+                "f_beta": 0.004662004662004661,
+                "beta": 1.0
+            },
+            "bertscore_evaluation": {
+                "precision": [
+                    0.7744786739349365
+                ],
+                "recall": [
+                    0.7563144564628601
+                ],
+                "f1": [
+                    0.7652887105941772
+                ],
+                "hashcode": "roberta-large_L17_no-idf_version=0.3.12(hug_trans=4.33.3)"
+            },
+            "rouge_evaluation": {
+                "rougeL": [
+                    0.044534412955465584,
+                    0.1896551724137931,
+                    0.0721311475409836
+                ]
+            }
+        },
+        {
+            "vector_id": "e25aa0ca-032a-4243-8a66-446ec62f69b1",
+            "score": 0.6567173,
+            "document_path": "s3://psycore-documents-445644858344/18-049091-01_LFFN_Wave_1_final_evaluation_TPI_project.pdf",
+            "graph_path": "s3://nas666graph/18-049091-01_LFFN_Wave_1_final_evaluation_TPI_project.pdf/graph.json",
+            "type": "text",
+            "text": " of the international quality standard for Market Research, ISO 20252, and with the Ipsos Terms and Conditions which can be found at https://ipsos.uk/terms. Building Digital UK 2023 18-049091-01 | Final version | This work was carried out in accordance with the requirements of the international quality standard for Market Research, ISO 20252, and with the Ipsos Terms and Conditions which can be found at https://",
+            "graph_evaluation": {
+                "recall": 1.0,
+                "precision": 0.05263157894736842,
+                "f_beta": 0.006329113924050633,
+                "beta": 1.0
+            },
+            "bertscore_evaluation": {
+                "precision": [
+                    0.7668228149414062
+                ],
+                "recall": [
+                    0.7388856410980225
+                ],
+                "f1": [
+                    0.752595067024231
+                ],
+                "hashcode": "roberta-large_L17_no-idf_version=0.3.12(hug_trans=4.33.3)"
+            },
+            "rouge_evaluation": {
+                "rougeL": [
+                    0.06477732793522267,
+                    0.23529411764705882,
+                    0.10158730158730159
+                ]
+            }
+        },
+        {
+            "vector_id": "3b0b736c-0a6b-48e1-81d0-01119f323e2f",
+            "score": 0.656610548,
+            "document_path": "s3://psycore-documents-445644858344/18-049091_01_LFFN_Wave_1_final_evaluation_Synthesis_report.pdf",
+            "graph_path": "s3://nas666graph/18-049091_01_LFFN_Wave_1_final_evaluation_Synthesis_report.pdf/graph.json",
+            "type": "text",
+            "text": " Government future telecommunications infrastructure policy or programmes (including 5G) Demand-led delivery approaches Source: BDUK Invitation to Tender 18-049091-01 | Final version | This work was carried out in accordance with the requirements of the international quality standard for Market Research, ISO 20252, and with the Ipsos Terms and Conditions which can be found at https://ipsos.uk/terms. Building Digital UK 2023 7 Ips",
+            "graph_evaluation": {
+                "recall": 0.125,
+                "precision": 0.05263157894736842,
+                "f_beta": 0.004662004662004661,
+                "beta": 1.0
+            },
+            "bertscore_evaluation": {
+                "precision": [
+                    0.7746508717536926
+                ],
+                "recall": [
+                    0.7695996761322021
+                ],
+                "f1": [
+                    0.7721170783042908
+                ],
+                "hashcode": "roberta-large_L17_no-idf_version=0.3.12(hug_trans=4.33.3)"
+            },
+            "rouge_evaluation": {
+                "rougeL": [
+                    0.05668016194331984,
+                    0.2153846153846154,
+                    0.08974358974358974
+                ]
+            }
+        },
+        {
+            "vector_id": "1e02ee3f-e062-4d17-8a41-00b19fe0c9e4",
+            "score": 0.654109895,
+            "document_path": "s3://psycore-documents-445644858344/18-049091-01_LFFN_Wave_1_final_evaluation_TPI_project.pdf",
+            "graph_path": "s3://nas666graph/18-049091-01_LFFN_Wave_1_final_evaluation_TPI_project.pdf/graph.json",
+            "type": "text",
+            "text": " required to take advantage of a range of new digital services and assure reliability and continuity of operations. For residents, ultrafast speeds were needed to support growing demand for data \u2013 for example, content-rich websites, streaming services and cloud services. They were also expected to produce significant social benefits by supporting the development of applications enabling remote service delivery such as remote medical diagnostics. At the end of 2016, the UK lagged behind a range of international compar",
+            "graph_evaluation": {
+                "recall": 0.034482758620689655,
+                "precision": 0.05263157894736842,
+                "f_beta": 0.006329113924050633,
+                "beta": 1.0
+            },
+            "bertscore_evaluation": {
+                "precision": [
+                    0.7899794578552246
+                ],
+                "recall": [
+                    0.8274117708206177
+                ],
+                "f1": [
+                    0.8082624673843384
+                ],
+                "hashcode": "roberta-large_L17_no-idf_version=0.3.12(hug_trans=4.33.3)"
+            },
+            "rouge_evaluation": {
+                "rougeL": [
+                    0.0728744939271255,
+                    0.23076923076923078,
+                    0.11076923076923079
+                ]
+            }
+        },
+        {
+            "vector_id": "62684b74-75ce-4320-80ad-5dfa9e7d0701",
+            "score": 0.651900947,
+            "document_path": "s3://psycore-documents-445644858344/18-049091_01_LFFN_Wave_1_final_evaluation_Synthesis_report.pdf",
+            "graph_path": "s3://nas666graph/18-049091_01_LFFN_Wave_1_final_evaluation_Synthesis_report.pdf/graph.json",
+            "type": "text",
+            "text": " agreeing to adhere to 10 core principles. The principles support and complement other standards such as ISOs, and the requirements of Data Protection legislation. 18-049091-01 | Final version | This work was carried out in accordance with the requirements of the international quality standard for Market Research, ISO 20252, and with the Ipsos Terms and Conditions which can be found at https://ipsos.uk/terms. Building Digital UK 2023",
+            "graph_evaluation": {
+                "recall": 0.13333333333333333,
+                "precision": 0.05263157894736842,
+                "f_beta": 0.004662004662004661,
+                "beta": 1.0
+            },
+            "bertscore_evaluation": {
+                "precision": [
+                    0.7778806686401367
+                ],
+                "recall": [
+                    0.7879630327224731
+                ],
+                "f1": [
+                    0.7828893661499023
+                ],
+                "hashcode": "roberta-large_L17_no-idf_version=0.3.12(hug_trans=4.33.3)"
+            },
+            "rouge_evaluation": {
+                "rougeL": [
+                    0.0728744939271255,
+                    0.2608695652173913,
+                    0.1139240506329114
+                ]
+            }
+        },
+        {
+            "vector_id": "38798376-3465-44b0-aba1-f80ee5c09814",
+            "score": 0.651642859,
+            "document_path": "s3://psycore-documents-445644858344/18-049091_01_LFFN_Wave_1_final_evaluation_Synthesis_report.pdf",
+            "graph_path": "s3://nas666graph/18-049091_01_LFFN_Wave_1_final_evaluation_Synthesis_report.pdf/graph.json",
+            "type": "text",
+            "text": "01 | Final version | This work was carried out in accordance with the requirements of the international quality standard for Market Research, ISO 20252, and with the Ipsos Terms and Conditions which can be found at https://ipsos.uk/terms. Building Digital UK 2023 10 Ipsos | Evaluation of the Local Full Fibre Network wave one projects: Synthesis report 1 Introduction Ipsos UK was commissioned by Building Digital UK (BDUK) in",
+            "graph_evaluation": {
+                "recall": 0.5714285714285714,
+                "precision": 0.05263157894736842,
+                "f_beta": 0.004662004662004661,
+                "beta": 1.0
+            },
+            "bertscore_evaluation": {
+                "precision": [
+                    0.77586829662323
+                ],
+                "recall": [
+                    0.7887840867042542
+                ],
+                "f1": [
+                    0.7822728157043457
+                ],
+                "hashcode": "roberta-large_L17_no-idf_version=0.3.12(hug_trans=4.33.3)"
+            },
+            "rouge_evaluation": {
+                "rougeL": [
+                    0.05668016194331984,
+                    0.2028985507246377,
+                    0.08860759493670886
+                ]
+            }
+        },
+        {
+            "vector_id": "d23ab436-2f7b-4854-8c1c-6ce4b80149ac",
+            "score": 0.649999917,
+            "document_path": "s3://psycore-documents-445644858344/18-049091_01_LFFN_Wave_1_final_evaluation_Synthesis_report.pdf",
+            "graph_path": "s3://nas666graph/18-049091_01_LFFN_Wave_1_final_evaluation_Synthesis_report.pdf/graph.json",
+            "type": "text",
+            "text": " in accordance with the requirements of the international quality standard for Market Research, ISO 20252, and with the Ipsos Terms and Conditions which can be found at https://ipsos.uk/terms. Building Digital UK 2023 34 Ipsos | Evaluation of the Local Full Fibre Network wave one projects: Synthesis report \u25aa Delivery learnings: The projects have generated significant learning about how to deliver broadband network contracts. These include learnings around contractual",
+            "graph_evaluation": {
+                "recall": 0.3,
+                "precision": 0.05263157894736842,
+                "f_beta": 0.004662004662004661,
+                "beta": 1.0
+            },
+            "bertscore_evaluation": {
+                "precision": [
+                    0.7783523797988892
+                ],
+                "recall": [
+                    0.7938127517700195
+                ],
+                "f1": [
+                    0.7860065698623657
+                ],
+                "hashcode": "roberta-large_L17_no-idf_version=0.3.12(hug_trans=4.33.3)"
+            },
+            "rouge_evaluation": {
+                "rougeL": [
+                    0.05668016194331984,
+                    0.2028985507246377,
+                    0.08860759493670886
+                ]
+            }
+        },
+        {
+            "vector_id": "8b12061a-665b-45e7-b7c9-65daed2fe8a5",
+            "score": 0.648083448,
+            "document_path": "s3://psycore-documents-445644858344/18-049091-01_LFFN_Wave_1_final_evaluation_TPI_project.pdf",
+            "graph_path": "s3://nas666graph/18-049091-01_LFFN_Wave_1_final_evaluation_TPI_project.pdf/graph.json",
+            "type": "text",
+            "text": " deployment of the next generation of digital infrastructure, create UK digital leadership and drive productivity and growth. The programme provided funding to local councils and other public bodies to achieve these aims. Local councils could choose from three delivery models to apply and deliver locally (in addition to a national voucher scheme which was outside the scope of this evaluation): \u25aa Public Sector Anchor Tenancy (PSAT): Bringing together local public sector customers, to create enough broadband demand to",
+            "graph_evaluation": {
+                "recall": 0.0,
+                "precision": 0.05263157894736842,
+                "f_beta": 0.006329113924050633,
+                "beta": 1.0
+            },
+            "bertscore_evaluation": {
+                "precision": [
+                    0.799329936504364
+                ],
+                "recall": [
+                    0.8220300674438477
+                ],
+                "f1": [
+                    0.8105210661888123
+                ],
+                "hashcode": "roberta-large_L17_no-idf_version=0.3.12(hug_trans=4.33.3)"
+            },
+            "rouge_evaluation": {
+                "rougeL": [
+                    0.0728744939271255,
+                    0.23376623376623376,
+                    0.1111111111111111
+                ]
+            }
+        },
+        {
+            "vector_id": "d8a1466d-a3ca-45d4-99cc-21c8e3a2d28c",
+            "score": 0.6477139,
+            "document_path": "s3://psycore-documents-445644858344/18-049091-01_LFFN_Wave_1_final_evaluation_TPI_project.pdf",
+            "graph_path": "s3://nas666graph/18-049091-01_LFFN_Wave_1_final_evaluation_TPI_project.pdf/graph.json",
+            "type": "text",
+            "text": " version | This work was carried out in accordance with the requirements of the international quality standard for Market Research, ISO 20252, and with the Ipsos Terms and Conditions which can be found at https://ipsos.uk/terms. Building Digital UK 2023 18-049091-01 | Final version | This work was carried out in accordance with the requirements of the international quality standard for Market Research, ISO 20252, and with the",
+            "graph_evaluation": {
+                "recall": 1.0,
+                "precision": 0.05263157894736842,
+                "f_beta": 0.006329113924050633,
+                "beta": 1.0
+            },
+            "bertscore_evaluation": {
+                "precision": [
+                    0.7686675190925598
+                ],
+                "recall": [
+                    0.7439646124839783
+                ],
+                "f1": [
+                    0.7561143636703491
+                ],
+                "hashcode": "roberta-large_L17_no-idf_version=0.3.12(hug_trans=4.33.3)"
+            },
+            "rouge_evaluation": {
+                "rougeL": [
+                    0.06477732793522267,
+                    0.2318840579710145,
+                    0.10126582278481014
+                ]
+            }
+        }
+    ],
+    "What is FTTC?": [
+        {
+            "vector_id": "f60c6df8-fd0e-48d5-8ab8-bed26e1cd9ee",
+            "score": 0.749931812,
+            "document_path": "s3://psycore-documents-445644858344/18-049091_01_LFFN_Wave_1_final_evaluation_Synthesis_report.pdf",
+            "graph_path": "s3://nas666graph/18-049091_01_LFFN_Wave_1_final_evaluation_Synthesis_report.pdf/graph.json",
+            "type": "text",
+            "text": " depend upon. 92 percent of homes in the UK were connected through part-fibre, part-copper lines that operate at superfast speeds3, such as Fibre to the Cabinet (FTTC). The Superfast Broadband Programme has significantly bolstered the coverage of FTTC networks4. However, these technologies are insufficient to meet the demands outlined above. Several factors were thought to have constrained the roll-out of full fibre networks in the",
+            "graph_evaluation": {
+                "recall": 0.07692307692307693,
+                "precision": 0.0,
+                "f_beta": 0,
+                "beta": 1.0
+            },
+            "bertscore_evaluation": {
+                "precision": [
+                    0.8185967206954956
+                ],
+                "recall": [
+                    0.8510679006576538
+                ],
+                "f1": [
+                    0.8345165252685547
+                ],
+                "hashcode": "roberta-large_L17_no-idf_version=0.3.12(hug_trans=4.33.3)"
+            },
+            "rouge_evaluation": {
+                "rougeL": [
+                    0.078125,
+                    0.29411764705882354,
+                    0.1234567901234568
+                ]
+            }
+        },
+        {
+            "vector_id": "e87d31a3-608d-4570-82ed-723e917aff2c",
+            "score": 0.743676722,
+            "document_path": "s3://psycore-documents-445644858344/18-049091-01_LFFN_Wave_1_final_evaluation_TPI_project.pdf",
+            "graph_path": "s3://nas666graph/18-049091-01_LFFN_Wave_1_final_evaluation_TPI_project.pdf/graph.json",
+            "type": "text",
+            "text": " speeds3, such as Fibre to the Cabinet (FTTC). The Superfast Broadband Programme has significantly bolstered the coverage of FTTC networks4. However, these technologies are insufficient to meet the demands outlined above. Several factors were thought to have constrained the roll-out of full fibre networks in the UK in 2017. These included: \u25aa Other countries having a greater share of the population dwelling in highly dense buildings of multiple occupation, increasing the",
+            "graph_evaluation": {
+                "recall": 0.125,
+                "precision": 0.0,
+                "f_beta": 0,
+                "beta": 1.0
+            },
+            "bertscore_evaluation": {
+                "precision": [
+                    0.8113355040550232
+                ],
+                "recall": [
+                    0.8420944213867188
+                ],
+                "f1": [
+                    0.8264288306236267
+                ],
+                "hashcode": "roberta-large_L17_no-idf_version=0.3.12(hug_trans=4.33.3)"
+            },
+            "rouge_evaluation": {
+                "rougeL": [
+                    0.08203125,
+                    0.29577464788732394,
+                    0.12844036697247707
+                ]
+            }
+        },
+        {
+            "vector_id": "ffcd6e89-32fb-43f0-8986-b269c288e963",
+            "score": 0.733365834,
+            "document_path": "s3://psycore-documents-445644858344/18-049091-01_LFFN_Wave_1_final_evaluation_TPI_project.pdf",
+            "graph_path": "s3://nas666graph/18-049091-01_LFFN_Wave_1_final_evaluation_TPI_project.pdf/graph.json",
+            "type": "text",
+            "text": "FTTP) coverage2. Traditional copper-based circuits are insufficient to support the high-capacity and highly reliable infrastructure which ultrafast broadband and 5G infrastructure depend upon. 92 percent of homes in the UK were connected through part-fibre, part-copper lines that operate at superfast speeds3, such as Fibre to the Cabinet (FTTC). The Superfast Broadband Programme has significantly bolstered the coverage of FTTC networks4",
+            "graph_evaluation": {
+                "recall": 0.0,
+                "precision": 0.0,
+                "f_beta": 0,
+                "beta": 1.0
+            },
+            "bertscore_evaluation": {
+                "precision": [
+                    0.8181255459785461
+                ],
+                "recall": [
+                    0.8516806960105896
+                ],
+                "f1": [
+                    0.8345659971237183
+                ],
+                "hashcode": "roberta-large_L17_no-idf_version=0.3.12(hug_trans=4.33.3)"
+            },
+            "rouge_evaluation": {
+                "rougeL": [
+                    0.0703125,
+                    0.28125,
+                    0.1125
+                ]
+            }
+        },
+        {
+            "vector_id": "b4e47812-fa70-4244-87ba-9d5fcf5db1d8",
+            "score": 0.664541245,
+            "document_path": "s3://psycore-documents-445644858344/18-049091_01_LFFN_Wave_1_final_evaluation_Synthesis_report.pdf",
+            "graph_path": "s3://nas666graph/18-049091_01_LFFN_Wave_1_final_evaluation_Synthesis_report.pdf/graph.json",
+            "type": "text",
+            "text": " variable, whilst removing the FTTP variable from their publicly available data. FTTP and gigabit- capable are similar, in that all FTTP coverage is gigabit-capable, however the gigabit-capable variable also includes other technologies that deliver gigabit-capable speeds but are not FTTP, such as cable. The analysis below presents the FTTP and gigabit-capable variables together as a single time series, but the",
+            "graph_evaluation": {
+                "recall": 0.0,
+                "precision": 0.0,
+                "f_beta": 0,
+                "beta": 1.0
+            },
+            "bertscore_evaluation": {
+                "precision": [
+                    0.8003432154655457
+                ],
+                "recall": [
+                    0.8222335577011108
+                ],
+                "f1": [
+                    0.811140775680542
+                ],
+                "hashcode": "roberta-large_L17_no-idf_version=0.3.12(hug_trans=4.33.3)"
+            },
+            "rouge_evaluation": {
+                "rougeL": [
+                    0.05859375,
+                    0.234375,
+                    0.09375
+                ]
+            }
+        },
+        {
+            "vector_id": "8bd62665-e6a8-4f11-9f01-9f033d366c6a",
+            "score": 0.663644791,
+            "document_path": "s3://psycore-documents-445644858344/Broadband_Delivery_UK_State_aid_consultation_Market_Testing_Pilot_Intervention_Areas_Second_Wave.pdf",
+            "graph_path": "s3://nas666graph/Broadband_Delivery_UK_State_aid_consultation_Market_Testing_Pilot_Intervention_Areas_Second_Wave.pdf/graph.json",
+            "type": "text",
+            "text": " Guidelines distinguish between two types of broadband networks: Basic Broadband Networks, and Next Generation Access (NGA) networks. Basic Broadband Networks are those based on currently widely-deployed technologies such as fixed wired telephony networks (using ADSL/ADSL2+ technologies), non-enhanced cable TV networks (eg DOCSIS 2.0), mobile networks (2G/3G (UMTS)), , and satellite systems.",
+            "graph_evaluation": {
+                "recall": 0.875,
+                "precision": 0.09090909090909091,
+                "f_beta": 0.008547008547008546,
+                "beta": 1.0
+            },
+            "bertscore_evaluation": {
+                "precision": [
+                    0.799968421459198
+                ],
+                "recall": [
+                    0.8215829730033875
+                ],
+                "f1": [
+                    0.8106316328048706
+                ],
+                "hashcode": "roberta-large_L17_no-idf_version=0.3.12(hug_trans=4.33.3)"
+            },
+            "rouge_evaluation": {
+                "rougeL": [
+                    0.03515625,
+                    0.16363636363636364,
+                    0.05787781350482315
+                ]
+            }
+        },
+        {
+            "vector_id": "8e3d31a3-eccc-4b81-85d9-91430d1071f1",
+            "score": 0.661537886,
+            "document_path": "s3://psycore-documents-445644858344/18-049091_01_LFFN_Wave_1_final_evaluation_Synthesis_report.pdf",
+            "graph_path": "s3://nas666graph/18-049091_01_LFFN_Wave_1_final_evaluation_Synthesis_report.pdf/graph.json",
+            "type": "text",
+            "text": " FTTP, such as cable. The analysis below presents the FTTP and gigabit-capable variables together as a single time series, but the change in definition explains the large increase in 2020. The figures below present the evolution of superfast, ultrafast and FTTP / gigabit-capable coverage in the areas within 1km of the LFFN funded network build in the LFFN projects. These show that: \u25aa There",
+            "graph_evaluation": {
+                "recall": 0.0,
+                "precision": 0.0,
+                "f_beta": 0,
+                "beta": 1.0
+            },
+            "bertscore_evaluation": {
+                "precision": [
+                    0.7978838682174683
+                ],
+                "recall": [
+                    0.824715793132782
+                ],
+                "f1": [
+                    0.8110780119895935
+                ],
+                "hashcode": "roberta-large_L17_no-idf_version=0.3.12(hug_trans=4.33.3)"
+            },
+            "rouge_evaluation": {
+                "rougeL": [
+                    0.0625,
+                    0.25,
+                    0.1
+                ]
+            }
+        },
+        {
+            "vector_id": "d5930c7e-d38a-41b3-93e1-68407983e354",
+            "score": 0.653789461,
+            "document_path": "s3://psycore-documents-445644858344/18-049091_01_LFFN_Wave_1_final_evaluation_Synthesis_report.pdf",
+            "graph_path": "s3://nas666graph/18-049091_01_LFFN_Wave_1_final_evaluation_Synthesis_report.pdf/graph.json",
+            "type": "text",
+            "text": " medium term, adoption of FTTP may raise productivity in other ways. For example, if firms have access to higher quality labour inputs, or if they can develop more efficient business models. \u2212 Market entry: By providing easier access to FTTP connections, new firms which require reliable and fast internet connections, such as digital businesses, may be able to start up within the local areas. \u2212 Business relocations: The availability of a full fibre network is also",
+            "graph_evaluation": {
+                "recall": 0.0,
+                "precision": 0.0,
+                "f_beta": 0,
+                "beta": 1.0
+            },
+            "bertscore_evaluation": {
+                "precision": [
+                    0.8116636276245117
+                ],
+                "recall": [
+                    0.8385698795318604
+                ],
+                "f1": [
+                    0.8248973488807678
+                ],
+                "hashcode": "roberta-large_L17_no-idf_version=0.3.12(hug_trans=4.33.3)"
+            },
+            "rouge_evaluation": {
+                "rougeL": [
+                    0.0625,
+                    0.21621621621621623,
+                    0.09696969696969697
+                ]
+            }
+        },
+        {
+            "vector_id": "c09daf6a-df3e-41e1-8589-ae2124a1cc73",
+            "score": 0.653297305,
+            "document_path": "s3://psycore-documents-445644858344/22-036458-01_GIS_early_process_evaluation_Accessible_CLIENT_USE.pdf",
+            "graph_path": "s3://nas666graph/22-036458-01_GIS_early_process_evaluation_Accessible_CLIENT_USE.pdf/graph.json",
+            "type": "text",
+            "text": " fibre in the ground networks but state they can offer gigabit capable networks reported that their OMR submissions were rejected on technical grounds \u2013 not being capable of providing the required speeds. The suppliers did acknowledge that the technology capable of providing gigabit capable networks is relatively new for example fixed wireless technologies capable of providing reliable gigabit speeds, but felt that rejecting their plans would lead to overbuild and a lack of value from public finances. They also reported that they",
+            "graph_evaluation": {
+                "recall": 0.1,
+                "precision": 0.0,
+                "f_beta": 0,
+                "beta": 1.0
+            },
+            "bertscore_evaluation": {
+                "precision": [
+                    0.7928847074508667
+                ],
+                "recall": [
+                    0.8293113708496094
+                ],
+                "f1": [
+                    0.8106890320777893
+                ],
+                "hashcode": "roberta-large_L17_no-idf_version=0.3.12(hug_trans=4.33.3)"
+            },
+            "rouge_evaluation": {
+                "rougeL": [
+                    0.06640625,
+                    0.20987654320987653,
+                    0.10089020771513353
+                ]
+            }
+        },
+        {
+            "vector_id": "6d333dcb-3a84-4c55-979b-017af8ded4d8",
+            "score": 0.640912354,
+            "document_path": "s3://psycore-documents-445644858344/18-049091_01_LFFN_Wave_1_final_evaluation_Synthesis_report.pdf",
+            "graph_path": "s3://nas666graph/18-049091_01_LFFN_Wave_1_final_evaluation_Synthesis_report.pdf/graph.json",
+            "type": "text",
+            "text": "capable infrastructure in place, with only two percent of the UK having gigabit-capable coverage, and the market was dominated by technologies which could not provide the gigabit-capable speeds which UK businesses and households would require in the future. Therefore, there was a case for the UK government to invest in fibre infrastructure. However, the context in which the LFFN programme operated in has altered significantly since the programme was launched. There has",
+            "graph_evaluation": {
+                "recall": 0.375,
+                "precision": 0.0,
+                "f_beta": 0,
+                "beta": 1.0
+            },
+            "bertscore_evaluation": {
+                "precision": [
+                    0.8006376028060913
+                ],
+                "recall": [
+                    0.8307613730430603
+                ],
+                "f1": [
+                    0.8154214024543762
+                ],
+                "hashcode": "roberta-large_L17_no-idf_version=0.3.12(hug_trans=4.33.3)"
+            },
+            "rouge_evaluation": {
+                "rougeL": [
+                    0.07421875,
+                    0.25675675675675674,
+                    0.11515151515151514
+                ]
+            }
+        },
+        {
+            "vector_id": "1fff3d7e-c934-4354-821c-fee263f8b512",
+            "score": 0.637190163,
+            "document_path": "s3://psycore-documents-445644858344/18-049091-01_LFFN_Wave_1_final_evaluation_TPI_project.pdf",
+            "graph_path": "s3://nas666graph/18-049091-01_LFFN_Wave_1_final_evaluation_TPI_project.pdf/graph.json",
+            "type": "text",
+            "text": "TP variable from their publicly available data. FTTP and gigabit- capable are similar, in that all FTTP coverage is gigabit-capable, however the gigabit-capable variable also includes other technologies that deliver gigabit-capable speeds but are not FTTP, such as cable. The analysis below presents the FTTP and gigabit capable variables together as a single time series, but the change in definition explains the large increase in",
+            "graph_evaluation": {
+                "recall": 0.0,
+                "precision": 0.0,
+                "f_beta": 0,
+                "beta": 1.0
+            },
+            "bertscore_evaluation": {
+                "precision": [
+                    0.8002898097038269
+                ],
+                "recall": [
+                    0.8211445808410645
+                ],
+                "f1": [
+                    0.8105830550193787
+                ],
+                "hashcode": "roberta-large_L17_no-idf_version=0.3.12(hug_trans=4.33.3)"
+            },
+            "rouge_evaluation": {
+                "rougeL": [
+                    0.0546875,
+                    0.20588235294117646,
+                    0.08641975308641976
+                ]
+            }
+        }
+    ]
+}

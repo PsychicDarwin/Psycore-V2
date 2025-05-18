@@ -155,6 +155,15 @@ class PsycoreTestRunner:
             
         """
         return [self.evaluate_prompt(prompt) for prompt in prompts]
+    
+    def get_config(self) -> Dict[str, Any]:
+        """
+        Get the current configuration.
+        
+        Returns:
+            The current configuration
+        """
+        return self.config
 
 
 # Example usage

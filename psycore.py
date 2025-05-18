@@ -150,16 +150,17 @@ class Psycore:
         logger.info(rag_results)
         logger.info("Evaluating RAG results")
 
-        iterative_stage = IterativeStage(self.s3_quick_fetch, self.graphModel, self.iterator_pass_threshold)
+        iterative_stage = IterativeStage(self.s3_quick_fetch, self.graphModel, self.iterator_pass_threshold,rag_results)
         stage_results = iterative_stage.decision_maker(rag_results,rag_chat_results)
         retry_count = 0
         while len(stage_results[1]) > 0 and retry_count < self.loop_retries:
             missing_relations = stage_results[1]
             string_relations = [ str(relation) for relation in missing_relations]
-            rag_chat_results = self.rag_chat.chat(base_prompt + ", bear in mind: "  + string_relations, rag_results)
+            rag_chat_results = self.rag_chat.chat(base_prompt + ", bear in mind: " + ", ".join(string_relations), rag_results)
             stage_results = iterative_stage.decision_maker(rag_results,rag_chat_results)
             retry_count += 1
-        (valid_relations, missing_relations) = stage_results
+        print(stage_results)
+        (threshold, valid_relations, missing_relations) = stage_results
         evaluators = [
             GraphEvaluator(iterative_stage, self.graphModel),
             BERTEvaluator(iterative_stage),

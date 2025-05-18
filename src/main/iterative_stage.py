@@ -3,9 +3,10 @@ from src.data.s3_quick_fetch import S3QuickFetch
 from src.system_manager.LoggerController import LoggerController
 import json
 class IterativeStage:
-    def __init__(self, quick_fetch: S3QuickFetch, graphModel: GraphCreator, threshold: float = 0.5, rag_results = None):
+    def __init__(self, quick_fetch: S3QuickFetch, graphModel: GraphCreator, threshold: float = 0.5, rag_results = []):
         self.s3_quick_fetch = quick_fetch
         self.graphModel = graphModel
+        self.threshold = threshold
         self.logger = LoggerController.get_logger()
         
         self.doc_graphs = {}
@@ -17,13 +18,13 @@ class IterativeStage:
                 self.doc_graphs[rag_results[i]["document_path"]] = json.loads(self.doc_graphs[rag_results[i]["document_path"]])
                 self.doc_graphs[rag_results[i]["document_path"]] = dict_data_to_relations(self.doc_graphs[rag_results[i]["document_path"]])
             
-        mega_doc_graph = []
+        self.mega_doc_graph = []
         for key, value in self.doc_graphs.items():
             self.logger.info(f"Processing graph document {key}")
             for i in range(len(value)):
-                if value[i] not in mega_doc_graph[key]:
-                    mega_doc_graph.extend(value)
-        mega_doc_graph = remove_dup_relations(mega_doc_graph)
+                if value[i] not in self.mega_doc_graph:
+                    self.mega_doc_graph.extend(value)
+        self.mega_doc_graph = remove_dup_relations(self.mega_doc_graph)
         self.chunk_summaries = {}
         for i in range(len(rag_results)):
             self.chunk_summaries[rag_results[i]["vector_id"]] = {

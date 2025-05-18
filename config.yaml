@@ -4,7 +4,7 @@ model:
 
 graph_verification:
   enabled: true              # Boolean to enable graph verification
-  method: "bert"              # Options: "llm" (requires model) or "bert"
+  method: "llm"              # Options: "llm" (requires model) or "bert"
   llm_model: "oai_4o_latest"         # Only used if method is "llm"
   # A light weight model that can handle JSON is required for processing graph chunks
   # 3.8 Billion 
@@ -16,7 +16,7 @@ prompt_mode:
 
 
 text_summariser:
-  model: "llava_13b"     # String for the LLM model to use for text summarization
+  model: "oai_4o_latest"     # String for the LLM model to use for text summarization
   # This is for converting images to text so needs to be a multimodal model but also light enough to have fast processing.
 
 

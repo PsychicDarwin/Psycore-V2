@@ -4,8 +4,8 @@ from rouge_score import rouge_scorer
 from src.data.s3_quick_fetch import S3QuickFetch
 
 class RougeEvaluator(Evaluator):
-    def __init__(self, iterativeStage):
-        super().__init__(iterativeStage)
+    def __init__(self, iterative_stage):
+        super().__init__(iterative_stage)
         self.scorer = rouge_scorer.RougeScorer(['rougeL'], use_stemmer=True)
         pass
 

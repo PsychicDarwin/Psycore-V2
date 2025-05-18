@@ -2,8 +2,8 @@ from .evaluator import Evaluator
 from evaluate import load
 
 class BERTEvaluator(Evaluator):
-    def __init__(self, iterativeStage):
-        super().__init__(iterativeStage)
+    def __init__(self, iterative_stage):
+        super().__init__(iterative_stage)
         self.bertscore = load("bertscore", module_type="metric")
         pass
 

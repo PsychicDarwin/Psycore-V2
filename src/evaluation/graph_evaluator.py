@@ -4,8 +4,9 @@ from src.main.iterative_stage import IterativeStage
 from src.data.s3_quick_fetch import S3QuickFetch
 import json
 class GraphEvaluator(Evaluator):
-    def __init__(self, iterative_stage: IterativeStage, beta: float = 1.0):
-        self.iterative_stage = iterative_stage
+    def __init__(self, iterative_stage: IterativeStage, graph_creator: GraphCreator = None,  beta: float = 1.0):
+        super().__init__(iterative_stage)
+        self.graph_creator = graph_creator if graph_creator else GraphCreator()
         self.beta = beta
 
     def convert_output_to_graph(self, output: str):
@@ -80,7 +81,7 @@ class GraphEvaluator(Evaluator):
         # Get the graph file from s3 bucket as text
         graph_data = self.iterative_stage.doc_graphs[rag_data["document_path"]]
         summary_text = self.iterative_stage.chunk_summaries[rag_data["vector_id"]]["summary"]
-        summary_graph = self.iterative_stage.doc_graphs[rag_data["vector_id"]]["graph"]
+        summary_graph = self.iterative_stage.chunk_summaries[rag_data["vector_id"]]["graph"]
         llm_graph = self.graph_creator.create_graph_relations(result)
         
         recall = self.compare_graph_precision(graph_data, summary_graph)

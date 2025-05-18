@@ -204,7 +204,6 @@ class S3Handler:
 
     def temp_download_file(self, s3_link: str, file_extension: Optional[str] = None) -> str:
         bucket, key = self.parse_s3_uri(s3_link)
-        print(f"Attempting to fetch from bucket: {bucket}, key: {key}")
         if file_extension is None and '.' in key:
             _, file_extension = os.path.splitext(key)
         temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=file_extension)

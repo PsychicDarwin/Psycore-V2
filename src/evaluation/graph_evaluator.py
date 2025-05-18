@@ -4,21 +4,10 @@ from src.main.iterative_stage import IterativeStage
 from src.data.s3_quick_fetch import S3QuickFetch
 import json
 class GraphEvaluator(Evaluator):
-    def __init__(self, iterativeStage: IterativeStage, beta=1.0):
-        # Call parent class __init__ to properly initialize iterativeStage
-        super().__init__(iterativeStage)
-        # Check if beta is an LLM_KG object and handle it correctly
-        from src.kg.llm import LLM_KG
-        if isinstance(beta, LLM_KG):
-            # If beta is an LLM_KG object, set a default beta value
-            self.beta = 1.0
-        else:
-            # Otherwise, try to convert it to a float
-            try:
-                self.beta = float(beta)
-            except (ValueError, TypeError):
-                # If conversion fails, use a default value
-                self.beta = 1.0
+    def __init__(self, iterative_stage: IterativeStage, graph_creator: GraphCreator = None,  beta: float = 1.0):
+        super().__init__(iterative_stage)
+        self.graph_creator = graph_creator if graph_creator else GraphCreator()
+        self.beta = beta
 
     def convert_output_to_graph(self, output: str):
         """
@@ -27,7 +16,7 @@ class GraphEvaluator(Evaluator):
         :param output: The output to convert.
         :return: The graph representation of the output.
         """
-        return self.iterativeStage.graphModel.create_graph_json(output)
+        return self.graph_creator.create_graph_json(output)
     
     def compare_graph_precision(self, retrieved_graph: list[GraphRelation], llm_graph: list[GraphRelation]) -> float:
         """
@@ -58,15 +47,6 @@ class GraphEvaluator(Evaluator):
         return len(true_positives) / len(truth_set)
     
     def f_beta_score(self, precision: float, recall: float, beta: float = 1.0) -> float:
-        # Ensure all inputs are floats
-        try:
-            precision = float(precision)
-            recall = float(recall)
-            beta = float(beta)
-        except (ValueError, TypeError):
-            # If conversion fails, return 0
-            return 0.0
-            
         if (precision + recall) == 0:
             return 0
         return (1 + beta ** 2) * (precision * recall) / (beta ** 2 * precision + recall)
@@ -79,12 +59,6 @@ class GraphEvaluator(Evaluator):
         :param beta: The beta value for the F-beta score.
         :return: The F-beta score between the two graphs.
         """
-        # Convert beta to float to avoid type issues
-        try:
-            beta = float(beta)
-        except (ValueError, TypeError):
-            beta = 1.0
-            
         precision = self.compare_graph_precision(source_graph, result_graph)
         recall = self.compare_graph_recall(source_graph, result_graph)
         if (precision + recall) == 0:
@@ -105,21 +79,13 @@ class GraphEvaluator(Evaluator):
     def evaluate_rag_result(self, result: str, rag_data: dict):
         graph_s3_path = rag_data["graph_path"]
         # Get the graph file from s3 bucket as text
-        graph_data = self.iterativeStage.doc_graphs[rag_data["document_path"]]
-        summary_text = self.iterativeStage.chunk_summaries[rag_data["vector_id"]]["summary"]
-        print("\n\n\n\n\n\n\n\n")
-        print(self.iterativeStage.doc_graphs.keys())
-        # The vector_id is not a key in doc_graphs - the document_path is the key
-        # Get the document path from rag_data
-        doc_path = rag_data["document_path"]
-        # Access graph using document_path instead of vector_id
-        summary_graph = self.iterativeStage.doc_graphs[doc_path]
-        # Use the graph creator from the iterative stage instead of self.graph_creator
-        llm_graph = self.iterativeStage.graphModel.create_graph_relations(result)
+        graph_data = self.iterative_stage.doc_graphs[rag_data["document_path"]]
+        summary_text = self.iterative_stage.chunk_summaries[rag_data["vector_id"]]["summary"]
+        summary_graph = self.iterative_stage.chunk_summaries[rag_data["vector_id"]]["graph"]
+        llm_graph = self.graph_creator.create_graph_relations(result)
         
-        # Get precision and recall correctly
+        recall = self.compare_graph_precision(graph_data, summary_graph)
         precision = self.compare_graph_precision(graph_data, llm_graph)
-        recall = self.compare_graph_recall(graph_data, summary_graph)
         f_beta = self.compare_graph_f_beta(graph_data, llm_graph, self.beta)
 
         graph_evaluation = {

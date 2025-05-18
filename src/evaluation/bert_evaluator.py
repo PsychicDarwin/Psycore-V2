@@ -2,8 +2,8 @@ from .evaluator import Evaluator
 from evaluate import load
 
 class BERTEvaluator(Evaluator):
-    def __init__(self, iterativeStage):
-        super().__init__(iterativeStage)
+    def __init__(self, iterative_stage):
+        super().__init__(iterative_stage)
         self.bertscore = load("bertscore", module_type="metric")
         pass
 
@@ -31,8 +31,7 @@ class BERTEvaluator(Evaluator):
     
 
     def evaluate_rag_result(self, result: str, rag_result: dict):
-        # Using iterativeStage (no underscore) to match the parent class initialization
-        summary = self.iterativeStage.chunk_summaries[rag_result["vector_id"]]["summary"]
+        summary = self.iterative_stage.chunk_summaries[rag_result["vector_id"]]["summary"]
         bertscore_result = {}
         if summary != "":
             bertscore_result = self.evaluate(summary, result)

@@ -5,29 +5,18 @@ class S3QuickFetch:
         self.s3_handler = s3_handler
 
     def get_image(self, image_s3: str) -> Attachment:
-        try:
-            local_path = self.s3_handler.temp_download_file(image_s3)
-            attachment = Attachment(attachment_type=AttachmentTypes.IMAGE, attachment_data=local_path,needs_extraction=True)
-            attachment.extract()
-            self.s3_handler.cleanup_temp_file(local_path)
-            return attachment
-        except Exception as e:
-            # If image download fails, return a placeholder attachment
-            print(f"Warning: Could not fetch image from {image_s3}. Error: {str(e)}")
-            # Return a minimal attachment that won't cause errors
-            return Attachment(attachment_type=AttachmentTypes.TEXT, attachment_data="[Image not available]", needs_extraction=False)
+        local_path = self.s3_handler.temp_download_file(image_s3)
+        attachment = Attachment(attachment_type=AttachmentTypes.IMAGE, attachment_data=local_path,needs_extraction=True)
+        attachment.extract()
+        self.s3_handler.cleanup_temp_file(local_path)
+        return attachment
 
 
     def fetch_text(self, text_s3: str) -> str:
-        try:
-            file = self.s3_handler.temp_download_file(text_s3)
-            file_data = open(file, "r").read()
-            self.s3_handler.cleanup_temp_file(file)
-            return file_data
-        except Exception as e:
-            # If file download fails, return empty string or placeholder
-            print(f"ERROR: Failed to access graph file at {text_s3}. Error: {str(e)}")
-            return ""
+        file = self.s3_handler.temp_download_file(text_s3)
+        file_data = open(file, "r").read()
+        self.s3_handler.cleanup_temp_file(file)
+        return file_data
     
     def pull_summary(self, rag_data: dict):
         if rag_data["type"] == "text":

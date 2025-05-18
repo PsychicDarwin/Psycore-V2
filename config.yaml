@@ -1,39 +1,37 @@
 model:
-  primary: "oai_4o_latest"           # String for the main LLM model to use
-  allow_image_input: true    # Boolean to enable image inputs into the model
+  primary: "oai_4o_latest" # String for the main LLM model to use
+  allow_image_input: true # Boolean to enable image inputs into the model
 
 graph_verification:
-  enabled: true              # Boolean to enable graph verification
-  method: "llm"              # Options: "llm" (requires model) or "bert"
-  llm_model: "oai_4o_latest"         # Only used if method is "llm"
+  enabled: true # Boolean to enable graph verification
+  method: "llm" # Options: "llm" (requires model) or "bert"
+  llm_model: "oai_4o_latest" # Only used if method is "llm"
   # A light weight model that can handle JSON is required for processing graph chunks
-  # 3.8 Billion 
+  # 3.8 Billion
 
 prompt_mode:
-  mode: "elaborated"         # Options: "original", "elaborated", "q_learning", "q_training"
-  elaborator_model: "oai_4o_latest"  # String for the LLM model to use for prompt elaboration
-# 
-
+  mode: "elaborated" # Options: "original", "elaborated", "q_learning", "q_training"
+  elaborator_model: "oai_4o_latest" # String for the LLM model to use for prompt elaboration
+#
 
 text_summariser:
-  model: "oai_4o_latest"     # String for the LLM model to use for text summarization
+  model: "oai_4o_latest" # String for the LLM model to use for text summarization
   # This is for converting images to text so needs to be a multimodal model but also light enough to have fast processing.
 
-
 embedding:
-  method: "aws"        # Options: "langchain", "clip", or "aws"
-  model: "amazon.titan-embed-image-v1"     # Required if method is "langchain" or "aws"
+  method: "aws" # Options: "langchain", "clip", or "aws"
+  model: "amazon.titan-embed-image-v1" # Required if method is "langchain" or "aws"
 
 logger:
-  level: "DEBUG"              # Options: "DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"
+  level: "DEBUG" # Options: "DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"
 
 document_range:
-  enabled: false              # Boolean to enable document range processing
-  document_ids: []           # Array of integer indices for specific documents to process
+  enabled: false # Boolean to enable document range processing
+  document_ids: [] # Array of integer indices for specific documents to process
 
 rag:
-  text_similarity_threshold: 0.55  # Threshold for text similarity in RAG (0.0 to 1.0)
+  text_similarity_threshold: 0.55 # Threshold for text similarity in RAG (0.0 to 1.0)
 
 iteration:
-  loop_retries: 5              # Maximum number of retries for iterative processing
-  pass_threshold: 0.5          # Threshold for passing iterations (0.0 to 1.0)
+  loop_retries: 5 # Maximum number of retries for iterative processing
+  pass_threshold: 0.5 # Threshold for passing iterations (0.0 to 1.0)

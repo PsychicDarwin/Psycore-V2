@@ -26,7 +26,7 @@ class S3QuickFetch:
             return file_data
         except Exception as e:
             # If file download fails, return empty string or placeholder
-            print(f"Warning: Could not fetch text from {text_s3}. Error: {str(e)}")
+            print(f"ERROR: Failed to access graph file at {text_s3}. Error: {str(e)}")
             return ""
     
     def pull_summary(self, rag_data: dict):

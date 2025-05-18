@@ -3,8 +3,8 @@ from src.data.s3_quick_fetch import S3QuickFetch
 from src.main import IterativeStage
 class Evaluator(ABC):
     @abstractmethod
-    def __init__(self,iterativeStage: IterativeStage):
-        self.iterativeStage = iterativeStage
+    def __init__(self,iterative_stage: IterativeStage):
+        self.iterative_stage = iterative_stage
         pass
 
     @abstractmethod

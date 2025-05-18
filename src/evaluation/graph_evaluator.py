@@ -4,11 +4,12 @@ from src.main.iterative_stage import IterativeStage
 from src.data.s3_quick_fetch import S3QuickFetch
 import json
 class GraphEvaluator(Evaluator):
+
     def __init__(self, iterative_stage: IterativeStage, graph_creator: GraphCreator = None,  beta: float = 1.0):
         super().__init__(iterative_stage)
         self.graph_creator = graph_creator if graph_creator else GraphCreator()
         self.beta = beta
-
+        
     def convert_output_to_graph(self, output: str):
         """
         Converts the output into a graph representation using the GraphCreator.

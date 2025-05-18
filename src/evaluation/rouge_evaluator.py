@@ -21,7 +21,8 @@ class RougeEvaluator(Evaluator):
         return results
 
     def evaluate_rag_result(self, result: str, rag_result: dict):
-        summary = self.iterative_stage.chunk_summaries[rag_result["vector_id"]]["summary"]
+        # Using iterativeStage (no underscore) to match the parent class initialization
+        summary = self.iterativeStage.chunk_summaries[rag_result["vector_id"]]["summary"]
         rouge_result = {}
         if summary != "":
             rouge_result = self.evaluate(summary, result)

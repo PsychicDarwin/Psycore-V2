@@ -162,7 +162,7 @@ class Psycore:
         print(stage_results)
         (threshold, valid_relations, missing_relations) = stage_results
         evaluators = [
-            GraphEvaluator(iterative_stage, self.graphModel),
+            GraphEvaluator(iterative_stage),  # Use default beta value
             BERTEvaluator(iterative_stage),
             RougeEvaluator(iterative_stage)
         ]

@@ -31,7 +31,8 @@ class BERTEvaluator(Evaluator):
     
 
     def evaluate_rag_result(self, result: str, rag_result: dict):
-        summary = self.iterative_stage.chunk_summaries[rag_result["vector_id"]]["summary"]
+        # Using iterativeStage (no underscore) to match the parent class initialization
+        summary = self.iterativeStage.chunk_summaries[rag_result["vector_id"]]["summary"]
         bertscore_result = {}
         if summary != "":
             bertscore_result = self.evaluate(summary, result)

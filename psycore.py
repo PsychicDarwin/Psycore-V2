@@ -143,7 +143,7 @@ class Psycore:
         elaborator = RAGElaborator(self.elaborator_model)
         elaborated_prompt = elaborator.elaborate(base_prompt)
         chosen_prompt, elaborated = prompt_stage.decide_between_prompts(base_prompt, elaborated_prompt)
-        rag_stage = RAGStage(self.vdb, 10)
+        rag_stage = RAGStage(self.vdb, 5)
         rag_results = rag_stage.get_rag_prompt_filtered(chosen_prompt, self.rag_text_similarity_threshold)
         rag_chat_results = self.rag_chat.chat(base_prompt, rag_results)
         
@@ -172,7 +172,15 @@ class Psycore:
                 logger.info(f"Evaluating with {evaluator.__class__.__name__}")
                 rag_results[i] = evaluator.evaluate_rag_result(rag_chat_results.content, rag_results[i])
         logger.info("Finished evaluating RAG results")
-        return rag_results
+        results = {
+            "response": rag_chat_results.content,
+            "elaborated_prompt": elaborated_prompt,
+            "base_prompt": base_prompt,
+            "retry_count": retry_count,
+            "chosen_prompt": chosen_prompt,
+            "rag_results": rag_results,
+        }
+        return results
 
 
     def __init__(self, config_path=None):

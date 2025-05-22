@@ -6,6 +6,23 @@ from src.main import (
     RAGStage, RAGChatStage, IterativeStage
 )
 
+st.markdown("""
+    <style>
+    /* Style normal links */
+    a {
+        color: white !important;
+        text-decoration: none;
+    }
+    
+    /* Style Streamlit markdown-generated links */
+    .markdown-text-container a {
+        color: white !important;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+
+
 def parse_arguments():
     """Parses command line arguments."""
     parser = argparse.ArgumentParser(description="psycore CLI")
@@ -32,8 +49,11 @@ def process_prompt(base_prompt, psycore_instance, rag_elaborator):
     rag_chat_results = psycore_instance.rag_chat.chat(base_prompt, rag_results)
     rag_elaborator.queue_history(rag_chat_results.content)
     
-    #sources = f"\nSource:\n{[(result['document_path'], result['vector_id'], result['score']) for result in rag_results]}"
-    return rag_chat_results.content
+    scores = "\n\nSources: \n"
+    for result in rag_results:
+        scores = scores + "\n" + "Source: " + str(s3_uri_to_link(result['document_path'])) + "\n\nScore = " + str(result["score"]) + "\n"
+    
+    return rag_chat_results.content + "\n" + scores
 
 def fetch_response(prompt, psycore_instance, rag_elaborator):
     """Fetches response by processing user prompt."""
@@ -43,6 +63,13 @@ def write_response(role, response, avatar):
     """Writes response to chat interface."""
     with st.chat_message(role, avatar=avatar):
         st.write(response)
+
+def s3_uri_to_link(s3_uri):
+    parts = s3_uri.replace("s3://", "").split("/", 1)
+    bucket_name = parts[0]
+    object_key = parts[1]
+    return f"https://{bucket_name}.s3.amazonaws.com/{object_key}"
+
 
 def initialize_session(psycore_instance, args):
     """Initializes session with preprocessing and chat setup."""

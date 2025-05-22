@@ -1,0 +1,25 @@
+document_range:
+  document_ids: []
+  enabled: false
+embedding:
+  method: aws
+  model: amazon.titan-embed-image-v1
+graph_verification:
+  enabled: true
+  llm_model: oai_4o_latest
+  method: llm
+iteration:
+  loop_retries: 5
+  pass_threshold: 0.1
+logger:
+  level: DEBUG
+model:
+  allow_image_input: true
+  primary: grok_2_vision
+prompt_mode:
+  elaborator_model: oai_4o_latest
+  mode: elaborated
+rag:
+  text_similarity_threshold: 0.55
+text_summariser:
+  model: oai_4o_latest

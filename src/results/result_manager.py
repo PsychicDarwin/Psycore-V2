@@ -49,6 +49,17 @@ class ResultManager:
         config_str = json.dumps(config, sort_keys=True)
         return hashlib.md5(config_str.encode()).hexdigest()[:10]
     
+    def check_hash_exists(self, config: Dict[str, Any]) -> tuple[bool, str]:
+        """
+        Check if a result already exists for the given config.
+        
+        :param config: The configuration dictionary to check
+        :return: Tuple of (exists: bool, hash: str)
+        """
+        config_hash = self._hash_config(config)
+        result_path = os.path.join(self.results_dir, f"{config_hash}.json")
+        return os.path.exists(result_path), config_hash
+    
     def _flatten_config(self, config: Dict[str, Any]) -> Dict[str, str]:
         """
         Flattens a nested configuration dictionary into a single-level dictionary.

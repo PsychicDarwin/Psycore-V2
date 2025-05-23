@@ -1,0 +1,872 @@
+{
+    "How did BDUK classify premises as White, Grey, Black, or Under Review in the Norfolk Public Review, and what implications did these classifications have for eligibility for government subsidy?": {
+        "response": "The provided text explains the *results* of the Open Market Review (OMR) classifications and their implications, but it does *not* detail the specific criteria BDUK used to classify premises as White, Grey, Black, or Under Review.  It mentions the OMR indicated planned commercial coverage and that the classifications significantly impact where the Gigabit Infrastructure Subsidy (GIS) intervention will provide subsidized networks.  Specifically, BDUK aims to minimize subsidizing premises that would have received commercial coverage.\n\nThe text highlights that changes in the proportion of White premises affect where subsidized networks are deployed, as BDUK aims to avoid subsidizing areas where commercial rollout is expected.  It also mentions a good match between OMR results and BDUK's internal model of uncommercial premises assessment.  However, the precise definitions of the color classifications and the methodology used to assign them are not present in this excerpt.  Therefore, I cannot provide a complete answer about the classification criteria.",
+        "elaborated_prompt": "How did Building Digital UK (BDUK) classify premises as White, Grey, Black, or Under Review in the Norfolk Public Review 2023, and what were the implications of these classifications for eligibility for government broadband subsidy in the United Kingdom?",
+        "base_prompt": "How did BDUK classify premises as White, Grey, Black, or Under Review in the Norfolk Public Review, and what implications did these classifications have for eligibility for government subsidy?",
+        "retry_count": 0,
+        "chosen_prompt": "How did BDUK classify premises as White, Grey, Black, or Under Review in the Norfolk Public Review, and what implications did these classifications have for eligibility for government subsidy?",
+        "rag_results": [
+            {
+                "vector_id": "e46a40d4-a324-4eeb-8ed4-44dd3dfff221",
+                "score": 0.712065876,
+                "document_path": "s3://psycore-documents-445644858344/Norfolk_Public_Review_PR_RFI_Launch__Template_V2_.pdf",
+                "graph_path": "s3://nas666graph/Norfolk_Public_Review_PR_RFI_Launch__Template_V2_.pdf/graph.json",
+                "type": "text",
+                "text": " Public Review will therefore help us gain further confidence that the proposed interventions are in areas that are eligible for subsidy, i.e., areas which are not commercially viable and require government intervention to address market failure. Current context - Norfolk BDUK initiated an Open Market Review (OMR) for Norfolk from Thursday 25th March 2021 - Thursday 22nd April 2021. You can view the OMR publication here. 5 The OMR indicated that planned commercial coverage for",
+                "graph_evaluation": {
+                    "recall": 0.18181818181818182,
+                    "precision": 0.3333333333333333,
+                    "f_beta": 0.0380952380952381,
+                    "beta": 1.0
+                },
+                "bertscore_evaluation": {
+                    "precision": [
+                        0.8228645324707031
+                    ],
+                    "recall": [
+                        0.8377065062522888
+                    ],
+                    "f1": [
+                        0.8302191495895386
+                    ],
+                    "hashcode": "roberta-large_L17_no-idf_version=0.3.12(hug_trans=4.33.3)"
+                },
+                "rouge_evaluation": {
+                    "rougeL": [
+                        0.0784313725490196,
+                        0.16216216216216217,
+                        0.10572687224669604
+                    ]
+                }
+            },
+            {
+                "vector_id": "939e9b42-3e98-460b-b47b-1e049f358ef7",
+                "score": 0.695847631,
+                "document_path": "s3://psycore-documents-445644858344/Norfolk_Public_Review_PR_RFI_Launch__Template_V2_.pdf",
+                "graph_path": "s3://nas666graph/Norfolk_Public_Review_PR_RFI_Launch__Template_V2_.pdf/graph.json",
+                "type": "text",
+                "text": "Public Review Dates: 19th August 2021 - 20th September 2021 PROJECT GIGABIT Norfolk REQUEST FOR INFORMATION 2 Index Introduction 3 Why BDUK is seeking your support 4 Purpose of this Public Review Request For Information 4 The Role of Local Bodies 5 Key Eligibility Requirements for Subsidy 6 Procurement and Commercial Approach 8 Forthcoming procurement - Norfolk 8 Participating / responding to this Public Review 8 Responses from residents, businesses",
+                "graph_evaluation": {
+                    "recall": 0.15789473684210525,
+                    "precision": 0.3333333333333333,
+                    "f_beta": 0.0380952380952381,
+                    "beta": 1.0
+                },
+                "bertscore_evaluation": {
+                    "precision": [
+                        0.8033208847045898
+                    ],
+                    "recall": [
+                        0.7862189412117004
+                    ],
+                    "f1": [
+                        0.7946779131889343
+                    ],
+                    "hashcode": "roberta-large_L17_no-idf_version=0.3.12(hug_trans=4.33.3)"
+                },
+                "rouge_evaluation": {
+                    "rougeL": [
+                        0.06535947712418301,
+                        0.14925373134328357,
+                        0.09090909090909091
+                    ]
+                }
+            },
+            {
+                "vector_id": "753924e0-537f-4767-807f-30754725dbc8",
+                "score": 0.690520287,
+                "document_path": "s3://psycore-documents-445644858344/22-036458-01_GIS_early_process_evaluation_Accessible_CLIENT_USE.pdf",
+                "graph_path": "s3://nas666graph/22-036458-01_GIS_early_process_evaluation_Accessible_CLIENT_USE.pdf/graph.json",
+                "type": "text",
+                "text": " mapped to \u2018white\u2019 and \u2018under review\u2019 premises in the OMR. This shows that in general, there is a good match between the OMR results and the BDUK internal model of uncommercial premises assessment of England. The BDUK internal model of uncommercial premises estimates that nearly 84% of premises in England are commercial, whereas the OMR estimates nearly 70% are \u2018grey\u2019 or \u2018black\ufffd",
+                "graph_evaluation": {
+                    "recall": 0.15384615384615385,
+                    "precision": 0.0625,
+                    "f_beta": 0.006472491909385114,
+                    "beta": 1.0
+                },
+                "bertscore_evaluation": {
+                    "precision": [
+                        0.8276479840278625
+                    ],
+                    "recall": [
+                        0.8621914386749268
+                    ],
+                    "f1": [
+                        0.8445666432380676
+                    ],
+                    "hashcode": "roberta-large_L17_no-idf_version=0.3.12(hug_trans=4.33.3)"
+                },
+                "rouge_evaluation": {
+                    "rougeL": [
+                        0.17647058823529413,
+                        0.43548387096774194,
+                        0.25116279069767444
+                    ]
+                }
+            },
+            {
+                "vector_id": "e63bc082-6af9-4b22-9f85-d28e49c5fe75",
+                "score": 0.687284,
+                "document_path": "s3://psycore-documents-445644858344/Norfolk_Public_Review_PR_RFI_Launch__Template_V2_.pdf",
+                "graph_path": "s3://nas666graph/Norfolk_Public_Review_PR_RFI_Launch__Template_V2_.pdf/graph.json",
+                "type": "text",
+                "text": "coming procurement - Norfolk BDUK will budget an appropriate amount of public funding from the Project Gigabit Programme, based on the final number of premises requiring subsidy for this area, at the procurement stage. The budget will be specified within the Invitation To Tender (ITT) documentation, following the Public Review. Details of any restrictions on the use of public subsidy will be explained in the tender documentation. It\u2019s BDUK\u2019s intention to",
+                "graph_evaluation": {
+                    "recall": 0.25,
+                    "precision": 0.125,
+                    "f_beta": 0.012779552715654952,
+                    "beta": 1.0
+                },
+                "bertscore_evaluation": {
+                    "precision": [
+                        0.8223496675491333
+                    ],
+                    "recall": [
+                        0.8494391441345215
+                    ],
+                    "f1": [
+                        0.8356748819351196
+                    ],
+                    "hashcode": "roberta-large_L17_no-idf_version=0.3.12(hug_trans=4.33.3)"
+                },
+                "rouge_evaluation": {
+                    "rougeL": [
+                        0.10457516339869281,
+                        0.2222222222222222,
+                        0.14222222222222222
+                    ]
+                }
+            },
+            {
+                "vector_id": "9bdd2471-dc51-4c53-8cf9-a7957fcd2ca5",
+                "score": 0.686879754,
+                "document_path": "s3://psycore-documents-445644858344/22-036458-01_GIS_early_process_evaluation_Accessible_CLIENT_USE.pdf",
+                "graph_path": "s3://nas666graph/22-036458-01_GIS_early_process_evaluation_Accessible_CLIENT_USE.pdf/graph.json",
+                "type": "text",
+                "text": " as \u2018white\u2019 and a slight decrease in the areas categorised as \u2018under review\u2019. The change in the proportion of premises categorised as \u2018white\u2019 will have significant impacts on where the GIS intervention will provide subsidised networks, as BDUK aim to minimise the premises which receive coverage through the GIS procurement that would have received coverage via commercial roll out. This highlights the benefits of undertaking a dynamic,",
+                "graph_evaluation": {
+                    "recall": 0.2222222222222222,
+                    "precision": 0.0625,
+                    "f_beta": 0.006472491909385114,
+                    "beta": 1.0
+                },
+                "bertscore_evaluation": {
+                    "precision": [
+                        0.8391009569168091
+                    ],
+                    "recall": [
+                        0.8729871511459351
+                    ],
+                    "f1": [
+                        0.8557087182998657
+                    ],
+                    "hashcode": "roberta-large_L17_no-idf_version=0.3.12(hug_trans=4.33.3)"
+                },
+                "rouge_evaluation": {
+                    "rougeL": [
+                        0.1830065359477124,
+                        0.417910447761194,
+                        0.2545454545454545
+                    ]
+                }
+            }
+        ]
+    },
+    "How has the UK government's strategy for gigabit-capable broadband evolved from the Superfast Broadband Programme to Project Gigabit, and what lessons have been incorporated into the newer interventions?": {
+        "response": "The provided text highlights a shift in the UK government's broadband strategy from the initial Local Full Fibre Networks (LFFN) program, which was part of the Superfast Broadband Programme, to Project Gigabit.  The key evolution is driven by a changed context.  While LFFN was launched at a time of low gigabit-capable coverage (2%) and a market dominated by inadequate technologies, necessitating government investment in fiber infrastructure, the situation has evolved significantly.\n\nProject Gigabit aims for nationwide gigabit-capable broadband coverage as quickly as possible, focusing on connecting the entire UK.  It builds upon existing Superfast contracts already delivering gigabit-capable broadband in Scotland, Wales, and Northern Ireland. The approach now incorporates lessons learned, primarily focusing on using public subsidies more effectively.  Project Gigabit emphasizes targeting market failures to achieve full UK coverage while minimizing negative impacts on competition and avoiding crowding out private investment. Procurement under Public Contracts Regulations (2020) ensures subsidy control requirements are met.\n\nWhile the passage mentions reducing deployment barriers and costs as essential, it doesn't explicitly state these are lessons incorporated from previous programs. However, the emphasis on addressing these barriers suggests they are a key consideration in Project Gigabit's design.  The text also highlights data gathering from telecom providers to forecast gigabit-capable infrastructure coverage, indicating a data-driven approach for informed decision-making in Project Gigabit.",
+        "elaborated_prompt": "How has the UK government's strategy for gigabit-capable broadband evolved from the Superfast Broadband Programme (2010-2020) to Project Gigabit (2021-2024)? What specific lessons and improvements have been incorporated into Project Gigabit's interventions compared to the Superfast Broadband Programme?",
+        "base_prompt": "How has the UK government's strategy for gigabit-capable broadband evolved from the Superfast Broadband Programme to Project Gigabit, and what lessons have been incorporated into the newer interventions?",
+        "retry_count": 0,
+        "chosen_prompt": "How has the UK government's strategy for gigabit-capable broadband evolved from the Superfast Broadband Programme to Project Gigabit, and what lessons have been incorporated into the newer interventions?",
+        "rag_results": [
+            {
+                "vector_id": "b4b54e7a-d518-458c-ad59-78f87b786a82",
+                "score": 0.874839544,
+                "document_path": "s3://psycore-documents-445644858344/18-049091_01_LFFN_Wave_1_final_evaluation_Synthesis_report.pdf",
+                "graph_path": "s3://nas666graph/18-049091_01_LFFN_Wave_1_final_evaluation_Synthesis_report.pdf/graph.json",
+                "type": "text",
+                "text": "capable infrastructure in place, with only two percent of the UK having gigabit-capable coverage, and the market was dominated by technologies which could not provide the gigabit-capable speeds which UK businesses and households would require in the future. Therefore, there was a case for the UK government to invest in fibre infrastructure. However, the context in which the LFFN programme operated in has altered significantly since the programme was launched. There has",
+                "graph_evaluation": {
+                    "recall": 0.25,
+                    "precision": 0.1111111111111111,
+                    "f_beta": 0.00816326530612245,
+                    "beta": 1.0
+                },
+                "bertscore_evaluation": {
+                    "precision": [
+                        0.8339195251464844
+                    ],
+                    "recall": [
+                        0.8807322978973389
+                    ],
+                    "f1": [
+                        0.8566868901252747
+                    ],
+                    "hashcode": "roberta-large_L17_no-idf_version=0.3.12(hug_trans=4.33.3)"
+                },
+                "rouge_evaluation": {
+                    "rougeL": [
+                        0.10619469026548672,
+                        0.32432432432432434,
+                        0.16
+                    ]
+                }
+            },
+            {
+                "vector_id": "24d33650-fed7-4125-8c69-6465b5137924",
+                "score": 0.869493723,
+                "document_path": "s3://psycore-documents-445644858344/Project_Gigabit__Summer_Update_Accessible_PDF_2_Aug_2021__1_.pdf",
+                "graph_path": "s3://nas666graph/Project_Gigabit__Summer_Update_Accessible_PDF_2_Aug_2021__1_.pdf/graph.json",
+                "type": "text",
+                "text": " deliver nationwide coverage of gigabit-capable broadband as soon as possible and Project Gigabit is about connecting up the whole of the United Kingdom. We are working closely with devolved administrations to scope the next phase of gigabit activity in the nations, which will follow a similar approach to England and align with live Superfast contracts already delivering gigabit-capable broadband across Scotland, Wales and Northern Ireland. In Wales, we expect up to 234,",
+                "graph_evaluation": {
+                    "recall": 0.2777777777777778,
+                    "precision": 0.21428571428571427,
+                    "f_beta": 0.01935483870967742,
+                    "beta": 1.0
+                },
+                "bertscore_evaluation": {
+                    "precision": [
+                        0.8342201709747314
+                    ],
+                    "recall": [
+                        0.8795958757400513
+                    ],
+                    "f1": [
+                        0.856307327747345
+                    ],
+                    "hashcode": "roberta-large_L17_no-idf_version=0.3.12(hug_trans=4.33.3)"
+                },
+                "rouge_evaluation": {
+                    "rougeL": [
+                        0.10619469026548672,
+                        0.32432432432432434,
+                        0.16
+                    ]
+                }
+            },
+            {
+                "vector_id": "5f45c6fe-8705-49c0-b28e-1561e0057227",
+                "score": 0.851958811,
+                "document_path": "s3://psycore-documents-445644858344/Norfolk_Public_Review_PR_RFI_Launch__Template_V2_.pdf",
+                "graph_path": "s3://nas666graph/Norfolk_Public_Review_PR_RFI_Launch__Template_V2_.pdf/graph.json",
+                "type": "text",
+                "text": " subsidy for gigabit- capable broadband infrastructure, for example, by ensuring subsidy is designed to target failure in the market to achieve full UK coverage while minimising negative effects on competition. Public subsidy will be targeted to limit the risks of crowding out private investment, altering commercial investment incentives and ultimately distorting competition. Projects will continue to be procured under the Public Contracts Regulations (2020), to help meet our subsidy control requirements. Suppliers have the",
+                "graph_evaluation": {
+                    "recall": 0.11764705882352941,
+                    "precision": 0.2857142857142857,
+                    "f_beta": 0.02572347266881029,
+                    "beta": 1.0
+                },
+                "bertscore_evaluation": {
+                    "precision": [
+                        0.8340103030204773
+                    ],
+                    "recall": [
+                        0.886289119720459
+                    ],
+                    "f1": [
+                        0.8593553304672241
+                    ],
+                    "hashcode": "roberta-large_L17_no-idf_version=0.3.12(hug_trans=4.33.3)"
+                },
+                "rouge_evaluation": {
+                    "rougeL": [
+                        0.13274336283185842,
+                        0.40540540540540543,
+                        0.2
+                    ]
+                }
+            },
+            {
+                "vector_id": "95c512a6-36f8-4660-8406-fef648e13312",
+                "score": 0.851253688,
+                "document_path": "s3://psycore-documents-445644858344/Future_Telecoms_Infrastructure_Review.pdf",
+                "graph_path": "s3://nas666graph/Future_Telecoms_Infrastructure_Review.pdf/graph.json",
+                "type": "text",
+                "text": "\ufffd approach to deployment that means gigabit-capable connectivity across all areas of the UK is achieved at the same time, and no areas are systematically left behind; and 5. A switchover process to increase demand for full fibre services. Addressing deployment barriers and reducing costs Reducing the cost and making it quicker and easier to roll out new telecoms infrastructure is essential. There are currently too many barriers which make building networks expensive and too slow.",
+                "graph_evaluation": {
+                    "recall": 0.25,
+                    "precision": 0.14285714285714285,
+                    "f_beta": 0.003802281368821293,
+                    "beta": 1.0
+                },
+                "bertscore_evaluation": {
+                    "precision": [
+                        0.8284805417060852
+                    ],
+                    "recall": [
+                        0.8655153512954712
+                    ],
+                    "f1": [
+                        0.8465930819511414
+                    ],
+                    "hashcode": "roberta-large_L17_no-idf_version=0.3.12(hug_trans=4.33.3)"
+                },
+                "rouge_evaluation": {
+                    "rougeL": [
+                        0.07964601769911504,
+                        0.23684210526315788,
+                        0.11920529801324503
+                    ]
+                }
+            },
+            {
+                "vector_id": "072cd6be-bc7f-4947-9e51-e9e3b28bb8ca",
+                "score": 0.849988759,
+                "document_path": "s3://psycore-documents-445644858344/Project_Gigabit__PHASE_ONE_DELIVERY_PLAN_v3.pdf",
+                "graph_path": "s3://nas666graph/Project_Gigabit__PHASE_ONE_DELIVERY_PLAN_v3.pdf/graph.json",
+                "type": "text",
+                "text": " underpinned with appropriate resources and capabilities - into a complete picture of forecast gigabit-capable infrastructure coverage for the UK. We have started to gather data from the largest telecoms providers and will continue to work over the coming weeks with more telecoms providers, focusing on those active in early 2 This is where an existing gigabit-capable network is overbuilt by another gigabit-capable network. In general, this is beneficial for consumers",
+                "graph_evaluation": {
+                    "recall": 0.2857142857142857,
+                    "precision": 0.35714285714285715,
+                    "f_beta": 0.015527950310559004,
+                    "beta": 1.0
+                },
+                "bertscore_evaluation": {
+                    "precision": [
+                        0.8223173022270203
+                    ],
+                    "recall": [
+                        0.8570958971977234
+                    ],
+                    "f1": [
+                        0.8393464684486389
+                    ],
+                    "hashcode": "roberta-large_L17_no-idf_version=0.3.12(hug_trans=4.33.3)"
+                },
+                "rouge_evaluation": {
+                    "rougeL": [
+                        0.07964601769911504,
+                        0.25,
+                        0.12080536912751677
+                    ]
+                }
+            }
+        ]
+    },
+    "What were the key limitations encountered during the OMR and public review processes as identified in the early process evaluation of the Gigabit Infrastructure Subsidy intervention?": {
+        "response": "The early process evaluation of the Gigabit Infrastructure Subsidy intervention identified several limitations regarding the Open Market Review (OMR) and public review processes:\n\n* **Mixed engagement:**  Suppliers and local authorities showed varying levels of involvement, with some reviewing frequently and others not at all, creating inconsistencies in data reliability.\n* **Timing of Public Review:** Suppliers found the timing of public review publications challenging.  By the time the review was published, market conditions could have changed, impacting the accuracy of the data and potentially leading to funding being allocated to areas that no longer required it.\n* **Risk of Overbuild (compared to earlier programs, this was an *improvement*):** Although the OMR process was seen as an improvement over the Superfast Broadband Programme in preventing overbuild, the evaluation still notes it as a risk. Changes in commercial rollout plans between the OMR process and contract delivery could lead to subsidized coverage in areas receiving commercial rollout.  This suggests the OMR process, while better, was still not perfectly preventing this issue.\n\n\nThe evaluation also mentions that the design of the process was a compromise to encourage market participation, suggesting initial designs may have been less practical or palatable to industry stakeholders.",
+        "elaborated_prompt": "Identify the primary limitations and challenges faced during the Open Market Review (OMR) and public review processes in the initial evaluation of the Gigabit Infrastructure Subsidy intervention, including specific issues from 2020, 2021, 2022, 2023, and 2024.",
+        "base_prompt": "What were the key limitations encountered during the OMR and public review processes as identified in the early process evaluation of the Gigabit Infrastructure Subsidy intervention?",
+        "retry_count": 0,
+        "chosen_prompt": "What were the key limitations encountered during the OMR and public review processes as identified in the early process evaluation of the Gigabit Infrastructure Subsidy intervention?",
+        "rag_results": [
+            {
+                "vector_id": "40160569-0aa6-40e8-b3d0-1c2df0076a7e",
+                "score": 0.792962074,
+                "document_path": "s3://psycore-documents-445644858344/22-036458-01_GIS_early_process_evaluation_Accessible_CLIENT_USE.pdf",
+                "graph_path": "s3://nas666graph/22-036458-01_GIS_early_process_evaluation_Accessible_CLIENT_USE.pdf/graph.json",
+                "type": "text",
+                "text": " months time. There were mixed responses from suppliers and local authorities on their involvement with the OMR process with some reviewing frequently and others not at all. Suppliers expressed the challenge of the timing of the public review publications for local OMRs. They noted that by the time the public review was published, the local market might have changed, affecting the accuracy of the data. 33 Ipsos | Gigabit Infrastructure Subsidy: Early process evaluation",
+                "graph_evaluation": {
+                    "recall": 0.16666666666666666,
+                    "precision": 0.1875,
+                    "f_beta": 0.01941747572815534,
+                    "beta": 1.0
+                },
+                "bertscore_evaluation": {
+                    "precision": [
+                        0.8529655933380127
+                    ],
+                    "recall": [
+                        0.9158631563186646
+                    ],
+                    "f1": [
+                        0.8832960724830627
+                    ],
+                    "hashcode": "roberta-large_L17_no-idf_version=0.3.12(hug_trans=4.33.3)"
+                },
+                "rouge_evaluation": {
+                    "rougeL": [
+                        0.2,
+                        0.5342465753424658,
+                        0.29104477611940294
+                    ]
+                }
+            },
+            {
+                "vector_id": "b17df6c7-780f-41f2-9180-7590b7be35dd",
+                "score": 0.785988,
+                "document_path": "s3://psycore-documents-445644858344/22-036458-01_GIS_early_process_evaluation_Accessible_CLIENT_USE.pdf",
+                "graph_path": "s3://nas666graph/22-036458-01_GIS_early_process_evaluation_Accessible_CLIENT_USE.pdf/graph.json",
+                "type": "text",
+                "text": " review processes; and \u25aa Conclusions from the process evaluation. 2 Eight of these interviews were undertaken as part of the Superfast Broadband evaluation \u2013 however, interviewees provided their views on the GIS intervention, as activity (OMR, tendering etc.) was ongoing for the GIS at the time these interviews were undertaken, meaning the providers were eager to provide their views. 6 Ipsos | Gigabit Infrastructure Subsidy: Early process",
+                "graph_evaluation": {
+                    "recall": 0.25,
+                    "precision": 0.15,
+                    "f_beta": 0.019169329073482427,
+                    "beta": 1.0
+                },
+                "bertscore_evaluation": {
+                    "precision": [
+                        0.8219835162162781
+                    ],
+                    "recall": [
+                        0.8510932326316833
+                    ],
+                    "f1": [
+                        0.8362851142883301
+                    ],
+                    "hashcode": "roberta-large_L17_no-idf_version=0.3.12(hug_trans=4.33.3)"
+                },
+                "rouge_evaluation": {
+                    "rougeL": [
+                        0.08717948717948718,
+                        0.265625,
+                        0.13127413127413126
+                    ]
+                }
+            },
+            {
+                "vector_id": "fad00067-77e7-437c-a9a2-3714af51eda1",
+                "score": 0.781830192,
+                "document_path": "s3://psycore-documents-445644858344/22-036458-01_GIS_early_process_evaluation_Accessible_CLIENT_USE.pdf",
+                "graph_path": "s3://nas666graph/22-036458-01_GIS_early_process_evaluation_Accessible_CLIENT_USE.pdf/graph.json",
+                "type": "text",
+                "text": " intervention areas; \u25aa The Open Market Review (OMR) and public review process, and how these have evolved over time. 1.3 Methodological approach This report is based on the following research activity: \u25aa A review of management information, including intervention area data, OMR responses, and commercial data; 1 Gigabit Infrastructure Subsidy Management Information, provided by BDUK. 5 Ipsos | Gigabit Infrastructure Subsidy: Early",
+                "graph_evaluation": {
+                    "recall": 0.15384615384615385,
+                    "precision": 0.15,
+                    "f_beta": 0.019169329073482427,
+                    "beta": 1.0
+                },
+                "bertscore_evaluation": {
+                    "precision": [
+                        0.8266490697860718
+                    ],
+                    "recall": [
+                        0.8517237305641174
+                    ],
+                    "f1": [
+                        0.8389990925788879
+                    ],
+                    "hashcode": "roberta-large_L17_no-idf_version=0.3.12(hug_trans=4.33.3)"
+                },
+                "rouge_evaluation": {
+                    "rougeL": [
+                        0.09743589743589744,
+                        0.31666666666666665,
+                        0.14901960784313725
+                    ]
+                }
+            },
+            {
+                "vector_id": "79871a27-027a-4e47-b42b-fd5c282374e0",
+                "score": 0.773175418,
+                "document_path": "s3://psycore-documents-445644858344/22-036458-01_GIS_early_process_evaluation_Accessible_CLIENT_USE.pdf",
+                "graph_path": "s3://nas666graph/22-036458-01_GIS_early_process_evaluation_Accessible_CLIENT_USE.pdf/graph.json",
+                "type": "text",
+                "text": " to the Superfast Broadband Programme as network providers planned commercial rollout changed between the OMR process and the delivery of contracts, meaning there was a risk the Superfast Broadband Programme provided subsidised coverage to areas that also received commercial rollout. 11 Ipsos | Gigabit Infrastructure Subsidy: Early process evaluation 22-036458-01 | Final version | Public Use | This work was carried out in accordance with the requirements of the international quality standard",
+                "graph_evaluation": {
+                    "recall": 0.17391304347826086,
+                    "precision": 0.08333333333333333,
+                    "f_beta": 0.012618296529968454,
+                    "beta": 1.0
+                },
+                "bertscore_evaluation": {
+                    "precision": [
+                        0.8291321396827698
+                    ],
+                    "recall": [
+                        0.8629881739616394
+                    ],
+                    "f1": [
+                        0.8457214832305908
+                    ],
+                    "hashcode": "roberta-large_L17_no-idf_version=0.3.12(hug_trans=4.33.3)"
+                },
+                "rouge_evaluation": {
+                    "rougeL": [
+                        0.12307692307692308,
+                        0.34285714285714286,
+                        0.1811320754716981
+                    ]
+                }
+            },
+            {
+                "vector_id": "508c1b19-66ad-4794-a4cc-b2ee53efeeaf",
+                "score": 0.766892433,
+                "document_path": "s3://psycore-documents-445644858344/22-036458-01_GIS_early_process_evaluation_Accessible_CLIENT_USE.pdf",
+                "graph_path": "s3://nas666graph/22-036458-01_GIS_early_process_evaluation_Accessible_CLIENT_USE.pdf/graph.json",
+                "type": "text",
+                "text": " the design was a compromise which was acceptable to the market and encouraged participation, as the original design risked network providers declining to participate in the intervention. Those stakeholders which raised concerns also noted that the approach used was an improvement, in terms of preventing overbuild, compared to the Superfast Broadband Programme, due to the OMR approach used (described below). 19 Ipsos | Gigabit Infrastructure Subsidy: Early process evaluation 22-036458-",
+                "graph_evaluation": {
+                    "recall": 0.16666666666666666,
+                    "precision": 0.15,
+                    "f_beta": 0.019169329073482427,
+                    "beta": 1.0
+                },
+                "bertscore_evaluation": {
+                    "precision": [
+                        0.8383644819259644
+                    ],
+                    "recall": [
+                        0.8714002966880798
+                    ],
+                    "f1": [
+                        0.854563295841217
+                    ],
+                    "hashcode": "roberta-large_L17_no-idf_version=0.3.12(hug_trans=4.33.3)"
+                },
+                "rouge_evaluation": {
+                    "rougeL": [
+                        0.1076923076923077,
+                        0.3,
+                        0.15849056603773584
+                    ]
+                }
+            }
+        ]
+    },
+    "How have different procurement models (e.g., regional vs. local suppliers) impacted the speed and effectiveness of broadband infrastructure delivery in rural areas?": {
+        "response": "The provided text does not directly compare the effectiveness of different procurement models (regional vs. local) on the speed of broadband infrastructure delivery in rural areas.  It *does* highlight some relevant points:\n\n* **Building on Superfast Success:** The Gigabit Infrastructure Subsidy (GIS) builds upon the Superfast Broadband Programme model, which was considered highly effective in accelerating broadband deployment in rural areas. However, the text doesn't specify whether the Superfast program favored regional or local suppliers.\n* **GIS Intervention Area Types:**  The GIS introduced three intervention area types (local, regional, and cross-regional), aiming to create opportunities for smaller network providers.  This suggests a move towards potentially including more local suppliers.\n* **Concerns about Contract Changes:**  Larger suppliers and some local authorities expressed concerns about changes to contract types compared to the Superfast Broadband Programme. While the text doesn't detail these concerns, it implies a potential shift in procurement strategy that may have affected the balance between larger regional and smaller local suppliers.\n* **Local Authority Preference:** The majority of local authorities wanted procurements for their areas to start quickly, though some recommended waiting for existing superfast contracts to complete.  This suggests a potential preference for localized approaches, but doesn't directly relate to supplier size.\n\nOverall, the text hints at a shift in procurement strategy with the GIS to include smaller, potentially local suppliers, but it doesn't offer a direct comparison of the effectiveness of different procurement models on deployment speed in rural areas.  It does emphasize the prior success of the Superfast program as a foundation for the GIS.",
+        "elaborated_prompt": "Impact of procurement models, such as regional suppliers versus local suppliers, on the speed and effectiveness of broadband infrastructure delivery in rural areas, including factors like delivery timelines, cost efficiency, and quality of service from 2020 to 2024.",
+        "base_prompt": "How have different procurement models (e.g., regional vs. local suppliers) impacted the speed and effectiveness of broadband infrastructure delivery in rural areas?",
+        "retry_count": 0,
+        "chosen_prompt": "How have different procurement models (e.g., regional vs. local suppliers) impacted the speed and effectiveness of broadband infrastructure delivery in rural areas?",
+        "rag_results": [
+            {
+                "vector_id": "845828f0-9a84-4c9c-b7e8-74f18f80fbf1",
+                "score": 0.768443048,
+                "document_path": "s3://psycore-documents-445644858344/22-036458-01_GIS_early_process_evaluation_Accessible_CLIENT_USE.pdf",
+                "graph_path": "s3://nas666graph/22-036458-01_GIS_early_process_evaluation_Accessible_CLIENT_USE.pdf/graph.json",
+                "type": "text",
+                "text": " to build to the least commercially viable premises before more viable premises, meaning that those premises were selected to receive publicly subsidised connectivity first. The delivery of the intervention builds on the Superfast Broadband Programme model, which prior evaluations have shown to be highly effective in accelerating the deployment of faster broadband networks in rural areas. The processes to be used in the delivery of the GIS are presented in Section 2 of this paper, which also explains how these differ",
+                "graph_evaluation": {
+                    "recall": 0.14285714285714285,
+                    "precision": 0.13333333333333333,
+                    "f_beta": 0.012987012987012988,
+                    "beta": 1.0
+                },
+                "bertscore_evaluation": {
+                    "precision": [
+                        0.8214044570922852
+                    ],
+                    "recall": [
+                        0.8637494444847107
+                    ],
+                    "f1": [
+                        0.8420448899269104
+                    ],
+                    "hashcode": "roberta-large_L17_no-idf_version=0.3.12(hug_trans=4.33.3)"
+                },
+                "rouge_evaluation": {
+                    "rougeL": [
+                        0.11196911196911197,
+                        0.35802469135802467,
+                        0.17058823529411765
+                    ]
+                }
+            },
+            {
+                "vector_id": "4109d622-d423-42ec-916b-c6bcd600bdbc",
+                "score": 0.756346762,
+                "document_path": "s3://psycore-documents-445644858344/22-036458-01_GIS_early_process_evaluation_Accessible_CLIENT_USE.pdf",
+                "graph_path": "s3://nas666graph/22-036458-01_GIS_early_process_evaluation_Accessible_CLIENT_USE.pdf/graph.json",
+                "type": "text",
+                "text": " offer better value for money for the Government. However, some larger suppliers and local authority stakeholders were concerned about the changes made to contract types in comparison to the Superfast Broadband Programme. The design of three types of intervention area (local, regional and cross regional) meant that there were some contracts within the GIS intervention which would be more suitable for smaller network providers to bid for. Whilst there was an understanding that there were smaller, newer suppliers involved",
+                "graph_evaluation": {
+                    "recall": 0.16666666666666666,
+                    "precision": 0.0625,
+                    "f_beta": 0.006472491909385114,
+                    "beta": 1.0
+                },
+                "bertscore_evaluation": {
+                    "precision": [
+                        0.8331505656242371
+                    ],
+                    "recall": [
+                        0.8835977911949158
+                    ],
+                    "f1": [
+                        0.8576329946517944
+                    ],
+                    "hashcode": "roberta-large_L17_no-idf_version=0.3.12(hug_trans=4.33.3)"
+                },
+                "rouge_evaluation": {
+                    "rougeL": [
+                        0.10810810810810811,
+                        0.35443037974683544,
+                        0.16568047337278108
+                    ]
+                }
+            },
+            {
+                "vector_id": "8ebd5f27-0cef-4edb-ba97-5c3b830faa34",
+                "score": 0.74984169,
+                "document_path": "s3://psycore-documents-445644858344/Project_Gigabit__PHASE_ONE_DELIVERY_PLAN_v3.pdf",
+                "graph_path": "s3://nas666graph/Project_Gigabit__PHASE_ONE_DELIVERY_PLAN_v3.pdf/graph.json",
+                "type": "text",
+                "text": " Although this question was aimed at telecoms providers, where local authorities did respond, the majority wanted procurements for their areas to start as soon as possible, although a few recommended waiting until the completion of live superfast contracts first. Our response: This document provides an update on the procurement pipeline and the initial releases. As we build the pipeline further we will incorporate providers\u2019 feedback on their capacity to bid for procurement opportunities. Some other themes \u25cf Over",
+                "graph_evaluation": {
+                    "recall": 0.13333333333333333,
+                    "precision": 0.125,
+                    "f_beta": 0.006191950464396285,
+                    "beta": 1.0
+                },
+                "bertscore_evaluation": {
+                    "precision": [
+                        0.81450355052948
+                    ],
+                    "recall": [
+                        0.862722635269165
+                    ],
+                    "f1": [
+                        0.8379199504852295
+                    ],
+                    "hashcode": "roberta-large_L17_no-idf_version=0.3.12(hug_trans=4.33.3)"
+                },
+                "rouge_evaluation": {
+                    "rougeL": [
+                        0.09652509652509653,
+                        0.3246753246753247,
+                        0.14880952380952378
+                    ]
+                }
+            },
+            {
+                "vector_id": "1f1ca29b-d243-405e-8bbc-668de7e24ee5",
+                "score": 0.741468489,
+                "document_path": "s3://psycore-documents-445644858344/Norfolk_Public_Review_PR_RFI_Launch__Template_V2_.pdf",
+                "graph_path": "s3://nas666graph/Norfolk_Public_Review_PR_RFI_Launch__Template_V2_.pdf/graph.json",
+                "type": "text",
+                "text": " a passive infrastructure supplier is offering access to infrastructure in the identified geography, it is encouraged to provide further details of its location in order that bidders for any future procurement process might consider its use in designing their solutions. \u25cf Within each broadband category (Next Generation Access, ultrafast or gigabit-capable) please indicate: (i) what level of take-up is expected in total; and (ii) what level of take-up",
+                "graph_evaluation": {
+                    "recall": 0.0,
+                    "precision": 0.0,
+                    "f_beta": 0,
+                    "beta": 1.0
+                },
+                "bertscore_evaluation": {
+                    "precision": [
+                        0.8019606471061707
+                    ],
+                    "recall": [
+                        0.8217185735702515
+                    ],
+                    "f1": [
+                        0.8117194175720215
+                    ],
+                    "hashcode": "roberta-large_L17_no-idf_version=0.3.12(hug_trans=4.33.3)"
+                },
+                "rouge_evaluation": {
+                    "rougeL": [
+                        0.05405405405405406,
+                        0.2,
+                        0.0851063829787234
+                    ]
+                }
+            },
+            {
+                "vector_id": "b64d634b-1647-42a4-9a99-440e6c2cee45",
+                "score": 0.741185188,
+                "document_path": "s3://psycore-documents-445644858344/BDUK_Rural_Gigabit_Connectivity_Hubs_Evaluation.pdf",
+                "graph_path": "s3://nas666graph/BDUK_Rural_Gigabit_Connectivity_Hubs_Evaluation.pdf/graph.json",
+                "type": "text",
+                "text": " in rural areas, alongside other policies targeting remote areas, such as recent voucher support. This chapter looks at the effects of the Hub on broadband. Its focus is whether nearby broadband effects occur and can be attributed to the Hub. To estimate the impact of the Hubs support, non-recipient areas who are as comparable as possible to the recipient areas \u2013 called the counterfactual \u2013 are explored seeing if the changes seen in the Hub areas differ.",
+                "graph_evaluation": {
+                    "recall": 0.25,
+                    "precision": 0.09090909090909091,
+                    "f_beta": 0.001040582726326743,
+                    "beta": 1.0
+                },
+                "bertscore_evaluation": {
+                    "precision": [
+                        0.7996315956115723
+                    ],
+                    "recall": [
+                        0.8301030397415161
+                    ],
+                    "f1": [
+                        0.8145824670791626
+                    ],
+                    "hashcode": "roberta-large_L17_no-idf_version=0.3.12(hug_trans=4.33.3)"
+                },
+                "rouge_evaluation": {
+                    "rougeL": [
+                        0.07335907335907337,
+                        0.25,
+                        0.11343283582089553
+                    ]
+                }
+            }
+        ]
+    },
+    "What role does passive infrastructure sharing (e.g. ducts and poles) play in the UK's plan for nationwide full fibre deployment, and how does this relate to regulatory goals?": {
+        "response": "Passive infrastructure sharing, such as the reuse of existing ducts and poles, is identified as a *key* element in the UK's strategy for nationwide full fiber deployment.  The provided text emphasizes the following:\n\n* **Cost Reduction:** Civil works, including duct and pole installation, represent about 70% of fiber deployment costs. Reusing existing infrastructure drastically reduces these expenses, making rollout more affordable, especially in challenging rural areas.\n* **Faster Deployment:**  Reusing existing infrastructure significantly speeds up network rollout. The text provides a comparison: installing fiber in existing ducts takes a fraction of the time compared to traditional duct construction.\n* **Regulatory Changes:**  The existing regulatory and policy environment, while effective in stimulating retail competition based on *existing* networks, requires changes to incentivize large-scale deployment of *new* networks. This implies that regulations must be adapted to promote and facilitate passive infrastructure sharing.\n\nThe overall goal is to create a regulatory environment that encourages investment and accelerates the rollout of full fiber networks, especially in commercially challenging areas.  Passive infrastructure sharing is a crucial component of this strategy, helping to reduce costs and deployment times.",
+        "elaborated_prompt": "What is the role of passive infrastructure sharing, specifically ducts and poles, in the United Kingdom's strategy for nationwide full fibre broadband deployment from 2020 to 2024, and how does this align with the UK's telecommunications regulatory goals and objectives during this period?",
+        "base_prompt": "What role does passive infrastructure sharing (e.g. ducts and poles) play in the UK's plan for nationwide full fibre deployment, and how does this relate to regulatory goals?",
+        "retry_count": 0,
+        "chosen_prompt": "What role does passive infrastructure sharing (e.g. ducts and poles) play in the UK's plan for nationwide full fibre deployment, and how does this relate to regulatory goals?",
+        "rag_results": [
+            {
+                "vector_id": "2e8e31af-b944-454e-bcaf-5b06e669c10c",
+                "score": 0.81791085,
+                "document_path": "s3://psycore-documents-445644858344/Future_Telecoms_Infrastructure_Review.pdf",
+                "graph_path": "s3://nas666graph/Future_Telecoms_Infrastructure_Review.pdf/graph.json",
+                "type": "text",
+                "text": " in this strategy aims to ensure that commercial investment in full fibre networks covers as much of the UK as possible. However, there will be some parts of the country that will be too costly for the market to deliver to alone. These parts of the country are likely to be largely in remote rural areas, with low population densities and, in many cases, topographic challenges. These factors increase the costs of deployment and reduce returns from fewer premises. The",
+                "graph_evaluation": {
+                    "recall": 0.16666666666666666,
+                    "precision": 0.09523809523809523,
+                    "f_beta": 0.0037771482530689327,
+                    "beta": 1.0
+                },
+                "bertscore_evaluation": {
+                    "precision": [
+                        0.8276911973953247
+                    ],
+                    "recall": [
+                        0.8658701777458191
+                    ],
+                    "f1": [
+                        0.846350371837616
+                    ],
+                    "hashcode": "roberta-large_L17_no-idf_version=0.3.12(hug_trans=4.33.3)"
+                },
+                "rouge_evaluation": {
+                    "rougeL": [
+                        0.09392265193370165,
+                        0.2125,
+                        0.13026819923371646
+                    ]
+                }
+            },
+            {
+                "vector_id": "de040088-6d44-4099-b6b7-8e0ed42d9804",
+                "score": 0.814338744,
+                "document_path": "s3://psycore-documents-445644858344/Future_Telecoms_Infrastructure_Review.pdf",
+                "graph_path": "s3://nas666graph/Future_Telecoms_Infrastructure_Review.pdf/graph.json",
+                "type": "text",
+                "text": " changes will be necessary in the regulatory and policy environment, to incentivise the large-scale deployment of new networks in rural and urban areas across the UK. The National Infrastructure Commission (NIC) published its National Infrastructure Assessment on 10 July.6 We welcome their assessment which includes a strong focus on digital connectivity and recommends that a national full fibre rollout programme should be put in place to achieve nationwide coverage. The analysis we have commissioned in support of this Review",
+                "graph_evaluation": {
+                    "recall": 0.3333333333333333,
+                    "precision": 0.09090909090909091,
+                    "f_beta": 0.0037735849056603774,
+                    "beta": 1.0
+                },
+                "bertscore_evaluation": {
+                    "precision": [
+                        0.8317044973373413
+                    ],
+                    "recall": [
+                        0.8649367094039917
+                    ],
+                    "f1": [
+                        0.8479951024055481
+                    ],
+                    "hashcode": "roberta-large_L17_no-idf_version=0.3.12(hug_trans=4.33.3)"
+                },
+                "rouge_evaluation": {
+                    "rougeL": [
+                        0.11602209944751381,
+                        0.25925925925925924,
+                        0.16030534351145037
+                    ]
+                }
+            },
+            {
+                "vector_id": "36e5f93a-dc94-4d7e-902d-7ca5d540ccfd",
+                "score": 0.808112204,
+                "document_path": "s3://psycore-documents-445644858344/Future_Telecoms_Infrastructure_Review.pdf",
+                "graph_path": "s3://nas666graph/Future_Telecoms_Infrastructure_Review.pdf/graph.json",
+                "type": "text",
+                "text": ".5.1 Promoting passive infrastructure reuse is key 66. Civil works, in particular installing ducts and poles, comprises around 70% of the costs of deploying fibre networks.42 Reusing existing infrastructure can significantly reduce the time it takes to roll out a new network. Ofcom estimates that while it can take days to build 200 metres of duct using traditional construction methods, fibre cables could be installed in the same length of existing duct in a matter",
+                "graph_evaluation": {
+                    "recall": 0.4166666666666667,
+                    "precision": 0.08333333333333333,
+                    "f_beta": 0.003766478342749529,
+                    "beta": 1.0
+                },
+                "bertscore_evaluation": {
+                    "precision": [
+                        0.8503959774971008
+                    ],
+                    "recall": [
+                        0.8905205130577087
+                    ],
+                    "f1": [
+                        0.8699958920478821
+                    ],
+                    "hashcode": "roberta-large_L17_no-idf_version=0.3.12(hug_trans=4.33.3)"
+                },
+                "rouge_evaluation": {
+                    "rougeL": [
+                        0.16022099447513813,
+                        0.37662337662337664,
+                        0.22480620155038758
+                    ]
+                }
+            },
+            {
+                "vector_id": "70203918-7057-4955-abcb-4b9d08503f30",
+                "score": 0.807617307,
+                "document_path": "s3://psycore-documents-445644858344/Future_Telecoms_Infrastructure_Review.pdf",
+                "graph_path": "s3://nas666graph/Future_Telecoms_Infrastructure_Review.pdf/graph.json",
+                "type": "text",
+                "text": " ambitions, there must be a sharp increase in the pace of full fibre roll out. The availability of capital is not the key constraint \u2013 but we do need the right conditions to attract investment. The current regulatory and policy environment has worked well to date in stimulating retail competition based on existing networks. However, changes will be necessary in the regulatory and policy environment, to incentivise the large-scale deployment of new networks in rural and urban areas across the UK",
+                "graph_evaluation": {
+                    "recall": 0.2777777777777778,
+                    "precision": 0.1,
+                    "f_beta": 0.0037807183364839316,
+                    "beta": 1.0
+                },
+                "bertscore_evaluation": {
+                    "precision": [
+                        0.8411673903465271
+                    ],
+                    "recall": [
+                        0.8964938521385193
+                    ],
+                    "f1": [
+                        0.8679498434066772
+                    ],
+                    "hashcode": "roberta-large_L17_no-idf_version=0.3.12(hug_trans=4.33.3)"
+                },
+                "rouge_evaluation": {
+                    "rougeL": [
+                        0.17679558011049723,
+                        0.3950617283950617,
+                        0.24427480916030533
+                    ]
+                }
+            },
+            {
+                "vector_id": "352f9460-1249-4be9-9895-1c0b4448ee6f",
+                "score": 0.794530213,
+                "document_path": "s3://psycore-documents-445644858344/Future_Telecoms_Infrastructure_Review.pdf",
+                "graph_path": "s3://nas666graph/Future_Telecoms_Infrastructure_Review.pdf/graph.json",
+                "type": "text",
+                "text": "viable commercially for full fibre deployment will require additional funding of some kind. We estimate this will include around 10% of premises across the UK. These, often rural, areas must not be forced to wait until the rest of the country has connectivity before they can access full fibre networks. Widespread connectivity creates opportunities for small businesses to tap into a global customer base and for people to work more efficiently. We will pursue an \u2018outside in\u2019",
+                "graph_evaluation": {
+                    "recall": 0.1875,
+                    "precision": 0.1111111111111111,
+                    "f_beta": 0.0037878787878787876,
+                    "beta": 1.0
+                },
+                "bertscore_evaluation": {
+                    "precision": [
+                        0.8164131045341492
+                    ],
+                    "recall": [
+                        0.8541446328163147
+                    ],
+                    "f1": [
+                        0.8348527550697327
+                    ],
+                    "hashcode": "roberta-large_L17_no-idf_version=0.3.12(hug_trans=4.33.3)"
+                },
+                "rouge_evaluation": {
+                    "rougeL": [
+                        0.09392265193370165,
+                        0.22077922077922077,
+                        0.1317829457364341
+                    ]
+                }
+            }
+        ]
+    }
+}

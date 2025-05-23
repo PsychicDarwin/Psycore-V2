@@ -3,6 +3,7 @@ import yaml
 from ipywidgets import widgets
 from IPython.display import display, clear_output
 from tqdm import tqdm
+from discord_webhook import DiscordWebhook
 
 # Get the parent directory
 parent_dir = os.path.abspath(os.path.join(os.path.dirname('PsycoreTestRunner.py'), ".."))
@@ -128,9 +129,12 @@ class VariationType:
         return preprocessing_groups
 
 class TestConfigRunner:
-    def __init__(self, config_path: str):
+    def __init__(self, config_path: str, discord_webhook_url: str = None):
         print(f"Initializing TestConfigRunner with config_path: {config_path}")
         self.config_path = config_path
+        self.discord_webhook_url = discord_webhook_url
+        if discord_webhook_url:
+            self.discord_webhook = DiscordWebhook(discord_webhook_url)
         print("Creating variations...")
         self.variations = self.create_variations()
         print(f"Created {len(self.variations)} variations")
@@ -147,7 +151,7 @@ class TestConfigRunner:
             },
             "document_range": {
                 "enabled": True,
-                "document_ids": [1]  # Default document IDs
+                "document_ids": [1, 15, 34, 4, 62, 63, 23, 44, 58, 67]  # Default document IDs
             },
             "rag": {
                 "text_similarity_threshold": 0.3
@@ -159,11 +163,7 @@ class TestConfigRunner:
         }
         
         # Default prompts for testing
-        self.default_prompts = [
-            "What programs are there to enhance broadband?",
-            "What does the Department of Digital, Culture, Media and Sport do?",
-            "What is FTTC?"
-        ]
+        self.default_prompts = ["How did BDUK classify premises as White, Grey, Black, or Under Review in the Norfolk Public Review, and what implications did these classifications have for eligibility for government subsidy?","How has the UK government's strategy for gigabit-capable broadband evolved from the Superfast Broadband Programme to Project Gigabit, and what lessons have been incorporated into the newer interventions?", "What were the key limitations encountered during the OMR and public review processes as identified in the early process evaluation of the Gigabit Infrastructure Subsidy intervention?","How have different procurement models (e.g., regional vs. local suppliers) impacted the speed and effectiveness of broadband infrastructure delivery in rural areas?","What role does passive infrastructure sharing (e.g. ducts and poles) play in the UK's plan for nationwide full fibre deployment, and how does this relate to regulatory goals?"]
 
     @staticmethod
     def deep_merge(dict1, dict2):
@@ -189,7 +189,7 @@ class TestConfigRunner:
             options=['llm_graph_aws_embedding', 'llm_graph_clip_embedding', 
                     'bert_graph_aws_embedding', 'bert_graph_clip_embedding'],
             description='Preprocessing Types:',
-            disabled=True,
+            disabled=False,
             layout=widgets.Layout(width='50%', height='100px')
         )
         
@@ -211,7 +211,7 @@ class TestConfigRunner:
         # Create output widget for displaying results
         output = widgets.Output()
         
-        def log_message(message):
+        def log_message(message, discord_prefix="ℹ️"):
             with output:
                 clear_output()
                 print(message)
@@ -226,11 +226,15 @@ class TestConfigRunner:
             'output': output
         }
         
-        # Display widgets
+        # Display widgets in a more organized layout
         display(widgets.VBox([
+            widgets.HTML("<h3>Test Types</h3>"),
             widgets.HBox([v for v in test_types.values()]),
+            widgets.HTML("<h3>Preprocessing Options</h3>"),
             widgets.HBox([preprocessing_enabled, preprocessing_type]),
+            widgets.HTML("<h3>Other Options</h3>"),
             overwrite_enabled,
+            widgets.HTML("<h3>Test Prompts</h3>"),
             prompts_input,
             output
         ]))
@@ -247,14 +251,37 @@ class TestConfigRunner:
         prompts_input = self.selection['prompts_input']
         output = self.selection['output']
         
-        def log_message(message):
+        def log_message(message, discord_prefix="ℹ️"):
             with output:
                 clear_output()
                 print(message)
-        
+            
+            # Send to Discord if webhook is configured
+            if hasattr(self, 'discord_webhook'):
+                try:
+                    # Split long messages into chunks of 2000 characters (Discord's limit)
+                    chunks = [message[i:i+2000] for i in range(0, len(message), 2000)]
+                    for chunk in chunks:
+                        self.discord_webhook.send_message(
+                            content=f"{discord_prefix} {chunk}",
+                            username="Psycore Test Runner"
+                        )
+                except Exception as e:
+                    print(f"Failed to send Discord notification: {e}")
+                
+        def send_discord_notification(message: str, prefix="ℹ️"):
+            if hasattr(self, 'discord_webhook'):
+                try:
+                    self.discord_webhook.send_message(
+                        content=f"{prefix} {message}",
+                        username="Psycore Test Runner"
+                    )
+                except Exception as e:
+                    print(f"Failed to send Discord notification: {e}")
+
         selected_types = [k for k, v in test_types.items() if v.value]
         if not selected_types:
-            log_message("Please select at least one test type")
+            log_message("Please select at least one test type", "⚠️")
             return
         
         # Get the selected configurations
@@ -263,38 +290,34 @@ class TestConfigRunner:
         # Group by preprocessing
         preprocessing_groups = VariationType.group_by_preprocessing(selected_configs)
         log_message(f"Selected test types: {selected_types}\nPreprocessing enabled: {preprocessing_enabled.value}")
-        if preprocessing_enabled.value:
-            log_message(f"Selected preprocessing types: {preprocessing_type.value}")
-        
-        # Filter by preprocessing type if enabled
-        if preprocessing_enabled.value:
-            if not preprocessing_type.value:
-                log_message("Please select at least one preprocessing type")
-                return
-            
-            log_message(f"Available preprocessing groups: {list(preprocessing_groups.keys())}")
-            log_message(f"Selected preprocessing types: {preprocessing_type.value}")
-            
-            filtered_groups = {}
-            for ptype in preprocessing_type.value:
-                if ptype in preprocessing_groups:
-                    filtered_groups[ptype] = preprocessing_groups[ptype]
-                    log_message(f"Added {ptype} to filtered groups with {len(preprocessing_groups[ptype])} configs")
-                else:
-                    log_message(f"No configurations found for preprocessing type: {ptype}")
-            
-            if not filtered_groups:
-                log_message("No valid preprocessing configurations found")
-                return
-            
-            preprocessing_groups = filtered_groups
-            log_message(f"Final filtered groups: {list(preprocessing_groups.keys())}")
         
         # Get prompts from input
         prompts = [p.strip() for p in prompts_input.value.split('\n') if p.strip()]
+        
+        # Send initial Discord notification about test configuration
+        start_message = "🚀 Starting new test run with configuration:\n"
+        start_message += f"• Test Types: {', '.join(selected_types)}\n"
+        start_message += f"• Preprocessing Enabled: {preprocessing_enabled.value}\n"
+        if preprocessing_enabled.value:
+            start_message += f"• Preprocessing Types: {', '.join(preprocessing_type.value)}\n"
+        start_message += f"• Overwrite Enabled: {overwrite_enabled.value}\n"
+        start_message += f"• Number of Prompts: {len(prompts)}\n"
+        start_message += "• Prompts:\n"
+        for i, prompt in enumerate(prompts, 1):
+            start_message += f"  {i}. {prompt[:100]}...\n" if len(prompt) > 100 else f"  {i}. {prompt}\n"
+        log_message(start_message, "🚀")
+        
+        # If preprocessing is enabled, we need to select preprocessing types
+        if preprocessing_enabled.value:
+            if not preprocessing_type.value:
+                log_message("Please select at least one preprocessing type", "⚠️")
+                return
+            
+            log_message(f"Selected preprocessing types: {preprocessing_type.value}")
+        
         try:
             # Initialize PsycoreTestRunner with timeout
-            log_message("Initializing PsycoreTestRunner...")
+            log_message("Initializing PsycoreTestRunner...", "⚙️")
             import threading
             import time
             
@@ -318,79 +341,124 @@ class TestConfigRunner:
             start_time = time.time()
             while init_thread.is_alive():
                 if time.time() - start_time > timeout:
-                    log_message("Error: PsycoreTestRunner initialization timed out after 30 seconds.\nPlease check your Pinecone credentials and connection.")
+                    log_message("Error: PsycoreTestRunner initialization timed out after 30 seconds.\nPlease check your Pinecone credentials and connection.", "❌")
                     return
                 time.sleep(0.1)
             
             if init_error:
-                log_message(f"Error initializing PsycoreTestRunner: {str(init_error)}")
+                log_message(f"Error initializing PsycoreTestRunner: {str(init_error)}", "❌")
                 return
                 
-            log_message("PsycoreTestRunner initialized successfully")
+            log_message("PsycoreTestRunner initialized successfully", "✅")
+            
+            # Track the last used graph type and embedding type
+            last_graph_type = None
+            last_embedding_type = None
             
             # Process each group
             for group, configs in preprocessing_groups.items():
-                # Flatten the list of lists and remove duplicates
-                print(group)
-                for i, config_path in enumerate(configs):
-                    try:
-                        config_name = os.path.basename(config_path)
-                        log_message(f"Testing configuration: {config_name}")
-                        
-                        # Load and merge configuration
-                        log_message(f"Loading configuration from {config_name}...")
+                # Skip groups that don't match selected preprocessing types if preprocessing is enabled
+                if preprocessing_enabled.value and group not in preprocessing_type.value:
+                    continue
+                    
+                # Extract current graph type and embedding type from group name
+                # Group name format is like "llm_graph_aws_embedding"
+                parts = group.split('_')
+                current_graph_type = parts[0]  # llm or bert
+                current_embedding_type = parts[2]  # aws or clip
+                
+                # Send notification about current group
+                group_message = f"📁 Processing group: {group}\n"
+                group_message += f"• Graph Type: {current_graph_type}\n"
+                group_message += f"• Embedding Type: {current_embedding_type}\n"
+                group_message += f"• Number of configs: {len(configs)}"
+                log_message(group_message, "📁")
+                
+                # Determine if preprocessing is needed
+                should_preprocess = preprocessing_enabled.value and (
+                    last_graph_type is None or  # First run
+                    last_graph_type != current_graph_type or  # Graph type changed
+                    last_embedding_type != current_embedding_type  # Embedding type changed
+                )
+                
+                # Update last used types
+                last_graph_type = current_graph_type
+                last_embedding_type = current_embedding_type
+                
+                # Process configs in batches of 5
+                for i in range(0, len(configs), 5):
+                    batch = configs[i:i+5]
+                    batch_message = f"📋 Processing batch {i//5 + 1} of {(len(configs) + 4)//5}:\n"
+                    for config_path in batch:
+                        batch_message += f"• {os.path.basename(config_path)}\n"
+                    log_message(batch_message, "📋")
+                    
+                    for config_path in batch:
                         try:
-                            with open(config_path, 'r') as f:
-                                config = yaml.safe_load(f)
-                            if config is None:
-                                log_message(f"Warning: Empty or invalid YAML file: {config_name}")
+                            config_name = os.path.basename(config_path)
+                            log_message(f"Testing configuration: {config_name}", "⚙️")
+                            
+                            # Load and merge configuration
+                            log_message(f"Loading configuration from {config_name}...", "📄")
+                            try:
+                                with open(config_path, 'r') as f:
+                                    config = yaml.safe_load(f)
+                                if config is None:
+                                    log_message(f"Warning: Empty or invalid YAML file: {config_name}", "⚠️")
+                                    continue
+                            except yaml.YAMLError as e:
+                                log_message(f"Error parsing YAML file {config_name}: {str(e)}", "❌")
                                 continue
-                        except yaml.YAMLError as e:
-                            log_message(f"Error parsing YAML file {confisg_name}: {str(e)}")
+                            
+                            # Merge with default config
+                            merged_config = TestConfigRunner.deep_merge(config, self.default_config)
+                            print(merged_config)
+                            # Print merged config before preprocessing
+                            log_message(f"\nMerged config before preprocessing for {config_name}:", "⚙️")
+                            log_message(json.dumps(merged_config, indent=2), "📄")
+                            
+                            # Check if result already exists
+                            exists, config_hash = self.result_manager.check_hash_exists(merged_config)
+                            if exists and not overwrite_enabled.value:
+                                log_message(f"Result already exists for {config_name} (hash: {config_hash}). Skipping...", "⏭️")
+                                continue
+                            # Update runner configuration
+                            log_message(f"Updating runner configuration...", "⚙️")
+                            # Only do preprocessing if it's needed and this is the first config in its group
+                            if (should_preprocess and i == 0):
+                                log_message(f"Updating runner configuration with True", "🔄")
+                                log_message(f"Updating runner configuration where {current_embedding_type} Embedding and {current_graph_type} Graph are used", "🔄")
+                                runner.update_config(merged_config, True)
+                            else:
+                                runner.update_config(merged_config, False)
+                            
+                            # Run tests
+                            log_message(f"Running tests with prompts...", "▶️")
+                            results = runner.evaluate_prompts(prompts)
+                            
+                            # Map results to prompts
+                            prompt_results = {prompt: result for prompt, result in zip(prompts, results)}
+                            
+                            # Save results
+                            log_message(f"Saving results...", "💾")
+                            self.result_manager.write_result(merged_config, prompt_results)
+                            
+                            log_message(f"Completed testing: {config_name}", "✅")
+                            
+                        except Exception as e:
+                            import traceback
+                            error_msg = f"Error processing {os.path.basename(config_path)}:\n{str(e)}"
+                            print(error_msg)
+                            log_message(error_msg, "❌")
                             continue
-                        
-                        # Merge with default config
-                        merged_config = TestConfigRunner.deep_merge(config, self.default_config)
-                        print(merged_config)
-                        # Print merged config before preprocessing
-                        log_message(f"\nMerged config before preprocessing for {config_name}:")
-                        log_message(json.dumps(merged_config, indent=2))
-                        
-                        # Check if result already exists
-                        exists, config_hash = self.result_manager.check_hash_exists(merged_config)
-                        if exists and not overwrite_enabled.value:
-                            log_message(f"Result already exists for {config_name} (hash: {config_hash}). Skipping...")
-                            continue
-                        
-                        # Update runner configuration
-                        log_message(f"Updating runner configuration...")
-                        runner.update_config(merged_config, (i == 0 and preprocessing_enabled.value == True))
-                        
-                        # Run tests
-                        log_message(f"Running tests with prompts...")
-                        results = runner.evaluate_prompts(prompts)
-                        
-                        # Map results to prompts
-                        prompt_results = {prompt: result for prompt, result in zip(prompts, results)}
-                        
-                        # Save results
-                        log_message(f"Saving results...")
-                        self.result_manager.write_result(merged_config, prompt_results)
-                        
-                        log_message(f"Completed testing: {config_name}")
-                        
-                    except Exception as e:
-                        import traceback
-                        error_msg = f"Error processing {os.path.basename(config_path)}:\n{str(e)}\n\nTraceback:\n{traceback.format_exc()}"
-                        print(error_msg)
-                        continue
             
-            log_message("All tests completed successfully!")
+            log_message("All tests completed successfully!", "✅")
             
         except Exception as e:
             import traceback
             error_msg = f"Critical error during test execution:\n{str(e)}\n\nTraceback:\n{traceback.format_exc()}"
-            log_message(error_msg)
+            log_message(error_msg, "❌")
+            raise e
 
     def run_test(self):
         print("Starting run_test method")
@@ -485,7 +553,7 @@ current_dir = os.getcwd()
 config_path = os.path.join(current_dir, "config_variations")
 print(f"Using config path: {config_path}")
 print(f"Config path exists: {os.path.exists(config_path)}")
-runner = TestConfigRunner(config_path)
+runner = TestConfigRunner(config_path, discord_webhook_url="https://discord.com/api/webhooks/")
 print("TestConfigRunner instance created")
 runner.select_test_types()
 

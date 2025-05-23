@@ -27,7 +27,7 @@ logger:
 
 document_range:
   enabled: false # Boolean to enable document range processing
-  document_ids: [] # Array of integer indices for specific documents to process
+  document_ids: [1, 15, 34, 4, 62, 63, 23, 44, 58, 67] # Array of integer indices for specific documents to process
 
 rag:
   text_similarity_threshold: 0.55 # Threshold for text similarity in RAG (0.0 to 1.0)

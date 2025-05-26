@@ -77,7 +77,9 @@ class ResultVisualiser:
                 },
                 "rouge_evaluation": {
                     "rougeL": [0, 0, 0]
-                }
+                },
+                "chosen_prompt": chosen_prompt,
+                "response": response,
             }
             for i, rag_result in enumerate(rag_results):
                 # We multiply the score by the index + 1
@@ -100,15 +102,59 @@ class ResultVisualiser:
                 final_results["rouge_evaluation"]["rougeL"][j] /= (rag_count * (rag_count + 1) / 2)
 
             prompt_index[prompt] = final_results
-        result = {
-            "response": response,
-            "chosen_prompt": chosen_prompt,
-            "rag_count": rag_count,
-            "final_results": final_results
-        }
-        return result
+        return prompt_index
+
+    def save_results_to_csv(self, output_path):
+        """Save the weighted results to a CSV file."""
+        rows = []
+        for config in self.configs:
+            for prompt, results in config['results'].items():
+                # Clean and escape text for CSV
+                original_prompt = str(prompt).replace('\n', ' ').replace('\r', ' ').strip()
+                chosen_prompt = str(results['chosen_prompt']).replace('\n', ' ').replace('\r', ' ').strip()
+                response = str(results['response']).replace('\n', ' ').replace('\r', ' ').strip()
+                
+                row = {
+                    'original_prompt': original_prompt,
+                    'chosen_prompt': chosen_prompt,
+                    'response': response,
+                    'model_primary': config['model']['primary'],
+                    'model_allow_image_input': config['model']['allow_image_input'],
+                    'graph_verification_enabled': config['graph_verification']['enabled'],
+                    'graph_verification_method': config['graph_verification']['method'],
+                    'graph_verification_llm_model': config['graph_verification']['llm_model'],
+                    'prompt_mode': config['prompt_mode']['mode'],
+                    'prompt_mode_elaborator': config['prompt_mode']['elaborator_model'],
+                    'text_summariser_model': config['text_summariser']['model'],
+                    'embedding_method': config['embedding']['method'],
+                    'embedding_model': config['embedding']['model'],
+                    'rag_text_similarity_threshold': config['rag']['text_similarity_threshold'],
+                    'rag_loop_retries': config['rag']['loop_retries'],
+                    'rag_pass_threshold': config['rag']['pass_threshold'],
+                    'retry_count': results['retry_count'],
+                    'rag_count': results['rag_count'],
+                    'graph_recall': results['graph_evaluation']['recall'],
+                    'graph_precision': results['graph_evaluation']['precision'],
+                    'graph_f_beta': results['graph_evaluation']['f_beta'],
+                    'bertscore_precision': results['bertscore_evaluation']['precision'],
+                    'bertscore_recall': results['bertscore_evaluation']['recall'],
+                    'bertscore_f1': results['bertscore_evaluation']['f1'],
+                    'rougeL_precision': results['rouge_evaluation']['rougeL'][0],
+                    'rougeL_recall': results['rouge_evaluation']['rougeL'][1],
+                    'rougeL_f1': results['rouge_evaluation']['rougeL'][2]
+                }
+                rows.append(row)
+                print(f"Added row for original prompt: {original_prompt[:100]}...")  # Print first 100 chars of prompt
+        
+        df = pd.DataFrame(rows)
+        # Ensure proper CSV escaping
+        df.to_csv(output_path, index=False, quoting=1)  # QUOTE_ALL mode
+        print(f"\nResults saved to {output_path}")
+        print(f"Total rows saved: {len(rows)}")
+        print("\nFirst few rows of data:")
+        print(df.head())
 
 
 if __name__ == "__main__":
     visualiser = ResultVisualiser("results")
-    print(visualiser.configs[0])
+    visualiser.save_results_to_csv("results/weighted_results.csv")

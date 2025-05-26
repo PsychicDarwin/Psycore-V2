@@ -18,7 +18,7 @@ def generate_uml_diagrams(modules, output_dir="uml_output", image_format="png"):
     for mod in modules:
         mod_path = str(Path(mod).parent)
         if not mod_path:
-            continue  # skip root-level files
+            continue  
 
         package_name = mod_path.replace(os.sep, "_")
 

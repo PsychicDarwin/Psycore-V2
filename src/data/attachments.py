@@ -110,7 +110,6 @@ class Attachment:
         # We process audio files by splitting them into smaller chunks and transcribing them using Whisper
         # Not all MLLM models support audio input, so we just convert it to text
         try: 
-            # Split the file up into 25MB chunks
             chunk_size_mb = 25
             chunks = split_audio_file(self.attachment_data, chunk_size_mb)
             model = whisper.load_model("medium")
@@ -118,9 +117,9 @@ class Attachment:
             for chunk in chunks:
                 result = model.transcribe(chunk, fp16=False)
                 transcriptions.append(result["text"])
-            # Combine the transcriptions
+            
             self.attachment_data = " ".join(transcriptions)
-            # Clean up temporary files
+            
             clean_temp_files(chunks)
         except Exception as e:
             logger.error(f"Failed to process audio: {str(e)}")

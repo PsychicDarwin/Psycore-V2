@@ -9,7 +9,6 @@ from src.system_manager import LocalCredentials
 from enum import Enum
 from src.system_manager import LoggerController
 
-# Load environment variables
 load_dotenv()
 
 logger = LoggerController.get_logger()
@@ -53,11 +52,9 @@ class S3Handler:
     def _upload_to_s3(self,bucket: Union[S3Bucket, str], key: str, body: Union[bytes, BinaryIO, str], content_type: str) -> str:
         logger.debug("Entering _upload_to_s3 with bucket=%s, key=%s, content_type=%s", bucket, key, content_type)
         try:
-            # Get bucket value if it's an S3Bucket enum
             bucket_name = bucket.value if isinstance(bucket, S3Bucket) else bucket
             
             if isinstance(body, (bytes, str)):
-                # Convert string to bytes if needed
                 if isinstance(body, str):
                     body = body.encode('utf-8')
                 self.s3.put_object(Bucket=bucket_name, Key=key, Body=body, ContentType=content_type)

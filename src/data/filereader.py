@@ -3,7 +3,6 @@ import io, imagehash,base64, docx2txt,pandas # PyMuPDF
 import fitz
 from src.system_manager import LoggerController
 
-# Configure logging
 logger = LoggerController.get_logger()
 
 class PDFReader:

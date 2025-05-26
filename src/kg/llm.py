@@ -9,7 +9,6 @@ from langchain_core.documents import Document
 from src.llm.content_formatter import ContentFormatter
 from src.system_manager.LoggerController import LoggerController
 
-# Configure logging
 logger = LoggerController.get_logger()
 
 class LLM_KG(GraphCreator):

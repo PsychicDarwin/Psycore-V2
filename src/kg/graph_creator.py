@@ -1,7 +1,6 @@
 from abc import ABC, abstractmethod
 from src.system_manager import LoggerController
 
-# Configure logging
 logger = LoggerController.get_logger()
 
 class GraphRelation:

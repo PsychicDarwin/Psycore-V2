@@ -100,13 +100,11 @@ class ModelCatalogue:
 
 
     def get_MLLMs(models: list[str] = None):
-        # Filter through models and return only multimodal models
         if models is None:
             models = ModelCatalogue._models
         return {k:v for k,v in models.items() if v.multiModal}
     
     def get_textLLMs(models: list[str] = None):
-        # Filter through models and return only text models
         if models is None:
             models = ModelCatalogue._models
         return {k:v for k,v in models.items() if not v.multiModal}
@@ -114,13 +112,11 @@ class ModelCatalogue:
     def get_MEmbeddings(models: list[str] = None):
         if models is None:
             models = ModelCatalogue._embeddings
-        # Filter through embeddings and return only multimodal embeddings
         return {k:v for k,v in models.items() if v.multiModal}
     
     def get_textEmbeddings(models: list[str] = None):
         if models is None:
             models = ModelCatalogue._embeddings
-        # Filter through embeddings and return only text embeddings
         return {k:v for k,v in models.items() if not v.multiModal}
     @staticmethod
     def get_models_with_json_schema(models: list[str] = None):

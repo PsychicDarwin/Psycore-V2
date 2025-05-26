@@ -13,9 +13,9 @@ def chunk_audio_size(file: str, chunk_size_mb: int) -> list:
     """
     probe = ffmpeg.probe(file)
     duration = float(probe['format']['duration'])
-    chunk_size = chunk_size_mb * 1024 * 1024  # Convert MB to bytes
-    bitrate = int(probe['format']['bit_rate']) / 8  # Convert bps to Bps
-    chunk_duration = chunk_size / bitrate  # Duration of each chunk in seconds
+    chunk_size = chunk_size_mb * 1024 * 1024  
+    bitrate = int(probe['format']['bit_rate']) / 8  
+    chunk_duration = chunk_size / bitrate  
 
     chunks = []
     for start in range(0, int(duration), int(chunk_duration)):
@@ -39,7 +39,7 @@ def split_audio_file(file: str, chunk_size_mb: int) -> list:
 
     for i, (start, end) in enumerate(chunks):
         with tempfile.NamedTemporaryFile(delete=False, suffix='.mp3') as temp_file:
-            temp_file.close()  # Close the file to allow ffmpeg to write to it
+            temp_file.close()  
             output_file = temp_file.name
             ffmpeg.input(file, ss=start, to=end).output(output_file).run(quiet=True)
             chunk_files.append(output_file)

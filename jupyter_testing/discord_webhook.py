@@ -43,7 +43,6 @@ class DiscordWebhook:
         if embeds:
             payload["embeds"] = embeds
             
-        # Add any additional parameters
         payload.update(kwargs)
         
         response = requests.post(
@@ -55,20 +54,16 @@ class DiscordWebhook:
 
 # Example usage:
 if __name__ == "__main__":
-    # Replace with your webhook URL
     webhook_url = "YOUR_WEBHOOK_URL_HERE"
     
-    # Create webhook instance
     webhook = DiscordWebhook(webhook_url)
     
-    # Send a simple message
     response = webhook.send_message(
         content="Hello from Python!",
         username="Custom Bot Name",
         avatar_url="https://example.com/avatar.png"
     )
     
-    # Check if the message was sent successfully
     if response.status_code == 204:
         print("Message sent successfully!")
     else:

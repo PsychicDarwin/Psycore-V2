@@ -9,11 +9,9 @@ from langchain_core.documents import Document
 from src.llm.content_formatter import ContentFormatter
 from src.system_manager.LoggerController import LoggerController
 
-# Configure logging
 logger = LoggerController.get_logger()
 class BERT_KG(GraphCreator):
     def __init__(self, model_name: str = "Babelscape/rebel-large"):
-        # Initialize model and tokenizer
         self.tokenizer = AutoTokenizer.from_pretrained(model_name)
         self.model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
 
@@ -30,7 +28,6 @@ class BERT_KG(GraphCreator):
         
         decoded_output = self.tokenizer.decode(outputs[0], skip_special_tokens=False)
                 
-        # Clean and parse output
         cleaned_output = re.sub(r"<s>|</s>", "", decoded_output).strip()
         triplet_info = cleaned_output.split("<triplet> ")[1:]
 
@@ -45,7 +42,7 @@ class BERT_KG(GraphCreator):
                     obj, rel = obj_rel.split("<obj> ")[:2]
                     triplets.append(GraphRelation(subject.strip(), obj.strip(), rel.strip()))
                 except ValueError:
-                    continue  # Malformed triple part
+                    continue  
 
         return triplets
 

@@ -18,14 +18,12 @@ from src.main.iterative_stage import IterativeStage
 def test_iterative_stage_directly():
     """Test the iterative stage component directly without using PsycoreTestRunner"""
     
-    # Set up logging
     LoggerController.initialize("DEBUG")
     logger = LoggerController.get_logger()
     
     logger.info("Starting direct iterative stage test")
     
     try:
-        # Step 1: Initialize S3 handler
         logger.info("Initializing S3 handler...")
         s3_creds = {
             "aws_iam": LocalCredentials.get_credential('AWS_IAM_KEY'),
@@ -40,25 +38,18 @@ def test_iterative_stage_directly():
         s3_handler = S3Handler(s3_creds)
         s3_quick_fetch = S3QuickFetch(s3_handler)
         
-        # Step 2: Initialize BERT knowledge graph model
         logger.info("Initializing BERT knowledge graph model...")
         graph_model = BERT_KG()
         
-        # Step 3: Get some sample RAG results
-        # Note: Normally these would come from running RAG,
-        # but for direct testing we'll create mock results
         logger.info("Creating sample RAG results...")
         
-        # First try to get actual files from S3 to use as examples
         try:
             documents = s3_handler.list_base_directory_files(S3Bucket.DOCUMENTS)
             logger.info(f"Found {len(documents)} documents in S3")
             
             if len(documents) > 0:
-                # Use the first document as an example
                 document_path = documents[0]
                 
-                # Try to find corresponding graph file
                 graphs = s3_handler.list_base_directory_files(S3Bucket.GRAPHS)
                 graph_path = None
                 
@@ -70,7 +61,6 @@ def test_iterative_stage_directly():
                 if graph_path:
                     logger.info(f"Using document: {document_path} and graph: {graph_path}")
                     
-                    # Create a simple mock RAG result
                     rag_results = [{
                         "vector_id": "mock_vector_id_1",
                         "score": 0.85,
@@ -91,7 +81,6 @@ def test_iterative_stage_directly():
             logger.info("Using mock RAG results instead")
             rag_results = create_mock_rag_results()
         
-        # Step 4: Create a mock chat result
         class MockChatResult:
             def __init__(self, content):
                 self.content = content
@@ -101,16 +90,13 @@ def test_iterative_stage_directly():
             "It contains information that may or may not match the knowledge graph."
         )
         
-        # Step 5: Initialize and test the iterative stage
         logger.info("Initializing iterative stage...")
         threshold = 0.7  # High threshold to encourage iterations
         iterative_stage = IterativeStage(s3_quick_fetch, graph_model, threshold, rag_results)
         
-        # Step 6: Run the decision maker
         logger.info("Running iterative stage decision maker...")
         decision_result = iterative_stage.decision_maker(rag_results, rag_chat_results)
         
-        # Step 7: Analyze and print results
         print("\n=== Iterative Stage Test Results ===\n")
         print(f"Valid relations percentage: {decision_result[0]}")
         print(f"Pass threshold: {threshold}")

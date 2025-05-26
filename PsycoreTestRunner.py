@@ -168,10 +168,10 @@ class PsycoreTestRunner:
 
 # Example usage
 if __name__ == "__main__":
-    # Create a runner with default config and run preprocessing
+    
     runner = PsycoreTestRunner(preprocess=True)
     
-    # Example of updating specific parameters and re-preprocessing
+    
     runner.update_config({
         "model": {
             "primary": "oai_4o_latest"

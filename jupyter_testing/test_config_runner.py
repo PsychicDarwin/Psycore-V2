@@ -5,9 +5,8 @@ from IPython.display import display, clear_output
 from tqdm import tqdm
 from discord_webhook import DiscordWebhook
 
-# Get the parent directory
 parent_dir = os.path.abspath(os.path.join(os.path.dirname('PsycoreTestRunner.py'), ".."))
-# Add the parent directory to sys.path
+
 sys.path.insert(0, parent_dir)
 
 import PsycoreTestRunner
@@ -74,7 +73,7 @@ class VariationType:
         print("Starting split_config with variations:", [str(v) for v in variations])
         
         for variation in variations:
-            # Determine which category to use
+            
             category = "General"
             if variation.api_limited and variation.hardware_limited:
                 category = "API_HARDWARE_LIMITED"
@@ -86,15 +85,15 @@ class VariationType:
             print(f"\nProcessing variation: {variation}")
             print(f"Selected category: {category}")
             
-            # Determine which graph type to use
+            
             graph_type = "llm_graph" if variation.llm_graph else "bert_graph"
             print(f"Selected graph_type: {graph_type}")
             
-            # Determine which embedding type to use
+            
             embedding_type = "aws_embedding" if variation.aws_embedding else "clip_embedding"
             print(f"Selected embedding_type: {embedding_type}")
             
-            # Add the config path to the appropriate list
+           
             config_structure[category][graph_type][embedding_type].append(variation.config_path)
             print(f"Added config path {variation.config_path} to {category}.{graph_type}.{embedding_type}")
             print(f"Current state of that list: {config_structure[category][graph_type][embedding_type]}")
@@ -151,7 +150,7 @@ class TestConfigRunner:
             },
             "document_range": {
                 "enabled": True,
-                "document_ids": [1, 15, 34, 4, 62, 63, 23, 44, 58, 67]  # Default document IDs
+                "document_ids": [1, 15, 34, 4, 62, 63, 23, 44, 58, 67]  
             },
             "rag": {
                 "text_similarity_threshold": 0.3
@@ -176,14 +175,14 @@ class TestConfigRunner:
         return merged
 
     def select_test_types(self):
-        # Create checkboxes for each test type
+        
         test_types = {
             "General": widgets.Checkbox(value=False, description='General'),
             "API_LIMITED": widgets.Checkbox(value=False, description='API Limited'),
             "API_HARDWARE_LIMITED": widgets.Checkbox(value=False, description='API & Hardware Limited')
         }
         
-        # Create preprocessing controls
+        
         preprocessing_enabled = widgets.Checkbox(value=False, description='Enable Preprocessing')
         preprocessing_type = widgets.SelectMultiple(
             options=['llm_graph_aws_embedding', 'llm_graph_clip_embedding', 
@@ -193,22 +192,22 @@ class TestConfigRunner:
             layout=widgets.Layout(width='50%', height='100px')
         )
         
-        # Create overwrite checkbox
+        
         overwrite_enabled = widgets.Checkbox(value=False, description='Allow Overwrite')
         
-        # Create prompts input
+        
         prompts_input = widgets.Textarea(
             value='\n'.join(self.default_prompts),
             description='Test Prompts:',
             layout=widgets.Layout(width='100%', height='100px')
         )
         
-        # Link preprocessing checkbox to dropdown
+        
         def on_preprocessing_change(change):
             preprocessing_type.disabled = not change['new']
         preprocessing_enabled.observe(on_preprocessing_change, names='value')
         
-        # Create output widget for displaying results
+        
         output = widgets.Output()
         
         def log_message(message, discord_prefix="ℹ️"):
@@ -216,7 +215,7 @@ class TestConfigRunner:
                 clear_output()
                 print(message)
         
-        # Store the widgets in the class variable
+        
         self.selection = {
             'test_types': test_types,
             'preprocessing_enabled': preprocessing_enabled,
@@ -226,7 +225,7 @@ class TestConfigRunner:
             'output': output
         }
         
-        # Display widgets in a more organized layout
+        
         display(widgets.VBox([
             widgets.HTML("<h3>Test Types</h3>"),
             widgets.HBox([v for v in test_types.values()]),
@@ -256,10 +255,10 @@ class TestConfigRunner:
                 clear_output()
                 print(message)
             
-            # Send to Discord if webhook is configured
+            
             if hasattr(self, 'discord_webhook'):
                 try:
-                    # Split long messages into chunks of 2000 characters (Discord's limit)
+                    
                     chunks = [message[i:i+2000] for i in range(0, len(message), 2000)]
                     for chunk in chunks:
                         self.discord_webhook.send_message(
@@ -284,17 +283,16 @@ class TestConfigRunner:
             log_message("Please select at least one test type", "⚠️")
             return
         
-        # Get the selected configurations
+        
         selected_configs = {k: self.config_structure[k] for k in selected_types}
         
-        # Group by preprocessing
+        
         preprocessing_groups = VariationType.group_by_preprocessing(selected_configs)
         log_message(f"Selected test types: {selected_types}\nPreprocessing enabled: {preprocessing_enabled.value}")
         
-        # Get prompts from input
+        
         prompts = [p.strip() for p in prompts_input.value.split('\n') if p.strip()]
         
-        # Send initial Discord notification about test configuration
         start_message = "🚀 Starting new test run with configuration:\n"
         start_message += f"• Test Types: {', '.join(selected_types)}\n"
         start_message += f"• Preprocessing Enabled: {preprocessing_enabled.value}\n"
@@ -307,7 +305,6 @@ class TestConfigRunner:
             start_message += f"  {i}. {prompt[:100]}...\n" if len(prompt) > 100 else f"  {i}. {prompt}\n"
         log_message(start_message, "🚀")
         
-        # If preprocessing is enabled, we need to select preprocessing types
         if preprocessing_enabled.value:
             if not preprocessing_type.value:
                 log_message("Please select at least one preprocessing type", "⚠️")
@@ -316,7 +313,6 @@ class TestConfigRunner:
             log_message(f"Selected preprocessing types: {preprocessing_type.value}")
         
         try:
-            # Initialize PsycoreTestRunner with timeout
             log_message("Initializing PsycoreTestRunner...", "⚙️")
             import threading
             import time
@@ -331,12 +327,10 @@ class TestConfigRunner:
                 except Exception as e:
                     init_error = e
             
-            # Start initialization in a separate thread
             init_thread = threading.Thread(target=init_runner)
             init_thread.daemon = True
             init_thread.start()
             
-            # Wait for initialization with timeout
             timeout = 30  # seconds
             start_time = time.time()
             while init_thread.is_alive():
@@ -351,11 +345,9 @@ class TestConfigRunner:
                 
             log_message("PsycoreTestRunner initialized successfully", "✅")
             
-            # Track the last used graph type and embedding type
             last_graph_type = None
             last_embedding_type = None
             
-            # Process each group
             for group, configs in preprocessing_groups.items():
                 # Skip groups that don't match selected preprocessing types if preprocessing is enabled
                 if preprocessing_enabled.value and group not in preprocessing_type.value:
@@ -367,25 +359,21 @@ class TestConfigRunner:
                 current_graph_type = parts[0]  # llm or bert
                 current_embedding_type = parts[2]  # aws or clip
                 
-                # Send notification about current group
                 group_message = f"📁 Processing group: {group}\n"
                 group_message += f"• Graph Type: {current_graph_type}\n"
                 group_message += f"• Embedding Type: {current_embedding_type}\n"
                 group_message += f"• Number of configs: {len(configs)}"
                 log_message(group_message, "📁")
                 
-                # Determine if preprocessing is needed
                 should_preprocess = preprocessing_enabled.value and (
                     last_graph_type is None or  # First run
                     last_graph_type != current_graph_type or  # Graph type changed
                     last_embedding_type != current_embedding_type  # Embedding type changed
                 )
                 
-                # Update last used types
                 last_graph_type = current_graph_type
                 last_embedding_type = current_embedding_type
                 
-                # Process configs in batches of 5
                 for i in range(0, len(configs), 5):
                     batch = configs[i:i+5]
                     batch_message = f"📋 Processing batch {i//5 + 1} of {(len(configs) + 4)//5}:\n"
@@ -398,7 +386,6 @@ class TestConfigRunner:
                             config_name = os.path.basename(config_path)
                             log_message(f"Testing configuration: {config_name}", "⚙️")
                             
-                            # Load and merge configuration
                             log_message(f"Loading configuration from {config_name}...", "📄")
                             try:
                                 with open(config_path, 'r') as f:
@@ -410,21 +397,20 @@ class TestConfigRunner:
                                 log_message(f"Error parsing YAML file {config_name}: {str(e)}", "❌")
                                 continue
                             
-                            # Merge with default config
                             merged_config = TestConfigRunner.deep_merge(config, self.default_config)
                             print(merged_config)
-                            # Print merged config before preprocessing
+                            
                             log_message(f"\nMerged config before preprocessing for {config_name}:", "⚙️")
                             log_message(json.dumps(merged_config, indent=2), "📄")
                             
-                            # Check if result already exists
+                            
                             exists, config_hash = self.result_manager.check_hash_exists(merged_config)
                             if exists and not overwrite_enabled.value:
                                 log_message(f"Result already exists for {config_name} (hash: {config_hash}). Skipping...", "⏭️")
                                 continue
-                            # Update runner configuration
+                            
                             log_message(f"Updating runner configuration...", "⚙️")
-                            # Only do preprocessing if it's needed and this is the first config in its group
+                            
                             if (should_preprocess and i == 0):
                                 log_message(f"Updating runner configuration with True", "🔄")
                                 log_message(f"Updating runner configuration where {current_embedding_type} Embedding and {current_graph_type} Graph are used", "🔄")
@@ -432,14 +418,14 @@ class TestConfigRunner:
                             else:
                                 runner.update_config(merged_config, False)
                             
-                            # Run tests
+                            
                             log_message(f"Running tests with prompts...", "▶️")
                             results = runner.evaluate_prompts(prompts)
                             
-                            # Map results to prompts
+                            
                             prompt_results = {prompt: result for prompt, result in zip(prompts, results)}
                             
-                            # Save results
+                            
                             log_message(f"Saving results...", "💾")
                             self.result_manager.write_result(merged_config, prompt_results)
                             
@@ -463,7 +449,7 @@ class TestConfigRunner:
     def run_test(self):
         print("Starting run_test method")
         self.select_test_types()
-        # Create a button to run the tests
+        
         run_button = widgets.Button(description='Run Selected Tests')
         run_button.on_click(lambda b: self.run_selected_tests())
         display(run_button)
@@ -474,12 +460,12 @@ class TestConfigRunner:
         print(f"Creating variations from base path: {base_path}")
         print(f"Base path exists: {os.path.exists(base_path)}")
 
-        # API_and_Hardware_Intensive variations
+        
         intensive_path = os.path.join(base_path, "API_and_Hardware_Intensive")
         print(f"Checking intensive path: {intensive_path}")
         print(f"Intensive path exists: {os.path.exists(intensive_path)}")
         if os.path.exists(intensive_path):
-            # BERT Graph variations
+            
             bert_aws_path = os.path.join(intensive_path, "BERT_Graph_AWS_Embedding")
             print(f"Checking BERT AWS path: {bert_aws_path}")
             print(f"BERT AWS path exists: {os.path.exists(bert_aws_path)}")
@@ -500,7 +486,7 @@ class TestConfigRunner:
                         print(f"Found BERT CLIP config: {full_path}")
                         variations.append(VariationType(bert_graph=True, llm_graph=False, aws_embedding=False, api_limited=True, hardware_limited=True, config_path=full_path))
             
-            # LLM Graph variations
+            
             llm_aws_path = os.path.join(intensive_path, "LLM_Graph_AWS_Embedding")
             print(f"Checking LLM AWS path: {llm_aws_path}")
             print(f"LLM AWS path exists: {os.path.exists(llm_aws_path)}")
@@ -521,7 +507,7 @@ class TestConfigRunner:
                         print(f"Found LLM CLIP config: {full_path}")
                         variations.append(VariationType(bert_graph=False, llm_graph=True, aws_embedding=False, api_limited=True, hardware_limited=True, config_path=full_path))
 
-        # API_Limited variations (LLM Graph with AWS Embedding)
+        
         api_limited_path = os.path.join(base_path, "API_Limited")
         print(f"Checking API Limited path: {api_limited_path}")
         print(f"API Limited path exists: {os.path.exists(api_limited_path)}")
@@ -532,7 +518,7 @@ class TestConfigRunner:
                     print(f"Found API Limited config: {full_path}")
                     variations.append(VariationType(bert_graph=False, llm_graph=True, aws_embedding=True, api_limited=True, hardware_limited=False, config_path=full_path))
 
-        # General Models variations (LLM Graph with AWS Embedding)
+        
         general_path = os.path.join(base_path, "General_Models")
         print(f"Checking General Models path: {general_path}")
         print(f"General Models path exists: {os.path.exists(general_path)}")
@@ -548,7 +534,7 @@ class TestConfigRunner:
 
 
 print("Creating TestConfigRunner instance...")
-# Get the current working directory
+
 current_dir = os.getcwd()
 config_path = os.path.join(current_dir, "config_variations")
 print(f"Using config path: {config_path}")

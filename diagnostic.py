@@ -15,7 +15,6 @@ def check_environment():
     print(f"Python version: {sys.version}")
     print(f"Current directory: {os.getcwd()}")
     
-    # Check required modules
     required_modules = [
         "yaml", "boto3", "pinecone", "torch", "transformers", 
         "streamlit", "langchain", "openai", "anthropic"
@@ -34,12 +33,10 @@ def check_credentials():
     """Check if necessary credentials are available"""
     print("\n=== Credentials Check ===")
     
-    # Try to import LocalCredentials without actually accessing secrets
     try:
         from src.system_manager import LocalCredentials
         print("✓ LocalCredentials module imported successfully")
         
-        # Check key credential names (without revealing secrets)
         credential_names = [
             "AWS_IAM_KEY", "AWS_DEFAULT_REGION", 
             "S3_DOCUMENTS_BUCKET", "S3_TEXT_BUCKET", 
@@ -50,7 +47,6 @@ def check_credentials():
         all_good = True
         for cred_name in credential_names:
             try:
-                # Just check if credential exists without printing it
                 cred = LocalCredentials.get_credential(cred_name)
                 if cred is not None:
                     print(f"✓ {cred_name} is set")
@@ -81,7 +77,6 @@ def check_config():
         
         print("✓ config.yaml loaded successfully")
         
-        # Check key configuration sections
         sections = ["model", "graph_verification", "prompt_mode", "embedding", "logger", "document_range", "rag", "iteration"]
         
         for section in sections:
@@ -127,7 +122,6 @@ def test_psycore_import():
         from psycore import Psycore
         print("✓ psycore module imported successfully")
         
-        # Test creating a Psycore instance with default config
         print("Attempting to initialize Psycore (this may take a moment)...")
         try:
             psycore = Psycore()
@@ -161,7 +155,6 @@ def check_s3_buckets():
         s3_handler = S3Handler(s3_creds)
         print("✓ S3Handler initialized successfully")
         
-        # Check each bucket
         for bucket_type in [S3Bucket.DOCUMENTS, S3Bucket.TEXT, S3Bucket.IMAGES, S3Bucket.GRAPHS]:
             try:
                 files = s3_handler.list_base_directory_files(bucket_type)

@@ -24,18 +24,17 @@ class ConfigManager:
     def _validate(self):
         c = self.config
 
-        # Check presence
+        
         for section in ["model", "graph_verification", "prompt_mode", "text_summariser", "logger", "embedding", "document_range", "rag", "iteration"]:
             if section not in c:
                 raise ConfigError(f"Missing required section: '{section}'")
 
-        # Validate model
+        
         if not isinstance(c["model"].get("primary"), str):
             raise ConfigError("model.primary must be a string")
         if not isinstance(c["model"].get("allow_image_input"), bool):
             raise ConfigError("model.allow_image_input must be a boolean")
 
-        # Validate graph_verification
         gv = c["graph_verification"]
         if not isinstance(gv.get("enabled"), bool):
             raise ConfigError("graph_verification.enabled must be a boolean")
@@ -48,7 +47,6 @@ class ConfigManager:
             if not isinstance(gv.get("llm_model"), str):
                 raise ConfigError("graph_verification.llm_model must be a string when method is 'llm'")
 
-        # Validate prompt_mode
         mode = c["prompt_mode"].get("mode")
         if mode not in self.VALID_PROMPT_MODES:
             raise ConfigError(f"prompt_mode.mode must be one of {self.VALID_PROMPT_MODES}")
@@ -56,11 +54,9 @@ class ConfigManager:
         if not isinstance(c["prompt_mode"].get("elaborator_model"), str):
             raise ConfigError("prompt_mode.elaborator_model must be a string")
 
-        # Validate text_summariser
         if not isinstance(c["text_summariser"].get("model"), str):
             raise ConfigError("text_summariser.model must be a string")
 
-        # Validate embedding
         emb = c["embedding"]
         method = emb.get("method")
         if method not in self.VALID_EMBEDDING_METHODS:
@@ -70,13 +66,11 @@ class ConfigManager:
             if not isinstance(emb.get("model"), str):
                 raise ConfigError(f"embedding.model must be a string when method is '{method}'")
 
-        # Validate logger
         if not isinstance(c["logger"].get("level"), str):
             raise ConfigError("logger.level must be a string")
         if c["logger"]["level"] not in self.VALID_LOG_LEVELS:
             raise ConfigError(f"logger.level must be one of {self.VALID_LOG_LEVELS}")
 
-        # Validate document_range
         dr = c["document_range"]
         if not isinstance(dr.get("enabled"), bool):
             raise ConfigError("document_range.enabled must be a boolean")
@@ -87,14 +81,12 @@ class ConfigManager:
         if not all(doc_id >= 0 for doc_id in dr["document_ids"]):
             raise ConfigError("document_range.document_ids must contain only non-negative integers")
 
-        # Validate rag
         rag = c["rag"]
         if not isinstance(rag.get("text_similarity_threshold"), (int, float)):
             raise ConfigError("rag.text_similarity_threshold must be a number")
         if not 0 <= rag["text_similarity_threshold"] <= 1:
             raise ConfigError("rag.text_similarity_threshold must be between 0 and 1")
 
-        # Validate iteration
         iteration = c["iteration"]
         if not isinstance(iteration.get("loop_retries"), int):
             raise ConfigError("iteration.loop_retries must be an integer")

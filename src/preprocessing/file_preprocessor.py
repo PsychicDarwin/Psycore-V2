@@ -46,7 +46,6 @@ class FilePreprocessor:
         attachment_file.extract()
         bucket_name, document_name, graph_path = None, None, None
         if additional_data is not None and "key" in additional_data.keys():
-            # Split the document name and bucket name
             bucket_name = S3Bucket.DOCUMENTS.value
             document_name = additional_data["key"]
             graph_path = f"{document_name}/graph.json"
@@ -60,15 +59,12 @@ class FilePreprocessor:
                 data = attachment_file.attachment_data
 
                 if attachment_file.attachment_type == AttachmentTypes.IMAGE:
-                    # Base64 to BytesIO binary
                     binary_image = BytesIO(base64.b64decode(data))
                     try:
-                        # Convert BytesIO to PIL Image for embedding
                         embedding_ready_image = Image.open(binary_image)
                         embedded_image = self.embedder.image_to_embedding(embedding_ready_image)
                         embedding_ready_image.close()
                         
-                        # Reset BytesIO position for S3 upload
                         binary_image.seek(0)
                         image_s3_uri = self.s3_handler.upload_image(document_name, binary_image)
                         summary = self.imageConverter.text_summary(binary_image)
@@ -121,15 +117,13 @@ class FilePreprocessor:
                         image.additional_data["image_path"] = f"{document_name}/image{i}"
                         logger.info(f"Uploading image {i+1} to S3")
                         summary_s3_uri = self.s3_handler.upload_image_text(document_name, text_summary, i)
-                        # Base64 to BytesIO binary
+                        
                         binary_image = BytesIO(base64.b64decode(image.attachment_data)) # attachment_data is already the base64 string
                         try:
-                            # Convert BytesIO to PIL Image for embedding
                             embedding_ready_image = Image.open(binary_image)
                             embedded_image = self.embedder.image_to_embedding(embedding_ready_image)
                             embedding_ready_image.close()
                             
-                            # Reset BytesIO position for S3 upload
                             binary_image.seek(0)
                             image_s3_uri = self.s3_handler.upload_image(document_name, binary_image, i)
                             

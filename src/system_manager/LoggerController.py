@@ -17,7 +17,6 @@ class LoggerController:
         if cls._instance is None:
             cls._instance = cls()
             
-            # Set log level
             level = level.upper()
             if level == 'DEBUG':
                 cls._log_level = logging.DEBUG
@@ -32,11 +31,9 @@ class LoggerController:
             else:
                 cls._log_level = logging.INFO
                 
-            # Configure logger
             cls._logger = logging.getLogger('PsycoreLogger')
             cls._logger.setLevel(cls._log_level)
             
-            # Create console handler if no handlers exist
             if not cls._logger.handlers:
                 console_handler = logging.StreamHandler()
                 console_handler.setLevel(cls._log_level)

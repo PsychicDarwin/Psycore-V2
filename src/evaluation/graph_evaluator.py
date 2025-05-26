@@ -79,7 +79,7 @@ class GraphEvaluator(Evaluator):
 
     def evaluate_rag_result(self, result: str, rag_data: dict):
         graph_s3_path = rag_data["graph_path"]
-        # Get the graph file from s3 bucket as text
+        
         graph_data = self.iterative_stage.doc_graphs[rag_data["document_path"]]
         summary_text = self.iterative_stage.chunk_summaries[rag_data["vector_id"]]["summary"]
         summary_graph = self.iterative_stage.chunk_summaries[rag_data["vector_id"]]["graph"]

@@ -4,7 +4,6 @@ from src.system_manager import LoggerController
 from src.vector_database.vector_service import VectorService
 from numpy import ndarray
 
-# Configure logging
 logger = LoggerController.get_logger()
 
 class PineconeService(VectorService):
@@ -34,16 +33,15 @@ class PineconeService(VectorService):
         logger.debug("Generating new UUID for data")
         while True:
             uuid_id = str(uuid.uuid4())
-            # Check if the ID exists in the index
+            
             fetch_result = self.index.fetch(ids=[uuid_id])
-            if not fetch_result.vectors:  # FetchResponse has a vectors attribute
+            if not fetch_result.vectors:  
                 logger.debug(f"Generated unique UUID: {uuid_id}")
                 return uuid_id
             logger.debug(f"UUID {uuid_id} already exists, generating new one")
 
     def add_data(self, embedding : ndarray, data: dict):
         """Add data to the vector database."""
-        # Convert numpy array to list if necessary
         if isinstance(embedding, ndarray):
             embedding = embedding.tolist()
             
@@ -67,15 +65,12 @@ class PineconeService(VectorService):
         if len(embeddings) != len(data_list):
             raise ValueError("Number of embeddings must match number of data entries")
             
-        # Convert numpy arrays to lists if necessary
         embeddings = [e.tolist() if isinstance(e, ndarray) else e for e in embeddings]
         
-        # Process in batches
         for i in range(0, len(embeddings), batch_size):
             batch_embeddings = embeddings[i:i + batch_size]
             batch_data = data_list[i:i + batch_size]
             
-            # Generate UUIDs for the batch
             batch_vectors = []
             for i, embedding, data in zip(range(len(batch_embeddings)), batch_embeddings, batch_data):
                 uuid_id = self.gen_uuid()
@@ -114,13 +109,13 @@ class PineconeService(VectorService):
     def update_data(self, data_id: str, new_data: dict):
         """Update data in the vector database."""
         logger.info(f"Updating data with ID: {data_id}, new data: {new_data}")
-        # Fetch the existing data
+        
         existing_data = self.index.fetch(ids=[data_id])
         if existing_data:
             logger.debug(f"Found existing data for ID: {data_id}")
-            # Update the metadata
+            
             existing_data['metadata'].update(new_data)
-            # Upsert the updated data
+            
             self.index.upsert(
                 vectors=[{
                     'id': data_id,

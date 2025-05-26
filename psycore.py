@@ -109,18 +109,12 @@ class Psycore:
                 print("Preprocessing cancelled.")
                 return
         self.logger.debug("Entering preprocess")
-        # Clean the VDB
         self.vdb.reset_data()
-        # Clean the S3 Buckets
         self.s3_handler.reset_buckets()
-        # Create the file preprocessor
         self.file_preprocessor = FilePreprocessor(self.s3_handler, self.vdb, self.embedder,self.text_summariser, self.graphModel)
-        # Get all files from the Documents bucket
         files = self.s3_handler.list_base_directory_files(S3Bucket.DOCUMENTS) 
-        # Limit to first 2 files for testing
         if self.document_ids is not None and len(self.document_ids) > 0:
             files = [files[i] for i in self.document_ids]
-        # Process the files
         self.file_preprocessor.process_files(files)
         self.logger.debug("Exiting preprocess")
 

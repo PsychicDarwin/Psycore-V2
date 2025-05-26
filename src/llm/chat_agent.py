@@ -16,10 +16,9 @@ class ChatAgent:
 
     def process_prompt(self, prompt : list[Union[str, Attachment]], context : list[Union[str, Attachment]] = None):
         new_history = []
-        # Handle None context
+        
         if context is None:
             context = []
-        # Split context into text inputs and attachments
         context_text = [item for item in context if isinstance(item, str)]
         context_attachments = [item for item in context if isinstance(item, Attachment) and item.attachment_type == AttachmentTypes.IMAGE]
         context_label = "context"
